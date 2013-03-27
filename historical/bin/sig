@@ -1,0 +1,2 @@
+#! /bin/csh
+~/bin/sig.pl | tee ~/.sig
