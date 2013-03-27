@@ -1,6 +1,8 @@
 #
 # GMJ .bashrc
 #
+# Tue Mar 26 20:07:29 2013 
+#
 
 #
 # Before anything else, fix the CTRL key !!!
@@ -9,7 +11,6 @@
 if [ -x $HOME/bin/fixctrl.sh ]; then
   $HOME/bin/fixctrl.sh
 fi
-
 
 #
 # Generic things
@@ -53,16 +54,6 @@ if [ -x $HOME/bin/whatsMyLocation.sh ]; then
   export myLocation=`$HOME/bin/whatsMyLocation.sh`
 fi
 
-if [ "$myLocation" == "work" ]; then
-    echo at cert
-    export http_proxy=http://proxy.cert.org:3128
-    export https_proxy=http://proxy.cert.org:3128
-elif [ "$myLocation" == "home" ]; then
-    echo at home
-    unset http_proxy
-    unset https_proxy
-fi
-
 if [ -x $HOME/bin/whatsMyOS.sh ]; then
   export myOS=`$HOME/bin/whatsMyOS.sh`
 fi
@@ -83,17 +74,20 @@ if [ "$myLocation" == "" ]; then
   fi
 fi
 
-if [ "$myLocation" == "" ]; then
-  if [[ "$myPublicDomainName" == *cert.org* ]]; then
-      export myLocation="work"
+if [ "$myLocation" == "work" ]; then
+  if [ -f $HOME/.bashrc.atWork ]; then
+    . $HOME/.bashrc.atWork
   fi
+elif [ "$myLocation" == "home" ]; then
+    echo at home
+    unset http_proxy
+    unset https_proxy
 fi
 
 
 #
 # Do location-specific setup
 #
-
 
 if [ `which emacs 2>/dev/null` ]; then
     export VISUAL=emacs
@@ -130,18 +124,11 @@ alias lssr='	ls '$color' -a -1s | sort -nr'
 # Set up silk repositories if they exist
 #
 
-case `hostname -s` in
-    manton)
-	export SILK_DATA_ROOTDIR=/analysis/gmj/share/sc12/silk/
-	export SILK_IPV6_POLICY=asv4
-	;;
-    *)
-	if [ -f /data/sensors.conf ]; then
-	    export SILK_DATA_ROOTDIR=/data
-	    export SILK_IPV6_POLICY=asv4
-        fi
-	;;
-esac
+if [ -f /data/sensors.conf ]; then
+    export SILK_DATA_ROOTDIR=/data
+    export SILK_IPV6_POLICY=asv4
+fi
+
 
 
 # Let somebody know we finished running
