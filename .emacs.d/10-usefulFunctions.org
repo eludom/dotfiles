@@ -1,0 +1,80 @@
+;; Adapted form From http://draketo.de/light/english/emacs/babcore
+;;
+;; save the current macro as reusable 
+;;
+;; gmj mods: save in ~/.emacs/savedKeyboardMacros.org
+;
+;(setq saved-keyboard-marcos-file (format "%s/%s" dotfiles-dir "savedKeyboardMacros.org"))
+;
+;(defun save-current-kbd-macro (name)
+;  "Save the current macro as named function definition inside
+;your initialization file so you can reuse it anytime in the
+;future."
+;  (interactive "SSave Macro as: ")
+;  (name-last-kbd-macro name)
+;  (save-excursion 
+;    (find-file-literally saved-keyboard-marcos-file)
+;    (goto-char (point-max))
+;    (insert "\n\n;; Saved macro\n")
+;    (insert "#+BEGIN_SRC emacs-lisp\n")
+;    (insert-kbd-macro name)
+;    (insert "\n")
+;    (insert "#+END_SRC\n")
+;    ))
+
+#+BEGIN_SRC emacs-lisp
+(defun chomp (str)
+  "Chomp leading and tailing whitespace from STR."
+  (while (string-match "\\`\n+\\|^\\s-+\\|\\s-+$\\|\n+\\'"
+		       str)
+    (setq str (replace-match "" t t str)))
+str
+)
+
+(defun insert-foo ()
+  "Insert foo in buffer"
+  (interactive)
+  (insert-string "foo")
+)
+
+
+(defun insert-date ()
+  "Insert current date and time in buffer"
+  (interactive)
+  (insert-string (current-time-string))
+)
+
+
+(defun insert-bar ()
+  "Insert bar in buffer"
+  (interactive)
+  (insert-string "bar")
+)
+
+
+; Adapted form From http://draketo.de/light/english/emacs/babcore
+;
+; save the current macro as reusable 
+;
+; gmj mods: save in ~/.emacs/savedKeyboardMacros.org
+
+(setq saved-keyboard-marcos-file (format "%s/%s" dotfiles-dir "savedKeyboardMacros.org"))
+
+(defun save-current-kbd-macro (name)
+  "Save the current macro as named function definition inside
+your initialization file so you can reuse it anytime in the
+future."
+  (interactive "SSave Macro as: ")
+  (name-last-kbd-macro name)
+  (save-excursion 
+    (find-file-literally saved-keyboard-marcos-file)
+    (goto-char (point-max))
+    (insert "\n\n;; Saved macro\n")
+    (insert "#+BEGIN_SRC emacs-lisp\n")
+    (insert-kbd-macro name)
+    (insert "\n")
+    (insert "#+END_SRC\n")
+    ))
+
+(message "usefulFunctions.org finished.")
+#+END_SRC

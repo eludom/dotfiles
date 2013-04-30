@@ -1,0 +1,79 @@
+* Package Info
+** About init.el and .org files in ~/.emacs.d
+   - http://orgmode.org/worg/org-contrib/babel/intro.html
+** Packages installed
+  - Package stuff as of 20130428
+#+BEGIN_EXAMPLE
+package-activated-list is a variable defined in `package.el'.
+Its value is
+(dired+ bash-completion openwith org-mime org-plus-contrib solarized-theme)
+#+END_EXAMPLE
+   
+** Useful Links
+   - setting default font on macs ::  http://stackoverflow.com/questions/1257426/emacs-mac-osx-and-changing-default-font 
+
+** Pacakge Manager Setup
+#+BEGIN_SRC emacs-lisp
+(require 'package) (package-initialize) 
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                           ("marmalade" . "http://marmalade-repo.org/packages/")
+                           ("melpa" . "http://melpa.milkbox.net/packages/")))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+
+; manual path additions
+
+;(add-to-list 'load-path (expand-file-name "~/elisp/"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
+#+END_SRC
+
+** Dired setup
+#+BEGIN_SRC emacs-lisp
+
+; Dired setup
+;
+; Ideas from:
+;   http://truongtx.me/2013/04/24/dired-as-default-file-manager-1-introduction/
+;   http://blog.nguyenvq.com/2009/12/01/file-management-emacs-dired-to-replace-finder-in-mac-os-x-and-other-os/
+;
+
+(require 'dired)
+
+; I kinda like having "." and ".." for navigation... (gmj)
+;
+;(setq-default dired-omit-mode t
+;				dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.")
+;;; toggle omit mode C-o
+;(define-key dired-mode-map (kbd "C-o") 'dired-omit-mode)
+
+(defun dired-do-shell-mac-open-vqn ()
+  (interactive)
+  (save-window-excursion
+    (dired-do-async-shell-command
+     "open" current-prefix-arg
+     (dired-get-marked-files t current-prefix-arg))))
+(define-key dired-mode-map (kbd "s-o") 'dired-do-shell-mac-open-vqn)
+
+
+(defun tmtxt/dired-open-current-directory-in-finder ()
+  "Open the current directory in Finder"
+  (interactive)
+  (save-window-excursion
+    (dired-do-async-shell-command
+     "open .")))
+(define-key dired-mode-map (kbd "s-O") 'tmtxt/dired-open-current-directory-in-finder)
+
+(require 'ls-lisp)
+(setq ls-lisp-use-insert-directory-program t)
+(setq insert-directory-program "/opt/local/libexec/gnubin/ls")
+
+(setq dired-listing-switches "--group-directories-first -atlh")
+
+; set up sorting options
+
+(load-file "~/.emacs.d/dired-sort-map.el")
+#+END_SRC
+
+(message "packageStuff.org finished.")
+#+RESULTS:
+: packageStuff.org finished.
+

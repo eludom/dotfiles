@@ -1,0 +1,17 @@
+
+
+;; Saved macro
+#+BEGIN_SRC emacs-lisp
+(fset 'foo
+   [?\C-r ?d ?e ?f ?u ?n ?\C-a ?\C-  ?\C-e escape ?x ?c ?o ?p ?y ?- ?r ?e ?g ?  ?a ?  ?k ?  return])
+
+#+END_SRC
+asdf
+
+;; Saved macro
+#+BEGIN_SRC emacs-lisp
+(fset 'upcaseFOO
+   [?\C-s ?f ?o ?o ?\C-b escape ?b escape ?u])
+
+(message "savedKeybaordMacros.org finished.")
+#+END_SRC

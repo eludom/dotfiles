@@ -1,0 +1,97 @@
+* OrgMode Settings
+  - This probably needs some cleanup
+  - Things have acreted here over time
+  - Some of these may be obsolete or redundant
+    - old exporter.
+
+#+BEGIN_SRC emacs-lisp
+
+(require 'org-exp-bibtex)
+(setenv "TMPDIR" ".")
+(setq org-return-follows-link t)
+(setq org-use-property-inheritance t)
+(setq org-export-with-toc nil)
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(global-set-key "\M-\C-g" 'org-plot/gnuplot)
+(setq org-agenda-include-diary t)
+(setq org-todo-keywords '((sequence "TODO" "IN-PROGRESS"  "|" "DONE" "WAITING" "DELEGATED" "CANCELED")))
+(setq org-directory "~/plans/")
+
+; org-mode babel settings
+
+(require 'org-exp-blocks)
+(org-babel-do-load-languages
+    'org-babel-load-languages '((python . t) (sh . t) (lisp . t) (R . t) (ditaa . t)))
+;(setq org-export-babel-evaluate n)
+(setq org-confirm-babel-evaluate nil)
+(setq org-babel-sh-command "bash")
+
+; org-mode HTMLize email
+
+(require 'org-mime)
+(setq org-mime-library 'mml)
+(add-hook 'message-mode-hook
+          (lambda ()
+            (local-set-key "\C-c\M-o" 'org-mime-htmlize)))
+(add-hook 'org-mode-hook
+          (lambda ()
+            (local-set-key "\C-c\M-o" 'org-mime-org-buffer-htmlize)))
+
+(add-hook 'org-mime-html-hook
+          (lambda ()
+            (org-mime-change-element-style
+             "blockquote" "border-left: 2px solid gray; padding-left: 4px;")))  
+
+(add-hook 'org-mime-html-hook
+          (lambda ()
+            (org-mime-change-element-style
+             "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
+                           "#E6E1DC" "#232323"))))
+;
+; Capture mode setup
+;
+
+(require 'org-contacts)
+(require 'org-capture)
+
+(setq org-directory "~/Org")
+(setq org-default-notes-file "~/Org/refile.org")
+
+;; I use C-M-r to start capture mode
+;(global-set-key (kbd "C-M-r") 'org-capture)
+(global-set-key (kbd "\C-cc") 'org-capture)
+;; I use C-c r to start capture mode when using SSH from my Android phone
+;(global-set-key (kbd "C-c r") 'org-capture)
+;; Capture templates for: TODO tasks, Notes, appointments, phone calls, and org-protocol
+(setq org-capture-templates
+      (quote (("t" "todo" entry (file "~/Org/refile.org")
+               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("r" "respond" entry (file "~/Org/refile.org")
+               "* TODO Respond to %:from on %:subject\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+              ("n" "note" entry (file "~/Org/refile.org")
+               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("j" "Journal" entry (file+datetree "~/Org/diary.org")
+               "* %?\n%U\n" :clock-in t :clock-resume t)
+              ("w" "org-protocol" entry (file "~/Org/refile.org")
+               "* TODO Review %c\n%U\n" :immediate-finish t)
+              ("p" "Phone call" entry (file "~/Org/refile.org")
+               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+              ("h" "Habit" entry (file "~/Org/refile.org")
+               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+
+(add-to-list 'org-capture-templates
+             '("c" "Contacts" entry (file "~/Org/contacts.org")
+               "* %(org-contacts-template-name)
+                  :PROPERTIES:
+                  :EMAIL: %(org-contacts-template-email)
+                  :END:"))
+
+(message "orgModeStuff.org finished.")
+#+END_SRC
+
+#+RESULTS:
+: orgModeStuff.org finished.
+

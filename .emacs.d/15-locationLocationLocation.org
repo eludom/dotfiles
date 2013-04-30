@@ -1,0 +1,50 @@
+;  
+; Attempt to determine location and set up things that are location dependant
+;
+; This needs work.
+;
+; Maybe look on stackoverflow to see how others are dealing with these issues;
+;
+
+
+#+BEGIN_SRC emacs-lisp
+
+; these should be set by .bashrc
+; I have srcipts in in ~/bin that try to figure this all out.
+
+; the Mac seems ill-behaved.  Check stackoverflow?
+
+(setq myOS (getenv "myOS"))
+(setq myLocation (getenv "myLocation"))
+(setq myPublicIP (getenv "myPublicIP"))
+(setq myPublicDomainName (getenv "myPublicDomainName"))
+(setq myNoSuchVar (getenv "myNoSuchVar"))
+
+
+(setq atHome nil)
+(setq atWork nil)
+(cond ((string-equal myLocation "home") (setq atHome t))
+      ((string-equal myLocation "work") (setq atWork t))
+      (t (message "Location Unknown"))
+      )
+
+(setq onMac nil)
+(setq onUbuntu nil)
+(cond ((string-equal myOS "mac") (setq onMac t))
+      ((string-equal myOS "ubuntu") (setq onUbuntu t))
+      (t (message "OS Unknown"))
+      )
+
+; execute stuff based on where we are.
+; expand this.
+
+; Do work specific setup here
+(if (file-exists-p "/Users/gmj/.emacs.atWork")
+      (load "/Users/gmj/.emacs.atWork"))
+
+(message "locationLocationLocation.org finished.")
+#+END_SRC
+
+#+RESULTS:
+: locationLocationLocation.org finished.
+
