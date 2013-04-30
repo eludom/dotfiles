@@ -1,0 +1,417 @@
+#
+# Songs
+#
+The waitress is practicing politics, while the businessmen all get stoned, they're sharing a drink they call loneliness, but it's better than drinking alone
+	W. Joel
+Goin' to the candidates debate, Laugh about it, Shout about it, When you've got to choose, Any way you look at it you loose.
+	Paul Simon
+Architects may come, and and Architects may go, and never change your point of view.  So long, Frank Lloyd Wright.
+	Paul Simon
+In ten years we're gonna have one million lawyers, how much can a poor nation stand ?
+	Tom Paxton, 1985
+#
+# Computers
+#
+We [MULTICS] never came up with the idea that security was a side effect of copyright enforcement.
+	Earl Boebert
+There are two ways of constructing a software design. One way is to make it so simple that there are obviously no deficiencies. And the other way is to make it so complicated that there are no obvious deficiencies.
+	C.A.R Hoare
+#Against all odds, over a noisy telephone line, tapped by the tax authorities and the secret police, Alice will happily attempt, with someone she doesn't trust, whom she cannot hear clearly, and who is probably someone else, to fiddle her tax returns and to organize a cout d'etat, while at the same time minimizing the cost of the phone call. A coding theorist is someone who doesn't think Alice is crazy.
+#	John Gordon
+0xC000FFEE
+
+"There are two major products that come out of Berkeley: LSD and UNIX."  - one of them caused me an addiction.
+
+EMACS: Eight Megabytes and Constantly Swapping (OK, so it's dated)
+
+Emacs: It's not an editor, it's a way of life.
+
+Perl doesn't waste CPU cycles, Perl programmers do.
+
+Only you can prevent bad Perl programs.
+
+I've hacked your Juniper router...and to prove it, here are the last three lines of your config "        }\n    }\n}"
+
+Choosy mothers choose EBCDIC.
+
+Which way to the ASCII users group ?
+
+port 80 == nirvana, the denial of all distinctions.
+
+IRC: <gjones> You should be able to checkout and edit now. <Jared> looks like it <gjones> This rocks. <Jared> How about that: something worked as advertised :) <gjones> GNU Emacs.  The heart of open source.
+
+IRC: *** Signoff: kak (reboot) <gjones> he uses windows. <Jared> :)
+
+IRC: *** kak (~kak) has joined channel #argfrp <kak> yeah! high speed access restored! *** Signoff: kak (Leaving) <dgarn> ...and removed... <gjones> he runs windows
+
+IRC: ultralights arn't made for air to air combat.
+	<dgarn>
+# GENERAL
+#
+Who is more busy than he who hath least to do?
+	John Clarke, Paroemiologia Anglo-Latina, 1639
+I consider looseness with words no less of a defect than looseness of the bowels.
+	John Calvin 
+IRC: <f00> the good news:  we've reached escape velocity.  the bad news:  we're not pointed up.
+
+Consulting: If you're not part of the solution, there's good money to be made in prolonging the problem
+
+From IRC: *** Signoff: bak (off to the bass lesson (is a 1/4 size double bass a half-bass?))
+     Kent King
+There is a great deal of pleasure to be gained from useless knowledge.
+	Bertrand Russell
+Better living through complexity.
+
+Time is just God's way of keeping everything from happening all at once.
+
+Resolve to be honest in all events; and if in your own judgment you cannot be an honest lawyer, resolve to be honest without being a lawyer.
+	A. Lincoln
+Lawyers rip into people like a monkey rips into a cupcake.
+	Ray Romano
+Selfish, loud, short sighted, ignorant, simplistic, unrealistic, high-maintenance, self-serving, meddlesome,  non-productive: a 2 year old or marketing?
+
+Bureaucrats are people too.
+
+Be kind to a bureaucrat today.
+
+Bureaucrats are loved by their mothers.
+
+This quotation left intentionally blank.
+
+If it draws blood, it's hardware.
+
+Mellow out.  Do a bong.  Take a quarter off and think about it.
+	A college dropout
+<aol>Me too</aol>
+	Keith Owens <kaos@OCS.COM.AU>
+My doctor said I was a paranoid schizophrenic. Well, he didn't actually say it, but we knew he was thinking it.
+
+Never ascribe to malice that which can adequately be explained by stupidity.
+
+I'll try being nicer if you'll try being smarter.
+
+Never assume malice when incompetence is a sufficient explanation.
+	Steve Jackson
+Those who can, create.  Those who can't, bitch.
+	CmdrTaco
+Modern corporations are not innately designed to make money. They are innately designed to get bigger, driven by senior executives with Napoleon complexes.
+	denshi@slashdot
+The down side is that in the mixed-up world of large corporate bureaucracies we could be seen a creative, free thinking, intelligent, hard-working, individuals. That would spell "down-size" to bean counters.
+	Alan Pitts
+There are only two truly infinite things, the universe and stupidity.  And I am unsure about the universe.
+	Albert Einstein
+I cannot believe that God would choose to play dice with the universe.
+	Albert Einstein
+Great spirits have always found violent opposition from mediocre minds.
+	Albert Einstein
+"Science without religion is lame, religion without science is blind."
+	Albert Einstein
+"I am enough of an artist to draw freely upon my imagination. Imagination is more important than knowledge. Knowledge is limited. Imagination encircles the world."
+	Albert Einstein
+"Gravitation can not be held responsible for people falling in love" 
+	Albert Einstein
+"Few are those who see with their own eyes and feel with their own hearts." 
+	Albert Einstein
+ "Gravitation can not be held responsible for people falling in love" 
+	Albert Einstein
+"Things should be made as simple as possible, but not any simpler." 
+	Albert Einstein
+"Joy in looking and comprehending is nature's most beautiful gift." 
+	Albert Einstein
+"Sometimes one pays most for the things one gets for nothing." 
+	Albert Einstein
+"Common sense is the collection of prejudices acquired by age 18. 
+	Albert Einstein
+"Problems cannot be solved at the same level of awareness that created them." 
+	Albert Einstein
+"Strange is our Situation Here Upon Earth" 
+	Albert Einstein
+"Few are those who see with their own eyes and feel with their own hearts." 
+	Albert Einstein
+"If you are out to describe the truth, leave elegance to the tailor." 
+	Albert Einstein
+"An empty stomach is not a good political advisor." 
+	Albert Einstein
+"Anyone who has never made a mistake has never tried anything new." 
+	Albert Einstein
+"I never think of the future. It comes soon enough." 
+	Albert Einstein
+"Force always attracts men of low morality, and I believe it to be an invariable rule that tyrants of genius are succeeded by scoundrels." 
+	Albert Einstein
+"If A equals success, then the formula is: A=X+Y+Z. X is work. Y is play. Z is keep your mouth shut." 
+	Albert Einstein
+"Try not to become a man of success but rather to become a man of value." 
+	Albert Einstein
+"Perfection of means and confusion of ends seem to characterize our age." 
+	Albert Einstein
+"Not everything that counts can be counted, and not everything that can be counted counts." 
+	Albert Einstein
+"The faster you go, the shorter you are." 
+	Albert Einstein
+"Nationalism is an infantile sickness. It is the measles of the human race." 
+	Albert Einstein
+"The only reason for time is so that everything doesn't happen at once." 
+	Albert Einstein
+"If my theory of relativity is proven successful, Germany will claim me as a German and France will declare that I am a citizen of the world." 
+	Albert Einstein
+"The wireless telegraph is not difficult to understand. The ordinary telegraph is like a very long cat. You pull the tail in New York, and it meows in Los Angeles. The wireless is the same, only without the cat. " 
+	Albert Einstein
+"Too many of us look upon Americans as dollar chasers. This is a cruel libel, even if it is reiterated thoughtlessly by the Americans themselves." (1929) 
+	Albert Einstein
+"Weakness of attitude becomes weakness of character." 
+	Albert Einstein
+"Perfections of mean and confusion of goals seem -in my opinion- to characterize our age. " 
+	Albert Einstein
+"Politics is a pendulum whose swings between anarchy and tyranny are fueled by perpetually rejuvenated illusions." 
+	Albert Einstein
+"All our lauded technological progress -- our very civilization - is like the axe in the hand of the pathological criminal." 
+	Albert Einstein
+"Only one who devotes himself to a cause with his whole strength and soul can be a true master. For this reason mastery demands all of a person." 
+	Albert Einstein
+# Dilbert
+PHB: "A good manager hires people smarter than himself." Dilbert: "We're doomed.  The CEO is the dumbest man in the company".  Wally: "Or they're all bad managers".
+
+Dilbert: "In the future, there will only be two kinds of jobs. Technology jobs and lying to the public."
+
+Karma is the bad credit report you can't shake.
+	George Jones
+
+"Effective communication is the key to business success !!!" "synergistly enhancing recurring revenue opportunities to maximize shareholder value for Generation D"
+
+#
+# GNU
+#
+Taking advice on what the GPL means from Microsoft is like taking Stalin's word on the meaning of the US Constitution. 
+	Eben Moglen, FSF General Counsel
+
+Kiddies to the left of me, Lawyers to the right. Here I am stuck in the middle with GNU. 
+	IPFreely@slashdot
+#
+# MS
+#
+QUESTION: How many Microsoft technicians does it take to change a light bulb? ANSWER: None. They just redefine Darkness (TM) as the new industry standard.
+
+Friends don't let friends use Windows.
+
+Windows: it could get worse, but it'll take time.
+
+<C> Give a couple of million XP-users a word processor and infinite time and they'll produce the complete works of Shakespeare.<J> No, Windows would crash first.
+
+#
+# Corporate goo#
+Radio Shack: You've got questions, we've got blank stares.
+      Pete White
+Customer Service == bureaucracy+incompetance+finger pointing+unavailable.
+
+"Forget committees.  New, noble, world-changing ideas come from one person working alone." 
+	Tom DiBartolo
+
+There was someone stuck in a meeting writing core values trying to get out. We must go rescue this person.
+	<TangGnat> 
+Remember, don't drink when installing drivers...
+	<TangGnat> 
+#
+# Politics/Government
+#
+Well, he didn't know what to do, so he decided to look at the government, to see what they did, and scale it down and run his life that way.
+	Laurie Anderson                      
+Without justice, what are kingdoms but great gangs of robbers ?
+	St. Augistine
+Government is a cancer masquraiding as it's own cure.
+	Fredrick Bastiat
+Most important ideas are uninteresting. Most interesting ideas are unimportant. Not every problem has a good solutions. Every solution have side effects.
+	Quoted from Dan Geer
+Technology is dominated by two kinds of people, those who understand what they do not manage, and those who manage what they do not understand.
+	Putt's Law
+Politics (n.) "the nonsensical, unavoidable interference of the uninformed." Marketing (n.) "a force that can't tell important from interesting".
+	Dan Geer
+Foo
+	bar
+#Latin
+Acta est fabula ("It's all over")
+	Augustus (Unknown) 
+Agnosco veteris vestigia flammae ("I feel again a spark of that ancient flame")
+	Virgil (Aeneid iv, 23) 
+Ama et fac quod vis ("Love and do what you will")
+	Augustine (Epis. Joann. Hom. Vii 8) 
+Audentiss fortuna iuvat ("Fortune favours the bold")
+	Virgil (Aeneid, x 284) 
+Audi partem alteram ("Always hear the other side")
+	Augustine (De Duabus Animabus, xiv, ii) 
+Aut Caesar, aut nihil ("Either Caeser or nothing")
+	Augustus (Unknown) 
+Ave, Imperator, morituri te salutant ("Hail, Emperor, those about to die salute thee")
+	Suetonius (Life of Cladius, 21) 
+Brutum fulem ("A harmless thunderbolt")
+	Pliny (Historia Naturalis, II, xliii) 
+Certum est quia impooibile est ("It is certain because it is impossible")
+	Tertullian (De Carne Christi II v) 
+Clarum et venerabile nomen Gentibus ("A name illustrious and revered by nations")
+	Lucan (Works I ix, 203) 
+Concordia discors ("Harmony in discord")
+	Horace (Epistles, I, xii, 19) 
+Contra bonum morem ("Against good custom")
+	Seneca (Dialogues, vi, i, 2) 
+Crimine ab uno Disce omnes ("For one piece of villany, judge them all")
+	Virgil (Aeneid II 65) 
+De minimus non curat lex ("The law does not concern itself with trifles")
+	Ariosto (Unknown) 
+De mortuis nil nisi bonum ("Speak nothing but good of the dead")
+	Chilon (Unknown) 
+De vitiis nostris scalam nobis facimus, si vitia ipsa calcamus ("We make a ladder of our vices if we trample those vices underfoot")
+	Augustine (Sermons, iii, De Ascensione) 
+Delenda est Carthago ("Carthage must be destroyed")
+	Cato the Eldar (Plutarch, Life of Cato) 
+Divide et impera ("Divide and rule")
+	Ariosto (Unknown) 
+Donec sermones utriusque linguae ("As long as I found favour in your sight")
+	Horace (Odes III, vi 46) 
+Dulce et decorum est pro patria mori ("It is sweet and fitting to die for the fatherland")
+	Horace (Odes III ii 13) 
+Dux femina facti ("A woman the head of the enterprise")
+	Virgil (Aeneid i, 364) 
+Elegantiae arbiter ("Judge of Taste")
+	Tacitus (Annals, xvi, 18) 
+Ex Africa semper aliquid novi ("Out of Africa always something new")
+	Pliny (Historia Naturalis, II, vii, 42) 
+Exegi monumentum aere perennius ("I have completed a monument more durable than brass")
+	Horace (Odes III iii 1) 
+Exoriare aliquis nostris ex ossibus ultor ("Arise, the coming avenger, out of my ashes")
+	Virgil (Aeneid iv, 625) 
+Faenum habet in cornu ("He is dangerous (he has hay on his horns)")
+	Horace (Satires I iv 34) 
+Fallentis semita vitae ("The untrodden paths of life")
+	Horace (Epistles, I, xviii, 103) 
+Felix, qui potuit rerum cognoscere causas ("Happy, he who has been able to learn the cause of things")
+	Virgil (Georgics II 490) 
+Flectere si nequeo superos, Acheronta movebo ("And if Heaven be inflexible, Hell shall be unleashed")
+	Virgil (Aeneid vii 312) 
+Forstan et nostrum nomen miscebitur istis ("Perhaps my name too will be mingled with theirs")
+	Ovid (Ars Amatoria, iii) 
+Furor arma ministrat ("Fury ministers arms")
+	Virgil (Aeneid i, I, 150) 
+Genus irritabile vatum ("The touchy race of poets")
+	Horace (Epistles II ii 102) 
+Gulta cavat lapidem non vi sed saepe cadendo ("The drop hollows the stone not by force but by often falling")
+	Ovid (Latimer, 7th sermon before Edward VI, 1549) 
+Hoc volo, sic jubeo, sit pro ratione volutas ("This is my wish, thus I command it. Let my will take the place of reason")
+	Juvenal (Satires vi 223) 
+Horresco referens ("I shudder to recall it")
+	Virgil (Aeneid II 204) 
+Iacta alea est ("The die is cast")
+	Caesar (Suetonius, Divus Julius, xxxii) 
+Illi mors gravis incubat ("On him does death lie heavily")
+	Seneca (Thyestes, ii, chorus) 
+In hoc signo vinces ("in this sign shalt thou conquer")
+	Constantine (Eusebius, Life of Constantine, i 28) 
+In Romuli faece ("Among the dregs of Romulus")
+	Cicero (Ad atticum II, i, 8) 
+In utrumque paratus ("Prepared for either event")
+	Virgil (Aeneid II 61) 
+In vino veritas ("Truth comes out of wine")
+	Pliny (Historia Naturalis, II, xiv 141) 
+Ira furor brevis est ("Anger is a brief madness")
+	Horace (Epistles I ii 62) 
+Ita feri ut se mori sentiat ("Strike him so that he can feel he is dying")
+	Suetonius (Caligula, xxx) 
+Laudator temporis acti ("Praiser of times past")
+	Horace (Arc Poetica 173) 
+Legiones redde ("Give me back my legions")
+	Augustus (Suetonius, Divus Augustus, 23) 
+Medio tutissimus ibis ("You will go most safetly in the middle")
+	Ovid (Metamorphoses ii 137) 
+Mens sana in corpore sano ("A sound mind in a sound body")
+	Juvenal (Satires vi 356) 
+Mens sibi conscia recti ("A mind concious of the right")
+	Virgil (Aeneid i, I, 604) 
+Miser Catulle, desinas ineptire ("Forgo your dream, poor fool of love")
+	Catullus (Carmina, vii) 
+Monstrum horrendum, informe, ingens, cui lumen ademptum ("A monster fearful and hideous, huge, and without eyes")
+	Virgil (Aeneid iii, 658) 
+Natura il fece, e poi ruppe la stampa ("Nature made him and then broke the mold.")
+	Ariosto (Orland Furioso 84) 
+Nemo me impune lacessit ("No-one provokes me with impunity")
+	Anonymous (Unknown) 
+Nemo repente fuit turpissimus ("No one ever became thoroughly bad all at once")
+	Juvenal (Satires, ii. 83) 
+Nil mortalibus ardui est ("Nothing is to great for mortal men")
+	Horace (Odes, I, i. 18) 
+Nobilitas sola est atque unica virtus ("Virtue is the sole and only nobility")
+	Juvenal (Satires, viii, 20) 
+Nocitura toga, nocitura petuntur militia ("Our prayers are put up for what will injure us in peace and in war")
+	Juvenal (Satires x 18) 
+Non omnia possumus omnes ("We are not all able to do all things")
+	Virgil (Eclogues viii 63) 
+Non omnis moriar ("I shall not die completely")
+	Horace (Odes III, xxx, 6) 
+O imitatires, servum pecus ("O imitators, you herd of slaves")
+	Horace (Epistles, I, xix, 1) 
+O Tempora! O Mores! ("What times! What ways of life!")
+	Cicero (Against Cataline I I) 
+Oderint dum metuant ("Let them hate as long as they fear.")
+	Accius (Atreus) 
+Odi et amo ("I hate and love")
+	Catullus (Carmina, lxxxv) 
+Omne ignotum pro magnifico est ("Everything unknown is taken as marvelous")
+	Tacitus (Agricola) 
+Probitas laudatur et alget ("Honesty is praised, and starves")
+	Juvenal (Satires i 74) 
+Qualis artifex pero ("What an artist dies with me!")
+	Nero (Suetonius, Life of Nero, xlix) 
+Quantum mutatus ab illo ("How changed from him whom we knew")
+	Virgil (Aeneid II 274) 
+Quem fugis a demens? ("A madman - whom does thou flee?")
+	Virgil (Eclogue ii 60) 
+Qui desiderat pacem, praeparet bellum ("Let him who desires peace prepare for war (si vi pacem, para bellum)")
+	Vegetius (De re mil, 3, prol) 
+Quid est, Catulle? Quid moraris emori? ("How now? Why not be quick and die?")
+	Catullus (Carmina, lii) 
+Quis custodiet ipsos Custodes? ("Who is to guard the guards themselves?")
+	Juvenal (Satires, vi, 347) 
+Rudis indigestaque moles ("An unformed and confused mass")
+	Ovid (Metamorphoses i 7) 
+Salus extra ecclesiam (imperium) non est ("No salvation exists outside the church (imperium)")
+	Augustine (De Cath Eccl. Unitate vi) 
+Salus populi suprema est lex ("The good of the people is the highest law")
+	Cicero (De Legibus III iii) 
+Securus iudicat orbis terrarum ("The verdict of the world is final")
+	Augustine (Contra Epist. Parnem iii) 
+Sed fugit interea, fugit irreparabile tempus ("But meanwhile time is flying, time that cannot be recalled")
+	Virgil (Georgics III 284) 
+Sed haec prius fuere ("All this is over now")
+	Catullus (Carmina, iv) 
+Semel insanivimus omnes ("We have all been mad once")
+	Mantuanus (Eclogue i. 217) 
+Sera nimis vita est crastina: vive hodie ("Too late is tomorrow's life: live your today")
+	Martial (Epigrammata I xv) 
+Sic transit gloria mundi ("So passes away the glory of the world")
+	Kempis (Imitatio Christi Ch3, vi) 
+Silent enim leges inter arma ("For laws are dumb in the midst of arms")
+	Cicero (Pro Milone iv) 
+Sine ira et studio ("Without rancor or partiality")
+	Tacitus (Annals I i.) 
+Stat magni nominus umbra ("There stands the shadow of a glorious name")
+	Lucan (Works I, 135) 
+Strepitumque Acherontis acari ("The roaring of the hungry stream of death")
+	Virgil (Georgics ii 492) 
+Tantum religio potuit suadere malorum ("Such evil deeds could religion prompt")
+	Lucretius (De Rerum Natura i 101) 
+Tecum vivere amen, tecum obeam libnes ("With you I love to live, with you I am ready to die")
+	Horace (Odes III, ix, 24) 
+Tempus edax rerum ("Time, the devourer of things")
+	Ovid (Metamorphoses ii 137) 
+Ubi solitudinem faciunt, pacem appellant ("Where they create a desolation they call it peace")
+	Tacitus (Agricola) 
+Utinam populus Romanus unam cervicem haberet! ("Would that the Roman people had but one neck!")
+	Caligula (Suetonius, Life of Caligula, 30) 
+Vae victo / Vae victus ("Woe to the defeated man / people")
+	Livy (History of Rome, V, xlviii) 
+Veni Vidi Vici ("I came, I saw, I conquered")
+	Caesar (Suetonius, Divus Julius, xxxvii 2) 
+Venienti occurrite morbo ("Meet the disease as it approaches")
+	Persius (Satires iii 64) 
+Virisque adquirit eundo ("At every step she (fame) gather strength")
+	Virgil (Aeneid iv 175) 
+Virtutem videant sinta bescantque relicta ("Let them look on Virtue and pine away because they have abandonded her")
+	Persius (Satires iii 38) 
+ 

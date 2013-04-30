@@ -1,0 +1,112 @@
+#
+# CSH preferences
+#
+
+if ($?prompt) then
+    set history=100		# Save history of 100 commands
+    set filec		# enable file completion	
+    umask 022		# default protection for new files
+    #set notify		# notify when new mail arrives 
+    #limit coredumpsize 0	# disable creation of core dumps
+#    set autologout = (120  15)
+    set prompt="%T %m:%~%# "
+    alias setprompt	'set prompt="%T %m:%~%# "'
+    setprompt
+endif
+    
+
+#
+# Set some reasonable prompt including time-of-day, machine name & dir
+#
+
+
+
+#
+# define some useful path hacking aliases
+#
+#   addpath /foo	- add /foo to the end of the search list IFF it exists
+#   delpath  /foo	- remove /foo from the path list if it is in list
+#   prependpath /foo	- prepend /foo to the path list
+#   firstpath /foo	- add /foo at head of path list IFF it exists
+#			  move if already in list
+#   lastpath /foo	- add /foo at end of path list;
+#			  move if already in list
+#   	
+#
+
+alias addpath 'set nonomatch ; if (! (" $path " =~ *\ \!^\ *) && -d \!^) set path = ($path \!^) ; unset nonomatch' # Add a path
+alias delpath 'set path = (`echo " $path " | sed -e "s# \!^ # #g"`)' # delete a path
+alias prependpath 'set nonomatch ; if (! (" $path " =~ *\ \!^\ *) && -d \!^) set path = (\!^ $path) ; unset nonomatch' # Prepend a path
+alias firstpath	'delpath \!^ ; prependpath \!^' # move to front
+alias lastpath	'delpath \!^ ; addpath \!^'	# move to end
+
+# YOUR CHANGES GO BELOW THIS LINE.  DO NOT REMOVE OR EDIT THIS LINE.
+
+# 
+# Your favorite aliases go here. 
+#
+
+alias cd 	'pushd \!* > /dev/null; setprompt;'
+alias 	clear
+alias del	rm -i
+alias dirs	'dirs | sed '"'"'s/ $//'"'"' | tr " " "\012"'
+alias rm	rm -i
+
+#
+# general purpose aliases
+#
+
+alias from 	/home/gjones/bin/from
+#alias from	'grep "^From " /var/spool/mail/gjones'
+#alias emacs 	xemacs
+alias eg	'printenv | grep -i '
+alias ls 	ls --color
+alias llt 	ls -lt --color
+alias lltm	'ls --color -lt | more'
+alias llth	'ls --color -lt | head'
+alias lpr	lpr -h
+alias lss	'ls --color -1s | sort -nr'
+alias lssr	'find . -print | perl -ne '"'"'chop; @foo = lstat $_; print "$_ $foo[7]\n";'"'"' | sort -nr +1'
+alias pod 	'popd > /tmp/popd.$$ ; cat /tmp/popd.$$ | sed '"'"'s/ $//'"'"' | tr " " "\012" ; rm /tmp/popd.$$; setprompt'
+alias path	'echo $path | perl -ne "s/ /\n/g; print;"'
+alias ppd	"pud;pod"
+alias psg	'/bin/ps -auxww | grep '
+alias purge 	'find ~ \( -name "#*" -o -name "*~" -o -name ".*~" -o -name "*"\$  -o -name core \) -print -exec /bin/rm -f "{}" \; '
+alias pud 	'pushd \!* > /tmp/pushd.$$ ; cat /tmp/pushd.$$ | sed '"'"'s/ $//'"'"' | tr " " "\012" ; rm /tmp/pushd.$$; setprompt'
+alias su	su -m    
+
+#
+# Add some of my favorite paths
+#
+
+
+
+#
+# order paths
+#
+
+firstpath /home/gjones/tct-beta/bin
+firstpath /home/gjones/Office51/bin
+firstpath /usr/games
+firstpath /usr/mh/bin
+firstpath /usr/contrib/bin
+firstpath /usr/X11/bin
+firstpath /usr/ucb
+firstpath /usr/sbin
+firstpath /usr/bin 
+firstpath /sbin
+firstpath /bin    
+firstpath /usr/local/bin
+firstpath /usr/local/bin	# This is hear twice because
+    				# delpath does not deal with
+    				# having two copies of the
+    				# same path at the end of the
+    				# path
+firstpath ~/scripts
+firstpath ~/bin
+firstpath .
+
+#limit cpu 600
+#touch .tcshrc-ran
+
+~/bin/sig.pl | tee ~/.sig
