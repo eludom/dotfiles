@@ -15,7 +15,6 @@
 (global-set-key "\C-]" 'call-last-kbd-macro)
 (global-set-key "\eq" 'query-replace)
 (global-set-key "\ey" 'yow)
-(global-set-key "\C-X5" 'split-window-horizontally)
 
 (global-set-key "\er" 'replace-string)
 (global-set-key "\em" 'set-mark-command)
@@ -30,6 +29,16 @@
 (global-set-key "\C-Xc" 'copy-region-as-kill)
 (global-set-key "\C-X!" 'compile)
 (global-unset-key "\C-X\C-l")
+#+END_SRC
+
+
+;
+; Somewhat newer keybindings
+;
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key "\C-X5" 'split-window-horizontally)
+(global-set-key (kbd "C-h SPC") 'man)
 #+END_SRC
 
 (message "locationLocationLocation.org finished.")
