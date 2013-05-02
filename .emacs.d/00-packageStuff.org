@@ -62,9 +62,15 @@ Its value is
      "open .")))
 (define-key dired-mode-map (kbd "s-O") 'tmtxt/dired-open-current-directory-in-finder)
 
-(require 'ls-lisp)
-(setq ls-lisp-use-insert-directory-program t)
-(setq insert-directory-program "/opt/local/libexec/gnubin/ls")
+(if (eq system-type 'darwin)
+  (progn
+    (setq foobar 1)
+    (require 'ls-lisp)
+    (setq ls-lisp-use-insert-directory-program t)
+    (setq insert-directory-program "/opt/local/libexec/gnubin/ls")
+  )
+)
+
 
 (setq dired-listing-switches "--group-directories-first -atlh")
 
