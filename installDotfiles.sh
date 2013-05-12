@@ -18,7 +18,7 @@ NOW=`date "+%s"`
 # Link directories and files in directories to here
 #
 
-for dirName in [ bin lisp .emacs.d ]; do
+for dirName in [ bin elisp .emacs.d ]; do
 
     if [ -L ${HOME}/${dirName} ]; then
 	# we already linked this.  Do nothing
