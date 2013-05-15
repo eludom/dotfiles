@@ -6,7 +6,7 @@
 #+BEGIN_EXAMPLE
 package-activated-list is a variable defined in `package.el'.
 Its value is
-(bash-completion dired+ dired-details+ dired-details org-mime org-plus-contrib solarized-theme)
+(dired+ dired-details+ dired-details org-mime org-plus-contrib solarized-theme)
 #+END_EXAMPLE
    
 ** Useful Links
@@ -70,7 +70,6 @@ Its value is
     (setq insert-directory-program "/opt/local/libexec/gnubin/ls")
   )
 )
-
 
 (setq dired-listing-switches "--group-directories-first -atlh")
 
