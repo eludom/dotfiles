@@ -6,7 +6,7 @@
 #+BEGIN_EXAMPLE
 package-activated-list is a variable defined in `package.el'.
 Its value is
-(dired+ bash-completion openwith org-mime org-plus-contrib solarized-theme)
+(bash-completion dired+ dired-details+ dired-details org-mime org-plus-contrib solarized-theme)
 #+END_EXAMPLE
    
 ** Useful Links
