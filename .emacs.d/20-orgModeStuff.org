@@ -25,7 +25,7 @@
 (require 'org-exp-blocks)
 (org-babel-do-load-languages
     'org-babel-load-languages '((python . t) (sh . t) (lisp . t) (R . t) (ditaa . t)))
-;(setq org-export-babel-evaluate n)
+(setq org-export-babel-evaluate nil)
 (setq org-confirm-babel-evaluate nil)
 (setq org-babel-sh-command "bash")
 

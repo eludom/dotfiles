@@ -14,8 +14,8 @@
   ; I'm pretty sure global setq is not the right way...
 
   ; set one of these
-  (setq ifdef-delete-chunks t) ;  delete non-matching chunks
-  (setq ifdef-comment-chunks nil) ;  delete non-matching chunks
+  (setq ifdef-delete-chunks nil) ;  delete non-matching chunks
+  (setq ifdef-comment-chunks t) ;  delete non-matching chunks
   (setq comment-start "#")
 
   (defun my-text-mode-hook ()
@@ -77,10 +77,10 @@ Return t if #ifdef section found (matching or not), nil if not found or no patte
       (if (boundp 'ifdef-condition)
           (progn ; true
           (setq ifdef-look-for-this (concat "#ifdef " ifdef-condition))
-  ;        (message ifdef-look-for-this)
+          (message (concat "looking for " ifdef-look-for-this))
           )
           (progn ; false
-  ;        (message "ifdef-condition not defined")
+          (message "ifdef-condition not defined")
           (throw 'exit nil)
           )
       )
@@ -96,16 +96,18 @@ Return t if #ifdef section found (matching or not), nil if not found or no patte
   
   	  (setq beg (match-beginning 0))
   	  (while (re-search-forward "^\\s\-\*#endif" nil t)
-  	    (setq cnt (+ cnt (if (string= (match-string 0) "<div") +1 -1)))
   	    (when (= cnt 0)
   	      (and (looking-at ">") (forward-char 1))
   	      (setq ifdef-chunk (buffer-substring beg (point)))
                 (setq ifdef-found-ifdef-section t)
                 (setq ifdef-delete-or-comment-this-chunk nil)
-  
+
+                (message (concat "ifdef-chunk-START" ifdef-chunk "ifdef-chunk-END"))
                 (when (not (string-match ifdef-condition ifdef-chunk))
-                  (setq ifdef-delete-or-comment-this-chunk t))
-                  (message "ifdef-delete-or-comment-this-chunk")
+                  (progn
+                    (setq ifdef-delete-or-comment-this-chunk t)
+                    (message "ifdef-delete-or-comment-this-chunk FOO"))
+
                   (if ifdef-delete-or-comment-this-chunk
                       (if ifdef-delete-chunks ; if delete-chunks
                           (progn ; if delete chunks
@@ -118,10 +120,11 @@ Return t if #ifdef section found (matching or not), nil if not found or no patte
                             (setq ifdef-this-line-is-blank t)
                             (if ifdef-this-line-is-blank
                                 (delete-blank-lines); collapse surrounding bank lines to one
-                            )  
+                            )
                           )
                           (if ifdef-comment-chunks ; else if comment chunks
-                              (progn 
+                              (progn
+                                (message "commenting chunk")
                                 (comment-region beg (point))
                               ) 
                           ) ; if commenting this chunk
@@ -131,6 +134,9 @@ Return t if #ifdef section found (matching or not), nil if not found or no patte
   	    (throw 'exit ifdef-found-ifdef-section))))
   	nil)))))
 #+END_SRC
+
+#+RESULTS:
+: ifdef-ifdef
 
 * To Do List
 ** Clean up symbols
