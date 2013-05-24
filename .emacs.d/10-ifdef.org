@@ -35,6 +35,14 @@
   :END:
 
 #+BEGIN_SRC elisp
+(defun ifdef-org-export-hook ()
+  "Export hook to apply #ifdef logic to buffer during org-mode export"
+  (interactive)
+  (setq ifdef-delete-chunks t) ;  delete non-matching chunks
+  (ifdef-buffer)
+  (ifdef-delete-all-ifdef-lines)
+)
+
 (defun ifdef-buffer ()
   "Apply cpp-like #ifdef processing to current buffer."
   (interactive)
@@ -42,9 +50,24 @@
   (ifdef-define)
   (goto-char (point-min))
   (while (ifdef-ifdef) nil)
-  
+  (ifdef-delete-all-ifdef-lines)
 )
 
+
+(defun ifdef-delete-all-ifdef-lines ()
+  "Delete all #define, #ifdef, and #endif lines in the current buffer"
+  (interactive)
+
+  (goto-char (point-min))
+
+  (while (re-search-forward "^\\s\-\*#\\(ifdef\\|define\\|endif\\)" nil t)
+    (setq pos1 (line-beginning-position) )
+    (forward-line 1)
+    (beginning-of-line)
+    (setq pos2 (line-beginning-position) )
+    (delete-region pos1 pos2)
+  )
+)
 
 (defun ifdef-define ()
   "Find #ifdef FOO. (setq ifdef-condition FOO).  FOO can be an elisp regexp.
