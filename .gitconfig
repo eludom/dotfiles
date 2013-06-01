@@ -1,0 +1,7 @@
+[user]
+	name = George Jones
+	email = gmj@pobox.com
+[core]
+	editor = emacs
+[status]
+	showUntrackedFiles = no

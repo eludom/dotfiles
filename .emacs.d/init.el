@@ -2,6 +2,18 @@
 
 ; Adapted from: http://orgmode.org/worg/org-contrib/babel/intro.html#sec-8-2-1
 
+; To set up org mode
+;
+; $ mkdir -p ~/src
+; $ cd ~/src/
+; $ git clone git://orgmode.org/org-mode.git
+; $ make autoloads
+;
+
+(add-to-list 'load-path "~/src/org-mode/lisp")
+(add-to-list 'load-path "~/src/org-mode/contrib/lisp" t)
+
+
 ;;; init.el --- Where all the magic begins
 ;;
 ;; This file loads Org-mode and then loads the rest of our Emacs initialization from Emacs lisp
@@ -25,8 +37,8 @@
 ;  (require 'ob-tangle))
 
 (require 'org)
-;(require 'org-install)
-;(require 'ob-tangle)
+(require 'org-install)
+(require 'ob-tangle)
 ;; load up all literate org-mode files in this directory
 (mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$"))
 
@@ -45,5 +57,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "White" :foreground "Black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 240 :width normal :foundry "apple" :family "Monaco")))))
+ '(default ((t (:inherit nil :stipple nil :background "White" :foreground "Black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 158 :width normal :foundry "unknown" :family "Droid Sans Mono")))))
 (put 'upcase-region 'disabled nil)

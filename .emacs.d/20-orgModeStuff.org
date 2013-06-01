@@ -6,7 +6,7 @@
 
 #+BEGIN_SRC emacs-lisp
 
-(require 'org-exp-bibtex)
+;(require 'org-exp-bibtex)
 (setenv "TMPDIR" ".")
 (setq org-return-follows-link t)
 (setq org-use-property-inheritance t)

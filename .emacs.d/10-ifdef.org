@@ -1,11 +1,5 @@
-#+TITLE:     #ifdef in elisp
-#+AUTHOR:    George M. Jones
-#+EMAIL:     gmj@cert.org
-#+DATE:      2013-05-15 Wed
-#+TEXT:	     This file defines elisp functions that perform the equivalent of cpp(1)s #ifdef
-
 * ifdef keybindings and setup
-  #+BEGIN_SRC elisp :exports code
+#+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x # i") 'ifdef-ifdef)
   (global-set-key (kbd "C-x # d") 'ifdef-define)
   (global-set-key (kbd "C-x # b") 'ifdef-buffer)
@@ -24,17 +18,11 @@
     )
 
   (add-hook 'text-mode-hook 'my-text-mode-hook)
-  #+END_SRC
-
-  #+RESULTS:
-  | my-text-mode-hook | text-mode-hook-identify |
+#+END_SRC
 
 * ifdef functions
-  :PROPERTIES:
-  :ORDERED:  t
-  :END:
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 (defun ifdef-org-export-hook ()
   "Export hook to apply #ifdef logic to buffer during org-mode export"
   (interactive)
@@ -153,9 +141,6 @@ Return t if #ifdef section found (matching or not), nil if not found or no patte
   	    (throw 'exit ifdef-found-ifdef-section)))
   	nil)))))
 #+END_SRC
-
-#+RESULTS:
-: ifdef-ifdef
 
 * To Do List
 ** Clean up symbols
