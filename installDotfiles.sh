@@ -1,16 +1,14 @@
 #! /bin/bash
 #
 # Usage:
-#  installDotFiles [install|delete]
+#  installDotFiles [install|delete|list]
 #
 # Install my dotfiles on a new system. 
 #
 # Symlink everything from ~/ to ~/git/dotfiles/
 #
 
-set -u -e -x
-
-echo args $#
+set -u -e
 
 if [ $# -eq 0 ]; then
     op="install"
@@ -18,7 +16,7 @@ elif [ $# -eq 1 ]; then
     op=$1
 else
     echo too many aruments
-    echo usage: $0 [install|delete]
+    echo usage: $0 [install|delete|list]
     exit
 fi
 
@@ -67,6 +65,18 @@ elif [ "$op" == "delete" ]; then
 	rm ~/${linkThis}
     fi
   done
+
+# list
+
+elif [ "$op" == "list" ]; then
+  for linkThis in ${linkThese[@]}; do
+    if [ -e ~/${linkThis} ]; then
+	file ~/${linkThis}
+    else
+	echo ~/${linkThis} does not exist
+    fi
+  done
+
 else
   echo bad option $op. Should be one of insall or delete
 fi
