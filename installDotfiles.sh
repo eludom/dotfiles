@@ -1,46 +1,77 @@
-#! /bin/bash -e -u
+#! /bin/bash
 #
-# Install my dotfiles on a new system
+# Usage:
+#  installDotFiles [install|delete]
 #
-# run this in dotfiles/ after git clone of git@github.com:eludom/dotfiles.git
-
-DOTFILES=$PWD
-NOW=`date "+%s"`
-
-#if [ -f .bashrc ]; then
-#  mv .bashrc .bashrc.$$.old
-#fi
-#ln -s ${DOTFILES}/.bashrc .
-
-#ln -s ${DOTFILES}/.bashrc .  
-
+# Install my dotfiles on a new system. 
 #
-# Link directories and files in directories to here
+# Symlink everything from ~/ to ~/git/dotfiles/
 #
 
-for dirName in [ bin elisp .emacs.d ]; do
+set -u -e -x
 
-    if [ -L ${HOME}/${dirName} ]; then
-	# we already linked this.  Do nothing
-	:
-    elif [ -d ${HOME}/${dirName} ]; then
-	: # this is a directory.  Link files that do not exist.
+echo args $#
 
-	cd ${dirName}
+if [ $# -eq 0 ]; then
+    op="install"
+elif [ $# -eq 1 ]; then
+    op=$1
+else
+    echo too many aruments
+    echo usage: $0 [install|delete]
+    exit
+fi
 
-	for x in  * .[a-zA-Z]*; do
-	    if [ ! -f ${HOME}/${dirName} ]; then
-		ln -s $PWD/$x ${HOME}/${dirName}/$x
-	    fi
-	done
+DOTFILES=~/git/dotfiles
+NOW=`date "+%Y-%m-%d:%H:%M:%S"`
 
-	cd ..
+if [ ! -d ${DOTFILES} ]; then
+    echo "You need to install dotfiles from github first"
+    cat <<EOF
+cd ~
+
+mkdir -p git
+cd git
+git clone git://github.com/eludom/dotfiles.git
+    exit
+EOF
+fi
+
+linkThese=( .bashrc .gitconfig bin elisp .emacs.d)
+
+cd ~
+
+# install
+
+if [ "$op" == "install" ]; then
+
+  for linkThis in ${linkThese[@]}; do
+    if [ -L ~/${linkThis} ]; then
+      :
+    elif [ -f ~/${linkThis} ]; then
+      mv ${linkThis} ${linkThis}.${NOW}.old
+      ln -s ${DOTFILES}/${linkThis} .
+    elif [ -d ~/${linkThis} ]; then
+      mv ${linkThis} ${linkThis}.${NOW}.old
+      ln -s ${DOTFILES}/${linkThis} .
     else
-	ln -s $PWD/$dirName $HOME
+      ln -s ${DOTFILES}/${linkThis} .
     fi
+  done
 
-done
+# delete
 
-#
-# Link individal files to to here
-#
+elif [ "$op" == "delete" ]; then
+  for linkThis in ${linkThese[@]}; do
+    if [ -L ~/${linkThis} ]; then
+	rm ~/${linkThis}
+    fi
+  done
+else
+  echo bad option $op. Should be one of insall or delete
+fi
+
+
+
+
+

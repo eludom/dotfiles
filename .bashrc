@@ -104,12 +104,12 @@ alias emacs='		emacs-snapshot'
 # Do OS-specific setup
 #
 
-if [ $TERM == "dumb" ]; then
+if [ "$TERM" == "dumb" ]; then
   color="";
-elif [ $myOS == "mac" ]; then
+elif [ "$myOS" == "mac" ]; then
   pathadd /opt/local/bin;
   color="-G";
-elif [ $myOS == "linux" ]; then
+elif [ "$myOS" == "linux" ]; then
   color="--color";
 fi
 
