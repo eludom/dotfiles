@@ -4,9 +4,9 @@ The start of the story is the same.
 #iFdef ALICE
 Alice is special, this message is just for her.
 #endif
-# #ifdef BOB
-# Bob gets a different story
-# #endif
+#ifdef BOB
+Bob gets a different story
+#endif
 #ifdef ALiCE
 For Alice, the story continues.
 #endif
@@ -15,7 +15,8 @@ but Bob is left in the dark.
 #endif
 #ifdef LARRY
 Larry Boy.  Lean and mean, green machine, outta sight, DYN-O-MITE !!!
-Lorum ipsum....
+Lorum ipsum.
+Foo.
 #endif
 
 The conclusions are the same.
