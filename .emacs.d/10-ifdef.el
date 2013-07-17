@@ -26,14 +26,6 @@
   (ifdef-delete-all-ifdef-lines)
 )
 
-(defun my-ifdef-hook (backend)
-  "Apply cpp(1) style ifdefs to buffer before org-mode export."
-
-  (ifdef-org-export-hook))
-
-(add-hook 'org-export-before-parsing-hook 'my-ifdef-hook)
-
-
 (defun ifdef-buffer ()
   "Apply cpp-like #ifdef processing to current buffer."
   (interactive)
