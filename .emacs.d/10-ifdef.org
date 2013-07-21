@@ -17,6 +17,13 @@
     ; (message "my-text-mode-hook ran.")
     )
 
+  (defun my-ifdef-hook (backend)
+    "Apply cpp(1) style ifdefs to buffer before org-mode export."
+    (ifdef-org-export-hook))
+
+  (add-hook 'org-export-before-parsing-hook 'my-ifdef-hook)
+
+
   (add-hook 'text-mode-hook 'my-text-mode-hook)
 #+END_SRC
 

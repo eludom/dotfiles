@@ -50,9 +50,9 @@ if [ "$op" == "install" ]; then
       mv ${linkThis} ${linkThis}.${NOW}.old
       ln -s ${DOTFILES}/${linkThis} .
     elif [ -d ~/${linkThis} ]; then
-      #mv ${linkThis} ${linkThis}.${NOW}.old
-      #ln -s ${DOTFILES}/${linkThis} .
-      cp ${DOTFILES}/${linkThis}/* ${linkThis}
+#      mv ${linkThis} ${linkThis}.${NOW}.old
+#      ln -s ${DOTFILES}/${linkThis} .
+      cp -R ${DOTFILES}/${linkThis}/* ${linkThis}
     else
       ln -s ${DOTFILES}/${linkThis} .
     fi

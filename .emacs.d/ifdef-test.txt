@@ -1,4 +1,5 @@
 #deFine \(ALICE\|LARRY\)
+
 The start of the story is the same.
 
 #iFdef ALICE
@@ -18,5 +19,3 @@ Larry Boy.  Lean and mean, green machine, outta sight, DYN-O-MITE !!!
 Lorum ipsum.
 Foo.
 #endif
-
-The conclusions are the same.

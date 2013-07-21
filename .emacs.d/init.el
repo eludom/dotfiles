@@ -10,9 +10,9 @@
 ; $ make autoloads
 ;
 
+(add-to-list 'load-path "~/.emacs.d")
 (add-to-list 'load-path "~/src/org-mode/lisp")
 (add-to-list 'load-path "~/src/org-mode/contrib/lisp" t)
-
 
 ;;; init.el --- Where all the magic begins
 ;;
@@ -59,3 +59,7 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "White" :foreground "Black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 158 :width normal :foundry "unknown" :family "Droid Sans Mono")))))
 (put 'upcase-region 'disabled nil)
+
+; load specific files
+
+(load "bibhook.el")
