@@ -1,0 +1,29 @@
+#+TITLE: Blogging fom org-mode
+#+OPTIONS: toc:nil \n:nil num:nil
+#+TAGS: emacs,bloging,org,org-mode
+#+AUTHOR:  George Jones
+
+* What this is
+  - These are some setup files for blogging to blogger.com from emacs org-mode
+  - This is an orgified version of my ~/.emacs.d/30-bloging.org
+  -  My .emacs.d/ setup for context https://github.com/eludom/dotfiles/tree/master/.emacs.d
+
+* Blogging setup and TODO list
+** DONE Install Google Client
+  - Google Client :: http://www.emacswiki.org/emacs/GoogleClient
+  - g-client setup :: http://emacspeak.blogspot.com/2007/03/emacs-client-for-google-services.html
+  - g-cus-load.el missing :: http://emacsgeek.blogspot.com/
+** DONE install bpe from packages  
+** TODO Push this to my dotfiles on github
+** TODO Post this to usefulfoo blog
+** TODO Test up Org2BlogAtom http://www.emacswiki.org/emacs/Org2BlogAtom
+
+* The Code  
+#+BEGIN_SRC emacs-lisp :export code
+; google services setup
+(add-to-list 'load-path "~/.emacs.d/g-client" t)
+(load-library "g")
+(message "blogging.org finished.")
+#+END_SRC
+
+
