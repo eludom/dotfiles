@@ -1,6 +1,5 @@
-; Generic GNUS/mail setup.
-;   - Should this move to .gnus ?
-;
+* Generic GNUS/mail setup.
+
 ; Specific GNUS/mail setup (servers)
 ;   - should be elsewhere
 

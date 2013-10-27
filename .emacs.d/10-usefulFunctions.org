@@ -1,3 +1,5 @@
+* Define Useful functions
+
 ;; Adapted form From http://draketo.de/light/english/emacs/babcore
 ;;
 ;; save the current macro as reusable 

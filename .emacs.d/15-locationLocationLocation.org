@@ -1,3 +1,5 @@
+* Determine locatoin and network connectoins
+
 ;  
 ; Attempt to determine location and set up things that are location dependant
 ;

@@ -1,4 +1,4 @@
-* Package Info
+*  Emacs package setup
 ** About init.el and .org files in ~/.emacs.d
    - http://orgmode.org/worg/org-contrib/babel/intro.html
 ** Packages installed
@@ -78,7 +78,4 @@ Its value is
 (load-file "~/.emacs.d/dired-sort-map.el")
 #+END_SRC
 
-(message "packageStuff.org finished.")
-#+RESULTS:
-: packageStuff.org finished.
 

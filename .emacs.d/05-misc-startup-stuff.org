@@ -1,3 +1,5 @@
+* Misc startup settings
+
 #+BEGIN_SRC emacs-lisp
 (setq require-final-newline t
       default-major-mode 'text-mode

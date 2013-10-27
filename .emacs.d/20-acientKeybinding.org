@@ -1,6 +1,4 @@
-;
-; My keybindings from ages past...
-;
+* My keybindings from ages past...
 
 #+BEGIN_SRC emacs-lisp
 (setq display-time-day-and-date t

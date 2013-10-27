@@ -1,29 +1,82 @@
-#+TITLE: Blogging fom org-mode
-#+OPTIONS: toc:nil \n:nil num:nil
-#+TAGS: emacs,bloging,org,org-mode
-#+AUTHOR:  George Jones
-
-* What this is
+* Blogging
+  
+* README
   - These are some setup files for blogging to blogger.com from emacs org-mode
-  - This is an orgified version of my ~/.emacs.d/30-bloging.org
   -  My .emacs.d/ setup for context https://github.com/eludom/dotfiles/tree/master/.emacs.d
+* Atom blogging via BPE
+** BPE Installation
+*** DONE Install Google Client commandline/API tools
+    On Ubuntu try
+    #+BEGIN_EXAMPLE
+    sudo apt-get install googlecl
+    #+END_EXAMPLE
+*** DONE Insall g-client emacs interface
+    See 
+    - http://www.emacswiki.org/emacs/GoogleClient
+    - http://emacspeak.blogspot.com/2007/03/emacs-client-for-google-services.html
+    - http://emacsgeek.blogspot.com/
+*** DONE Configure package
+     For me this looked like
 
-* Blogging setup and TODO list
-** DONE Install Google Client
-  - Google Client :: http://www.emacswiki.org/emacs/GoogleClient
-  - g-client setup :: http://emacspeak.blogspot.com/2007/03/emacs-client-for-google-services.html
-  - g-cus-load.el missing :: http://emacsgeek.blogspot.com/
-** DONE install bpe from packages  
-** TODO Push this to my dotfiles on github
-** TODO Post this to usefulfoo blog
-** TODO Test up Org2BlogAtom http://www.emacswiki.org/emacs/Org2BlogAtom
+     #+BEGIN_EXAMPLE
+     cd ~src
+     bzunzip2 g-client.tar.bz2
+     tar -xvf g-client.tar
+     cd src/g-client
+     make config
+     make
+     #+END_EXAMPLE
 
-* The Code  
-#+BEGIN_SRC emacs-lisp :export code
-; google services setup
-(add-to-list 'load-path "~/.emacs.d/g-client" t)
+*** DONE install BPE form packages
+     
+** BPE configuraiton code
+#+BEGIN_SRC emacs-lisp
+; set up emacs interface to googlecl
+(add-to-list 'load-path "~/src/g-client" t)
 (load-library "g")
-(message "blogging.org finished.")
+
+; setup bpe
+(require 'bpe)
+(require 'htmlize nil 'noerror) ; to fontify source code block on your blog.
+(setq bpe:account   "eludom@gmail.com")
+(setq bpe:blog-name "usefulfoo")
+(define-key org-mode-map (kbd "C-c C-p") 'bpe:post-article)
+(define-key org-mode-map (kbd "C-c C-i") 'bpe:insert-template)
+;; For Japanese, default is $LANG environment variable.
+;(setq bpe:lang "ja_JP.UTF-8")
+
+#+END_SRC
+    
+** BPE posting
+   - open an .org file
+   - C-c C-i to insert a template
+   - write the post
+   - C-c C-p to posts
+   - posts as draft
+   - bug: have to insert a " tagname" after "#+TAG:" in template.
+* Wordpress blogging
+** Wordpress configuration code
+#+BEGIN_SRC emacs-lisp
+(setq load-path (cons "~/.emacs.d/elpa/org2blog-20130704.908/" load-path))
+(require 'org2blog-autoloads)
+
+(setq org2blog/wp-blog-alist
+'(("wordpress"
+:url "http://eludom.wordpress.com/xmlrpc.php"
+:username "eludom"
+:default-title "Goodbye World"
+:default-categories ("org2blog" "emacs")
+:tags-as-categories nil)
+("food8forthought"
+:url "http://eludom.wordpress.com/xmlrpc.php"
+:username "eludom"
+:default-title "Set a title next time"
+:default-categories ("word" "vi")
+:tags-as-categories nil)
+))
 #+END_SRC
 
+#+BEGIN_SRC
+(message "blogging.org finished.")
+#+END_SRC
 
