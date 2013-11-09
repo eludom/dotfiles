@@ -1,0 +1,23 @@
+* What: Things that affect appearance
+
+  Put things here that affect appearance.
+
+** How
+
+*** TODO Install "color-theme" pacakge
+
+** Documentation and links
+
+** Why
+
+   Because the default text colors are sometimes bad.
+
+** Code
+#+BEGIN_SRC emacs-lisp
+(if (require 'color-theme nil t)
+    (progn
+      (setq color-theme-is-global t)
+      (color-theme-charcoal-black))
+  (message "install package color-theme")
+  )
+#+END_SRC
