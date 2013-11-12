@@ -65,23 +65,40 @@
    - publish buffer  =C-c p C-u M-x org2blog/wp-post-buffer=
    - post buffer as page draft  =C-c D M-x org2blog/wp-post-buffer-as-page=
    - publish buffer as page  =C-c P C-u M-x org2blog/wp-post-buffer-as-page=
+** org2blog learning
+*** TODO play with it
+*** TODO learn how to post to different blogs
+*** TODO learn about tags, links, categories, etc.
+
 ** org2blog configuration code
 #+BEGIN_SRC emacs-lisp
 (setq load-path (cons "~/.emacs.d/elpa/org2blog-20130704.908/" load-path))
 (require 'org2blog-autoloads)
 
 (setq org2blog/wp-blog-alist
-      '(("wordpress"
-	 :url "http://eludom.wordpress.com/xmlrpc.php"
-	 :username "eludom"
-	 :default-title "Goodbye World"
-	 :default-categories ("org2blog" "emacs")
-	 :tags-as-categories nil)
-	("food8forthought"
+      '(("eludom"
 	 :url "http://eludom.wordpress.com/xmlrpc.php"
 	 :username "eludom"
 	 :default-title "Set a title next time"
-	 :default-categories ("word" "vi")
+	 :default-categories ("personal")
+	 :tags-as-categories nil)
+	("food8forthought"
+	 :url "http://food8forthought.wordpress.com/xmlrpc.php"
+	 :username "eludom"
+	 :default-title "Set a title next time"
+	 :default-categories ("musings")
+	 :tags-as-categories nil)
+	("amusingfoo"
+	 :url "http://amusingfoo.wordpress.com/xmlrpc.php"
+	 :username "eludom"
+	 :default-title "Set a title next time"
+	 :default-categories ("amusing" "geeky")
+	 :tags-as-categories nil)
+	("usefulfoo"
+	 :url "http://usefulfoo.wordpress.com/xmlrpc.php"
+	 :username "eludom"
+	 :default-title "Set a title next time"
+	 :default-categories ("useful" "geeky")
 	 :tags-as-categories nil)
 	))
 #+END_SRC
@@ -90,7 +107,3 @@
 (message "blogging.org finished.")
 #+END_SRC
 
-** org2blog learning
-*** TODO play with it
-*** TODO learn how to post to different blogs
-*** TODO learn about tags, links, categories, etc.

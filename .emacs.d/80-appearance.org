@@ -17,7 +17,8 @@
 (if (require 'color-theme nil t)
     (progn
       (setq color-theme-is-global t)
-      (color-theme-charcoal-black))
+      (color-theme-charcoal-black)
+)
   (message "install package color-theme")
   )
 #+END_SRC
