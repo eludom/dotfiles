@@ -1,15 +1,28 @@
 * Saved keyboard macros
 
-;; Saved macro
 #+BEGIN_SRC emacs-lisp
+(fset 'sumrow
+   (lambda (&optional arg) "Sum a row of an ORG table.
+Assumes starting position is at start of a row.
+Assumes lirst column is a name and not to be summed.
+Assumes last column is TOTAL. "
+     (interactive "p") (kmacro-exec-ring-item (quote ([5 18 124 18 6 67108896 5 2 23 1 19 19 19 6 2 67108896 5 2 3 43 25 tab] 0 "%d")) arg)))
+
+(fset 'sumcolumn
+   (lambda (&optional arg) "Sum a column of an ORG table.
+Assumes point is in a column.
+Wipes out current value.
+Sums the column.
+Moves to next column."
+     (interactive "p") (kmacro-exec-ring-item (quote ([18 124 6 67108896 19 124 2 23 3 43 25 tab] 0 "%d")) arg)))
+
+
+;; Saved macro
 (fset 'foo
    [?\C-r ?d ?e ?f ?u ?n ?\C-a ?\C-  ?\C-e escape ?x ?c ?o ?p ?y ?- ?r ?e ?g ?  ?a ?  ?k ?  return])
 
-#+END_SRC
-asdf
-
 ;; Saved macro
-#+BEGIN_SRC emacs-lisp
+
 (fset 'upcaseFOO
    [?\C-s ?f ?o ?o ?\C-b escape ?b escape ?u])
 
