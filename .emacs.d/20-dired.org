@@ -1,0 +1,157 @@
+** Dired setup
+
+   Dired setup.  Because you never want to use the mouse.  Part of an
+   ever evolving worldview mediated by
+   https://github.com/eludom/dotfiles
+
+#+BEGIN_SRC emacs-lisp
+
+; Dired setup
+;
+; Ideas from:
+;   http://truongtx.me/2013/04/24/dired-as-default-file-manager-1-introduction/
+;   http://blog.nguyenvq.com/2009/12/01/file-management-emacs-dired-to-replace-finder-in-mac-os-x-and-other-os/
+;
+
+(require 'dired)
+
+; I kinda like having "." and ".." for navigation... (gmj)
+;
+;(setq-default dired-omit-mode t
+;				dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.")
+;;; toggle omit mode C-o
+;(define-key dired-mode-map (kbd "C-o") 'dired-omit-mode)
+
+;
+; Mac specific stuff
+;
+
+(defun dired-do-shell-mac-open-vqn ()
+  (interactive)
+  (save-window-excursion
+    (dired-do-async-shell-command
+     "open" current-prefix-arg
+     (dired-get-marked-files t current-prefix-arg))))
+
+
+(defun tmtxt/dired-open-current-directory-in-finder ()
+  "Open the current directory in Finder"
+  (interactive)
+  (save-window-excursion
+    (dired-do-async-shell-command
+     "open .")))
+
+
+(if (eq system-type 'darwin)
+  (progn
+    (require 'ls-lisp)
+    (setq ls-lisp-use-insert-directory-program t)
+    (setq insert-directory-program "/opt/local/libexec/gnubin/ls")
+    (define-key dired-mode-map (kbd "s-o") 'dired-do-shell-mac-open-vqn)
+    (define-key dired-mode-map (kbd "s-O") 'tmtxt/dired-open-current-directory-in-finder)
+  )
+)
+
+
+;
+; Ubuntu specific stuff
+;
+
+; Ultimately  from  https://github.com/ubolonton/.emacs.d/blob/master/config/ublt-dired.el
+; Replace "gnome-open" as approipiate for the sytem (e.g. on a mac, it's just "open")
+; Should probably collapse this funciton with dired-do-shell-mac-open-vqn () and
+; parametirze the open funciont.
+
+(defun dired-open-native ()
+  "Open marked files (or the file the cursor is on) from dired."
+  (interactive)
+  (let* ((files (dired-get-marked-files t current-prefix-arg))
+         (n (length files)))
+    (when (or (<= n 3)
+              (y-or-n-p (format "Open %d files?" n)))
+      (dolist (file files)
+        (call-process "gnome-open"
+                      nil 0 nil file)))))
+
+; The use of "gnome-open" here should probably be parameterized.
+
+(defun dired-open-current-directory-in-GUI-file-manager ()
+  "Open the current directory in native GUI file namanger
+For those times when dired just wont do.
+"
+  (interactive)
+  (save-window-excursion
+    (dired-do-async-shell-command
+     "gnome-open .")))
+
+
+(if (eq system-type 'gnu/linux)
+  (progn
+     (setq on-gnu-linux t)
+;    (require 'ls-lisp)
+;    (setq ls-lisp-use-insert-directory-program t)
+;    (setq insert-directory-program "/opt/local/libexec/gnubin/ls")
+    (define-key dired-mode-map (kbd "s-o") 'dired-open-native)
+; this is not quite working 
+    (define-key dired-mode-map (kbd "s-O") 'dired-open-current-directory-in-GUI-file-manager)
+  )
+)
+
+; this may need to be changed if one does not have/use gnu ls(1)
+(setq dired-listing-switches "--group-directories-first -atlh")
+
+; set up sorting options
+
+(load-file "~/.emacs.d/dired-sort-map.el")
+
+;;;; dired-sort-map.el --- in Dired: press s then s, x, t or n to sort by Size, eXtension, Time or Name
+;
+;;; Copyright (C) 2002 -> Free Software Foundation, Inc.
+;
+;;; Inspired by Francis J. Wright's dired-sort-menu.el
+;;; Authors: Patrick Anderson, Santiago Mejia, Andy Stewart,
+;;;  Prof. Jayanth R Varma
+;
+;;; Versions:
+;;; don't remember
+;;; 2.2a bundled in NoteMacs
+;;; 2.2 Add help message suggested by Santiago Mejia
+;;; 2.3 Precede each switch with " -" as found by Prof. Jayanth R Varma
+;
+;;; This file is free software; you can redistribute it and/or modify
+;;; it under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation; either version 2, or (at your option)
+;;; any later version.
+;
+;;;; Install:
+;;; Copy this file to a directory in your load path.
+;;; Execute: M-x eval-buffer :so you don't have to restart.
+;;; Add the line: (require 'dired-sort-map) : to your .emacs
+;
+;;;; Todo:
+;;; (add-hook
+;;;  'dired-load-hook
+;;;  '(lambda ()
+;;;     (progn
+;
+;;;; Code:
+;(require 'dired)
+;(defvar dired-sort-map (make-sparse-keymap))
+;
+;(define-key dired-mode-map "s" dired-sort-map)
+;
+;; (dired-sort-toggle-or-edit)  is this bound to a key?  It needs to be to acccess these....(gmj Sun Apr 28 07:57:41 2013)
+;
+;(define-key dired-sort-map "s" (lambda () "sort by Size" (interactive) (dired-sort-other (concat dired-listing-switches " -S"))))
+;(define-key dired-sort-map "x" (lambda () "sort by eXtension" (interactive) (dired-sort-other (concat dired-listing-switches " -X"))))
+;(define-key dired-sort-map "t" (lambda () "sort by Time" (interactive) (dired-sort-other (concat dired-listing-switches " -t"))))
+;(define-key dired-sort-map "n" (lambda () "sort by Name" (interactive) (dired-sort-other dired-listing-switches)))
+;(define-key dired-sort-map "?" (lambda () "sort help" (interactive) (message "s Size; x eXtension; t Time; n Name")))
+;;; )))
+;
+;(provide 'dired-sort-map)
+;;;; dired-sort-map.el ends here
+
+(message "dired.org finished.")
+#+END_SRC
+
