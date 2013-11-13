@@ -37,19 +37,19 @@
    - bug: have to insert a " tagname" after "#+TAG:" in template.
 ** BPE configuraiton code
 #+BEGIN_SRC emacs-lisp
-; set up emacs interface to googlecl
-(add-to-list 'load-path "~/src/g-client" t)
-(load-library "g")
-
-; setup bpe
-(require 'bpe)
-(require 'htmlize nil 'noerror) ; to fontify source code block on your blog.
-(setq bpe:account   "eludom@gmail.com")
-(setq bpe:blog-name "usefulfoo")
-(define-key org-mode-map (kbd "C-c C-p") 'bpe:post-article)
-(define-key org-mode-map (kbd "C-c C-i") 'bpe:insert-template)
-;; For Japanese, default is $LANG environment variable.
-;(setq bpe:lang "ja_JP.UTF-8")
+;; set up emacs interface to googlecl
+;(add-to-list 'load-path "~/src/g-client" t)
+;(load-library "g")
+;
+;; setup bpe
+;(require 'bpe)
+;(require 'htmlize nil 'noerror) ; to fontify source code block on your blog.
+;(setq bpe:account   "eludom@gmail.com")
+;(setq bpe:blog-name "usefulfoo")
+;(define-key org-mode-map (kbd "C-c C-p") 'bpe:post-article)
+;(define-key org-mode-map (kbd "C-c C-i") 'bpe:insert-template)
+;;; For Japanese, default is $LANG environment variable.
+;;(setq bpe:lang "ja_JP.UTF-8")
 
 #+END_SRC
     
