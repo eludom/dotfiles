@@ -1,133 +1,99 @@
-Welcome to the Emacs shell
+* OrgMode Settings
+  - This probably needs some cleanup
+  - Things have acreted here over time
+  - Some of these may be obsolete or redundant
+    - old exporter.
 
-~ $ pwd
-/Users/gmj
-~ $ cd .emacs.d
-~/.emacs.d $ 
-~/.emacs.d $ git status
-# On branch master
-# Changes not staged for commit:
-#   (use "git add <file>..." to update what will be committed)
-#   (use "git checkout -- <file>..." to discard changes in working directory)
-#
-#	modified:   10-ifdef.el
-#	modified:   80-appearance.org
-#	modified:   init.el
-#
-no changes added to commit (use "git add" and/or "git commit -a")
-~/.emacs.d $ git add 80-appearance.org
-got: command not found
-~/.emacs.d $ git add 80-appearance.org
-~/.emacs.d $ git commit -m"Fix theme an fonts on mac"
-error: unknown switch `M'
-usage: git commit [options] [--] <pathspec>...
+#+BEGIN_SRC emacs-lisp
 
-    -q, --quiet           suppress summary after successful commit
-    -v, --verbose         show diff in commit message template
+(require 'ox-bibtex)
+(setenv "TMPDIR" ".")
+(setq org-return-follows-link t)
+(setq org-use-property-inheritance t)
+(setq org-export-with-toc nil)
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+(global-set-key "\M-\C-g" 'org-plot/gnuplot)
+(setq org-agenda-include-diary t)
+(setq org-todo-keywords '((sequence "TODO" "IN-PROGRESS"  "|" "DONE" "WAITING" "DELEGATED" "CANCELED")))
+(setq org-directory "~/plans/")
 
-Commit message options
-    -F, --file <file>     read message from file
-    --author <author>     override author for commit
-    --date <date>         override date for commit
-    -m, --message <message>
-                          commit message
-    -c, --reedit-message <commit>
-                          reuse and edit message from specified commit
-    -C, --reuse-message <commit>
-                          reuse message from specified commit
-    --fixup <commit>      use autosquash formatted message to fixup specified commit
-    --squash <commit>     use autosquash formatted message to squash specified commit
-    --reset-author        the commit is authored by me now (used with -C/-c/--amend)
-    -s, --signoff         add Signed-off-by:
-    -t, --template <file>
-                          use specified template file
-    -e, --edit            force edit of commit
-    --cleanup <default>   how to strip spaces and #comments from message
-    --status              include status in commit message template
-    -S, --gpg-sign[=<key id>]
-                          GPG sign commit
+; org-mode babel settings
 
-Commit contents options
-    -a, --all             commit all changed files
-    -i, --include         add specified files to index for commit
-    --interactive         interactively add files
-    -p, --patch           interactively add changes
-    -o, --only            commit only specified files
-    -n, --no-verify       bypass pre-commit hook
-    --dry-run             show what would be committed
-    --short               show status concisely
-    --branch              show branch information
-    --porcelain           machine-readable output
-    --long                show status in long format (default)
-    -z, --null            terminate entries with NUL
-    --amend               amend previous commit
-    --no-post-rewrite     bypass post-rewrite hook
-    -u, --untracked-files[=<mode>]
-                          show untracked files, optional modes: all, normal, no. (Default: all)
+(require 'org-exp-blocks)
+(org-babel-do-load-languages
+    'org-babel-load-languages '((python . t) (sh . t) (lisp . t) (R . t) (ditaa . t)))
+(setq org-export-babel-evaluate nil)
+(setq org-confirm-babel-evaluate nil)
+(setq org-babel-sh-command "bash")
 
-~/.emacs.d $ git commit -m"Fix theme an fonts on mac"
-[master 249f999] Fix theme an fonts on mac
- 1 file changed, 22 insertions(+), 7 deletions(-)
-~/.emacs.d $ git push
-warning: push.default is unset; its implicit value is changing in
-Git 2.0 from 'matching' to 'simple'. To squelch this message
-and maintain the current behavior after the default changes, use:
+; org-mode HTMLize email
 
-  git config --global push.default matching
+(require 'org-mime)
+(setq org-mime-library 'mml)
+(add-hook 'message-mode-hook
+          (lambda ()
+            (local-set-key "\C-c\M-o" 'org-mime-htmlize)))
+(add-hook 'org-mode-hook
+          (lambda ()
+            (local-set-key "\C-c\M-o" 'org-mime-org-buffer-htmlize)))
 
-To squelch this message and adopt the new behavior now, use:
+(add-hook 'org-mime-html-hook
+          (lambda ()
+            (org-mime-change-element-style
+             "blockquote" "border-left: 2px solid gray; padding-left: 4px;")))  
 
-  git config --global push.default simple
+(add-hook 'org-mime-html-hook
+          (lambda ()
+            (org-mime-change-element-style
+             "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
+                           "#E6E1DC" "#232323"))))
+;
+; Capture mode setup
+;
 
-See 'git help config' and search for 'push.default' for further information.
-(the 'simple' mode was introduced in Git 1.7.11. Use the similar mode
-'current' instead of 'simple' if you sometimes use older versions of Git)
+(require 'org-contacts)
+(require 'org-capture)
 
-Permission denied (publickey).
-fatal: Could not read from remote repository.
+(setq org-directory "~/Org")
+(setq org-default-notes-file "~/Org/refile.org")
 
-Please make sure you have the correct access rights
-and the repository exists.
-~/.emacs.d $ ssh
-usage: ssh [-1246AaCfgKkMNnqsTtVvXxYy] [-b bind_address] [-c cipher_spec]
-           [-D [bind_address:]port] [-e escape_char] [-F configfile]
-           [-I pkcs11] [-i identity_file]
-           [-L [bind_address:]port:host:hostport]
-           [-l login_name] [-m mac_spec] [-O ctl_cmd] [-o option] [-p port]
-           [-R [bind_address:]port:host:hostport] [-S ctl_path]
-           [-W host:port] [-w local_tun[:remote_tun]]
-           [user@]hostname [command]
-~/.emacs.d $ cd ~/git
-~/git $ cd dotfiles.20131113/
-~/git/dotfiles.20131113 $ 
-~/git/dotfiles.20131113 $ 
-~/git/dotfiles.20131113 $ ls
-README.txt  bin  elisp  historical  howto-install-gmj-dotfiles.org  installDotfiles.sh
-~/git/dotfiles.20131113 $ cd .emacs.d
-~/git/dotfiles.20131113/.emacs.d $ 
-~/git/dotfiles.20131113/.emacs.d $ 
-~/git/dotfiles.20131113/.emacs.d $ grep -i template *
-#<buffer *grep*>
-~/git/dotfiles.20131113/.emacs.d $ 
-~/git/dotfiles.20131113/.emacs.d $ 
-~/git/dotfiles.20131113/.emacs.d $ git add 20-orgModeStuff.org
-~/git/dotfiles.20131113/.emacs.d $ git commit -m"Fixed journal capture template to include current item and one timestamp."
-[master acffee9] Fixed journal capture template to include current item and one timestamp.
- 1 file changed, 1 insertion(+), 1 deletion(-)
-~/git/dotfiles.20131113/.emacs.d $ git push
-warning: push.default is unset; its implicit value is changing in
-Git 2.0 from 'matching' to 'simple'. To squelch this message
-and maintain the current behavior after the default changes, use:
+;; I use C-M-r to start capture mode
+;(global-set-key (kbd "C-M-r") 'org-capture)
+(global-set-key (kbd "\C-cc") 'org-capture)
+;; I use C-c r to start capture mode when using SSH from my Android phone
+;(global-set-key (kbd "C-c r") 'org-capture)
+;; Capture templates for: TODO tasks, Notes, appointments, phone calls, and org-protocol
+(setq org-capture-templates
+      (quote (("t" "todo" entry (file "~/Org/refile.org")
+               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("r" "respond" entry (file "~/Org/refile.org")
+               "* TODO Respond to %:from on %:subject\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+              ("n" "note" entry (file "~/Org/refile.org")
+               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("j" "Journal" entry (file+datetree "~/Org/diary.org")
+               "* %?\n     %U\n     %a\n")
+              ("w" "org-protocol" entry (file "~/Org/refile.org")
+               "* TODO Review %c\n%U\n" :immediate-finish t)
+              ("p" "Phone call" entry (file "~/Org/refile.org")
+               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+              ("h" "Habit" entry (file "~/Org/refile.org")
+               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
 
-  git config --global push.default matching
+(add-to-list 'org-capture-templates
+             '("c" "Contacts" entry (file "~/Org/contacts.org")
+               "* %(org-contacts-template-name)
+                  :PROPERTIES:
+                  :EMAIL: %(org-contacts-template-email)
+                  :END:"))
 
-To squelch this message and adopt the new behavior now, use:
+(require 'ox-confluence)
 
-  git config --global push.default simple
+(message "orgModeStuff.org finished.")
+#+END_SRC
 
-See 'git help config' and search for 'push.default' for further information.
-(the 'simple' mode was introduced in Git 1.7.11. Use the similar mode
-'current' instead of 'simple' if you sometimes use older versions of Git)
+#+RESULTS:
+: orgModeStuff.org finished.
 
-fatal: unable to access 'https://github.com/eludom/dotfiles.git/': Proxy CONNECT aborted
-~/git/dotfiles.20131113/.emacs.d $ 
