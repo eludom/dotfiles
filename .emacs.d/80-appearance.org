@@ -1,4 +1,4 @@
-  (set-face-attribute 'default (selected-frame) :height 100)* What: Things that affect appearance
+* What: Things that affect appearance
 
   Put things here that affect appearance.
 
