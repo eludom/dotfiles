@@ -1,12 +1,14 @@
 * OrgMode Settings
-  - This probably needs some cleanup
-  - Things have acreted here over time
-  - Some of these may be obsolete or redundant
-    - old exporter.
-
+** What
+   - Set up various org-mode things
+** Why
+   - Because org-mode config stuff needs to be collected somewhere
+** How
+   - See code below
+** Code
 #+BEGIN_SRC emacs-lisp
 
-(require 'ox-bibtex)
+;(require 'ox-bibtex)
 (setenv "TMPDIR" ".")
 (setq org-return-follows-link t)
 (setq org-use-property-inheritance t)
@@ -89,11 +91,19 @@
                   :EMAIL: %(org-contacts-template-email)
                   :END:"))
 
+
 (require 'ox-confluence)
 
 (message "orgModeStuff.org finished.")
 #+END_SRC
+** Things to do
+*** TODO Think about splitting things out of here
+    - Stuff has accreted here over time
+*** TODO Clean up old cruft
+*** TODO Deal with different vesions of org here if needed
+    - curently ox-bibtex does not load on some older versions of org
+      (8.0.5), but org2blog/wp-new-entry has errors with newer versions
+    - Try to fix/and or isolate these failures here.
 
-#+RESULTS:
-: orgModeStuff.org finished.
+
 

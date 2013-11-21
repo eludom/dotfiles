@@ -1,30 +1,37 @@
 *  Emacs package setup
-** About init.el and .org files in ~/.emacs.d
-   - http://orgmode.org/worg/org-contrib/babel/intro.html
-** Packages installed
-  - Package stuff as of 20130428
-#+BEGIN_EXAMPLE
-package-activated-list is a variable defined in `package.el'.
-Its value is
-(dired+ dired-details+ dired-details org-mime org-plus-contrib solarized-theme)
-#+END_EXAMPLE
-   
-** Useful Links
-   - setting default font on macs ::  http://stackoverflow.com/questions/1257426/emacs-mac-osx-and-changing-default-font 
-
-** Pacakge Manager Setup
-#+BEGIN_SRC emacs-lisp
-(require 'package) (package-initialize) 
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+** What
+   Emacs pacakge setup things
+** Why
+   Because all this package stuff has to be set up somewhre
+** How
+   See code below.
+** Code
+   #+BEGIN_SRC emacs-lisp
+   (require 'package) (package-initialize) 
+   (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                            ("marmalade" . "http://marmalade-repo.org/packages/")
                            ("melpa" . "http://melpa.milkbox.net/packages/")))
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+   (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
-; manual path additions
+   ; manual path additions
 
-;(add-to-list 'load-path (expand-file-name "~/elisp/"))
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
-#+END_SRC
+   ;(add-to-list 'load-path (expand-file-name "~/elisp/"))
+   (add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
+   #+END_SRC
+
+** Things to do
+*** TODO Cheeck out https://github.com/jwiegley/use-package  
+** Also See
+   - http://orgmode.org/worg/org-contrib/babel/intro.html for a
+     description of how to orgify an ~/.emacs or ~/.emacs.d/init.el
+     config 
+   - To list packages installed
+     #+BEGIN_EXAMPLE
+     package-activated-list is a variable defined in `package.el'.
+     Its value is
+     (dired+ dired-details+ dired-details org-mime org-plus-contrib solarized-theme)
+     #+END_EXAMPLE
+
 
 
 
