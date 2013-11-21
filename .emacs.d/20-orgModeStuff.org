@@ -7,9 +7,8 @@
    - See code below
 ** Code
 #+BEGIN_SRC emacs-lisp
-
-;(require 'ox-bibtex)
-(setenv "TMPDIR" ".")
+;(require 'ox-bibtex) ;; BIBTEX export to LaTeX not working.  Fix.
+;(setenv "TMPDIR" ".") ;; Why was this here ?  Breaks dired via ssh to to some hosts
 (setq org-return-follows-link t)
 (setq org-use-property-inheritance t)
 (setq org-export-with-toc nil)
@@ -96,6 +95,7 @@
 
 (message "orgModeStuff.org finished.")
 #+END_SRC
+
 ** Things to do
 *** TODO Think about splitting things out of here
     - Stuff has accreted here over time
@@ -104,6 +104,12 @@
     - curently ox-bibtex does not load on some older versions of org
       (8.0.5), but org2blog/wp-new-entry has errors with newer versions
     - Try to fix/and or isolate these failures here.
+*** TODO make bibtex export to LaTeX work
+*** TODO figure out why TMPDIR env was set and if unsetting breaks anything
+    - Was this needed for babel remote execution?
+    - was breaking DIRED on some hosts
+
+
 
 
 
