@@ -1,9 +1,11 @@
-** Dired setup
-
-   Dired setup.  Because you never want to use the mouse.  Part of an
+* What
+   Dired setup.   Part of an
    ever evolving worldview mediated by
    https://github.com/eludom/dotfiles
-
+* Why
+  Because you never want to use the mouse. 
+* How
+* Code
 #+BEGIN_SRC emacs-lisp
 
 ; Dired setup
@@ -98,7 +100,7 @@ For those times when dired just wont do.
 )
 
 ; this may need to be changed if one does not have/use gnu ls(1)
-(setq dired-listing-switches "--group-directories-first -atlh")
+;(setq dired-listing-switches "--group-directories-first -atlh")
 
 ; set up sorting options
 
@@ -154,4 +156,17 @@ For those times when dired just wont do.
 
 (message "dired.org finished.")
 #+END_SRC
+
+* To Do
+** TODO Merge darwin and ubuntu open fuctions  
+  
+** TODO fix arguments to allow listing of directorys first
+   - breaks dired directory listing over ssh to some systems
+     #+BEGIN_EXAMPLE
+     ;(setq dired-listing-switches "--group-directories-first -atlh")
+     #+END_EXAMPLE
+* For more info
+
+
+
 
