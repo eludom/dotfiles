@@ -8,11 +8,18 @@
 ; $ cd ~/src/
 ; $ git clone git://orgmode.org/org-mode.git
 ; $ make autoloads
-;
 
 (add-to-list 'load-path "~/.emacs.d")
 (add-to-list 'load-path "~/src/org-mode/lisp")
 (add-to-list 'load-path "~/src/org-mode/contrib/lisp" t)
+
+
+;; Set up Info directory to point to installed docs
+
+; http://orgmode.org/worg/org-faq.html
+; (add-to-list 'Info-additional-directory-list
+;             (expand-file-name "~/src/org-mode/"))
+
 (add-to-list 'load-path "~/src/g-client")
 
 ;;; init.el --- Where all the magic begins
