@@ -23,8 +23,8 @@
 ; Set up basic org-mode stuff here because the rest of this init file
 ; is going to use org
 
-(add-to-list 'load-path "~/src/org-mode/lisp")
-(add-to-list 'load-path "~/src/org-mode/contrib/lisp" t)
+(add-to-list 'load-path (expand-file-name "~/src/org-mode/lisp/"))
+(add-to-list 'load-path (expand-file-name "~/src/org-mode/contrib/lisp/"))
 
 ;; Set up Info directory to point to installed docs
 ;; INFOPATH hack from http://www.emacswiki.org/emacs/InfoPath
