@@ -20,6 +20,10 @@
    #+END_SRC
 
 ** Things to do
+*** TODO Figure out how to keep elpa from pulling in org-mode when I insall org2blog
+   - I want to stay with direct git pulls of org
+   - When I install the org2blog package, it also pulls down org,
+     creating confusoin and load order problems.
 *** TODO Cheeck out https://github.com/jwiegley/use-package  
 ** Also See
    - http://orgmode.org/worg/org-contrib/babel/intro.html for a
