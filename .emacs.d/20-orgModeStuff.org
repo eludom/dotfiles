@@ -7,6 +7,7 @@
    - See code below
 ** Code
 #+BEGIN_SRC emacs-lisp
+
 ;(require 'ox-bibtex) ;; BIBTEX export to LaTeX not working.  Fix.
 ;(setenv "TMPDIR" ".") ;; Why was this here ?  Breaks dired via ssh to to some hosts
 (setq org-return-follows-link t)
