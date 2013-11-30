@@ -1,4 +1,22 @@
-* ifdef keybindings and setup
+* What
+  Code to do cpp ifdef-like substitution on org-mode export.
+* Why
+  Because I wanted to ifdef my resume for different versoins
+  (LinkedIn, etc)
+* How
+  Define functions to implmenet #define, #ifdef, etc.  Add as an
+  org-mode export hook.  Define keybindings.
+
+  See sample text below.
+
+* Who
+* When
+  To run on the current buffer by hand NOW type =C-x # b=.
+
+  To run automatically AT EXPORT, just run org-mode export.  The hook should fire.
+
+* Code
+** ifdef keybindings and function definitions
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x # i") 'ifdef-ifdef)
   (global-set-key (kbd "C-x # d") 'ifdef-define)
@@ -25,11 +43,7 @@
 
 
   (add-hook 'text-mode-hook 'my-text-mode-hook)
-#+END_SRC
 
-* ifdef functions
-
-#+BEGIN_SRC emacs-lisp
 (defun ifdef-org-export-hook ()
   "Export hook to apply #ifdef logic to buffer during org-mode export"
   (interactive)
@@ -148,6 +162,31 @@ Return t if #ifdef section found (matching or not), nil if not found or no patte
   	    (throw 'exit ifdef-found-ifdef-section)))
   	nil)))))
 #+END_SRC
+
+* Some sample text
+#+BEGIN_EXAMPLE
+#deFine \(ALICE\|LARRY\)
+
+The start of the story is the same.
+
+#iFdef ALICE
+Alice is special, this message is just for her.
+#endif
+#ifdef BOB
+Bob gets a different story
+#endif
+#ifdef ALiCE
+For Alice, the story continues.
+#endif
+#ifdef BOB
+but Bob is left in the dark.
+#endif
+#ifdef LARRY
+Larry Boy.  Lean and mean, green machine, outta sight, DYN-O-MITE !!!
+Lorum ipsum.
+Foo.
+#endif
+#+END_EXAMPLE
 
 * To Do List
 ** Clean up symbols
