@@ -200,3 +200,8 @@ Foo.
    - [ ] narrow-to-region
    - [ ] see Le Wang's reply to my post on G++
          https://github.com/lewang/ws-butler/blob/master/ws-butler.el#L109
+** Inhibit ifdef expansoin of example above on export
+   - It would be more useful as an example if ifdef left it alone
+   - Probably a conditional in the export hook.  Look for this file
+     name and skip ifdef processing, or find a way to quote the
+     #ifdefs
