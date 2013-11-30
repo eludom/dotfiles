@@ -13,12 +13,19 @@
 (add-to-list 'load-path "~/src/org-mode/lisp")
 (add-to-list 'load-path "~/src/org-mode/contrib/lisp" t)
 
-
 ;; Set up Info directory to point to installed docs
+;; INFOPATH hack from http://www.emacswiki.org/emacs/InfoPath
+(setenv "INFOPATH" (concat
+		    (expand-file-name "~/src/org-mode/doc/")
+		    ":"
+		    (getenv "INFOPATH")
+		    )
+	)
+(add-hook 'Info-mode-hook; After Info-mode has started
+        (lambda ()
+	      (setq Info-additional-directory-list Info-default-directory-list)
+	      ))
 
-; http://orgmode.org/worg/org-faq.html
-; (add-to-list 'Info-additional-directory-list
-;             (expand-file-name "~/src/org-mode/"))
 
 (add-to-list 'load-path "~/src/g-client")
 
