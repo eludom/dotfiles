@@ -61,6 +61,14 @@
     #+END_EXAMPLE
 
 ** Install packages
+   - org2blog
+     + then unistall the version of org that comes along because we
+       use git version in ~/src
+   - color-theme
+   - twittering-mode
+   - magit
+   
+
 ** LaTeX Installation
 
 #+BEGIN_SRC emacs-lisp

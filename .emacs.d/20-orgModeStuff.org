@@ -24,7 +24,7 @@
 
 ; org-mode babel settings
 
-(require 'org-exp-blocks)
+;(require 'org-exp-blocks)
 (org-babel-do-load-languages
     'org-babel-load-languages '((python . t) (sh . t) (lisp . t) (R . t) (ditaa . t)))
 (setq org-export-babel-evaluate nil)
