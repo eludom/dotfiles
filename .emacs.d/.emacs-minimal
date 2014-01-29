@@ -1,0 +1,3 @@
+(add-to-list 'load-path "~/src/org/org-mode/lisp")
+(add-to-list 'load-path "~/src/org/org-mode/contrib/lisp")
+(require 'org-loaddefs)
