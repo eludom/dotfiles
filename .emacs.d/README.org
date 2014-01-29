@@ -33,12 +33,10 @@
     Some/all of this README could go into installDotfiles.sh
 
     #+BEGIN_EXAMPLE
-    $ cd ~/src
+    $ cd ~/git
     $ git clone https://github.com/eludom/dotfiles.git
-    $ cd org-mode
-    $ git fetch --tags
-    $ cd src/org-mode
-    $ make
+    $ cd ~/git/dotfiles/
+    $ ./installDotfiles.sh # or similar by hand
      #+END_EXAMPLE
 
 ** To switch versions
@@ -61,15 +59,17 @@
     #+END_EXAMPLE
 
 ** Install packages
+   - color-theme
    - org2blog
      + then unistall the version of org that comes along because we
        use git version in ~/src
-   - color-theme
    - twittering-mode
    - magit
    
-
 ** LaTeX Installation
+   - Install pdflatex (from whaterever package/ports are required)
+   - Install bibtex
+   - Install bibtex2html
 
 #+BEGIN_SRC emacs-lisp
 (message "See README.org for manual installation and setup requirements.")
