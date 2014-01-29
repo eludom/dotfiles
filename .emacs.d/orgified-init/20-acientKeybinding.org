@@ -1,0 +1,45 @@
+* My keybindings from ages past...
+
+#+BEGIN_SRC emacs-lisp
+(setq display-time-day-and-date t
+      display-time-24hr-format t)
+(display-time)
+
+;(global-set-key "\C-Xd" 'insert-date)
+(global-set-key "\C-\\" 'compile)
+;(global-set-key "\C-XP" 'plan)
+(global-set-key "\C-XR" 'gnus)
+;(global-set-key "\C-XW" 'w3m)
+(global-set-key "\C-]" 'call-last-kbd-macro)
+(global-set-key "\eq" 'query-replace)
+(global-set-key "\ey" 'yow)
+
+(global-set-key "\er" 'replace-string)
+(global-set-key "\em" 'set-mark-command)
+(global-set-key "\e " 'set-mark-command)
+(global-set-key "\e#" 'what-line)
+(global-set-key "\eg" 'goto-line)
+(global-set-key "\ei" 'ispell-buffer)
+;(global-set-key "\C-X\C-K" 'bury-buffer)
+(global-set-key "\C-he" 'emacs-version)
+(global-set-key "\ep" 'set-fill-prefix)
+(global-set-key "\C-Xp" 'fill-paragraph)
+(global-set-key "\C-Xc" 'copy-region-as-kill)
+(global-set-key "\C-X!" 'compile)
+(global-unset-key "\C-X\C-l")
+#+END_SRC
+
+
+;
+; Somewhat newer keybindings
+;
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key "\C-X5" 'split-window-horizontally)
+(global-set-key (kbd "C-h SPC") 'man)
+#+END_SRC
+
+(message "locationLocationLocation.org finished.")
+
+#+RESULTS:
+

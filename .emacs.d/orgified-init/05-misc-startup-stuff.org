@@ -1,0 +1,8 @@
+* Misc startup settings
+
+#+BEGIN_SRC emacs-lisp
+(setq require-final-newline t
+      default-major-mode 'text-mode
+      text-mode-hook 'turn-on-auto-fill
+      describe-function-show-arglist t)
+#+END_SRC 

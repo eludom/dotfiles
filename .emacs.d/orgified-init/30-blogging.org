@@ -1,0 +1,109 @@
+* Blogging
+* README
+  - These are some setup files for blogging to blogger.com from emacs org-mode
+  -  My .emacs.d/ setup for context https://github.com/eludom/dotfiles/tree/master/.emacs.d
+* Atom blogging via BPE
+** BPE Installation
+*** DONE Install Google Client commandline/API tools
+    On Ubuntu try
+    #+BEGIN_EXAMPLE
+    sudo apt-get install googlecl
+    #+END_EXAMPLE
+*** DONE Insall g-client emacs interface
+    See 
+    - http://www.emacswiki.org/emacs/GoogleClient
+    - http://emacspeak.blogspot.com/2007/03/emacs-client-for-google-services.html
+    - http://emacsgeek.blogspot.com/
+*** DONE Configure package
+     For me this looked like
+
+     #+BEGIN_EXAMPLE
+     cd ~src
+     bzunzip2 g-client.tar.bz2
+     tar -xvf g-client.tar
+     cd src/g-client
+     make config
+     make
+     #+END_EXAMPLE
+
+*** DONE install BPE form packages
+     
+** BPE posting instructions
+   - open an .org file
+   - C-c C-i to insert a template
+   - write the post
+   - C-c C-p to posts
+   - posts as draft
+   - bug: have to insert a " tagname" after "#+TAG:" in template.
+** BPE configuraiton code
+#+BEGIN_SRC emacs-lisp
+;; set up emacs interface to googlecl
+;(add-to-list 'load-path "~/src/g-client" t)
+;(load-library "g")
+;
+;; setup bpe
+;(require 'bpe)
+;(require 'htmlize nil 'noerror) ; to fontify source code block on your blog.
+;(setq bpe:account   "eludom@gmail.com")
+;(setq bpe:blog-name "usefulfoo")
+;(define-key org-mode-map (kbd "C-c C-p") 'bpe:post-article)
+;(define-key org-mode-map (kbd "C-c C-i") 'bpe:insert-template)
+;;; For Japanese, default is $LANG environment variable.
+;;(setq bpe:lang "ja_JP.UTF-8")
+
+#+END_SRC
+    
+* Wordpress blogging
+** org2blog installation
+** org2blog useful links
+   - https://github.com/punchagan/org2blog
+   - http://sachachua.com/blog/2013/08/helping-someone-get-started-with-emacs-and-org-mode-through-org2blog-troubleshooting-steps/
+** org2blog posting instructions
+   - Log in =M-x org2blog/wp-login=
+   - Create a posting template =M-x org2blog/wp-new-entry=
+   - post buffer as draft =C-c d M-x org2blog/wp-post-buffer=
+   - publish buffer  =C-c p C-u M-x org2blog/wp-post-buffer=
+   - post buffer as page draft  =C-c D M-x org2blog/wp-post-buffer-as-page=
+   - publish buffer as page  =C-c P C-u M-x org2blog/wp-post-buffer-as-page=
+** org2blog learning
+*** TODO play with it
+*** TODO learn how to post to different blogs
+*** TODO learn about tags, links, categories, etc.
+
+** org2blog configuration code
+#+BEGIN_SRC emacs-lisp
+(setq load-path (cons "~/.emacs.d/elpa/org2blog-20130704.323/" load-path))
+(require 'org2blog-autoloads)
+
+(setq org2blog/wp-blog-alist
+      '(("eludom"
+	 :url "http://eludom.wordpress.com/xmlrpc.php"
+	 :username "eludom"
+	 :default-title "Set a title next time"
+	 :default-categories ("personal")
+	 :tags-as-categories nil)
+	("food8forthought"
+	 :url "http://food8forthought.wordpress.com/xmlrpc.php"
+	 :username "eludom"
+	 :default-title "Set a title next time"
+	 :default-categories ("musings")
+	 :tags-as-categories nil)
+	("amusingfoo"
+	 :url "http://amusingfoo.wordpress.com/xmlrpc.php"
+	 :username "eludom"
+	 :default-title "Set a title next time"
+	 :default-categories ("amusing" "geeky")
+	 :tags-as-categories nil)
+	("usefulfoo"
+	 :url "http://usefulfoo.wordpress.com/xmlrpc.php"
+	 :username "eludom"
+	 :default-title "Set a title next time"
+	 :default-categories ("useful" "geeky")
+	 :tags-as-categories nil)
+	))
+#+END_SRC
+
+#+BEGIN_SRC
+(message "blogging.org finished.")
+#+END_SRC
+

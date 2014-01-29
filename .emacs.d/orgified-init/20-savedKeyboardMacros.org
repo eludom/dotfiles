@@ -1,0 +1,41 @@
+* Saved keyboard macros
+
+#+BEGIN_SRC emacs-lisp
+  
+  (fset 'sumrow
+     (lambda (&optional arg) "Sum a row of an ORG table.
+  Assumes starting position is at start of a row.
+  Assumes lirst column is a name and not to be summed.
+  Assumes last column is TOTAL. "
+       (interactive "p") (kmacro-exec-ring-item (quote ([5 18 124 18 6 67108896 5 2 23 1 19 19 19 6 2 67108896 5 2 3 43 25 tab] 0 "%d")) arg)))
+  
+  (fset 'sumcolumn
+     (lambda (&optional arg) "Sum a column of an ORG table.
+  Assumes point is in a column.
+  Wipes out current value.
+  Sums the column.
+  Moves to next column."
+       (interactive "p") (kmacro-exec-ring-item (quote ([18 124 6 67108896 19 124 2 23 3 43 25 tab] 0 "%d")) arg)))
+  
+  
+  ;; Saved macros
+  
+  ;; How do I add docstrings to these fset macros ?
+  ;; Can I just turn them into lamba with docstrings as above?  will the [...] work in kmacro-exec-ring-item?
+  
+  ; yank a (presumably) unfilled paragraph of text, unfill it, go to previous line (presumably
+  ; an element in a prevoulsy started org-mode bullet list, insert a new bullet, re-fill paragraph.
+  ; May want a option to add quotes.
+  (fset 'unfill-then-fill-bullet
+     [?\C-y escape ?x ?u ?n ?f ?i ?  ?p ?  return ?\C-a ?\C-p ?\C-e ?\C-c return ?\C-d ?\C-e ? ])
+  
+  (fset 'foo
+     [?\C-r ?d ?e ?f ?u ?n ?\C-a ?\C-  ?\C-e escape ?x ?c ?o ?p ?y ?- ?r ?e ?g ?  ?a ?  ?k ?  return])
+  
+  ;; Saved macro
+  
+  (fset 'upcaseFOO
+     [?\C-s ?f ?o ?o ?\C-b escape ?b escape ?u])
+  
+  (message "savedKeybaordMacros.org finished.")
+#+END_SRC
