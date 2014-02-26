@@ -16,11 +16,11 @@
 #
 #       Show the files modified last week
 #
-#	  $ modified 7 14
+#	  $ modified 14 7
 #
 #       Show fils modified 3 weeks ago
 #
-#         $ modified 21 28
+#         $ modified 28 21
 #
 # NOTES:
 #	Filenames with a space (" ") in them are a problem.  
@@ -39,6 +39,6 @@
 
 # usecomand line args, or supply defaults
 OLDEST=${1:-7}
-YOUNGEST=${1:-0}
+YOUNGEST=${2:-0}
 
 ls -ltd `find . -mtime +${YOUNGEST} -mtime -${OLDEST} -print | sed 's/ /*/g'`
