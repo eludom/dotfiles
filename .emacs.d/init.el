@@ -55,7 +55,7 @@
  '(display-time-mode t)
  '(doc-view-continuous t)
  '(org-contacts-files (quote ("~/Org/contacts.org")))
- '(org-ditaa-jar-path "/Users/gmj/elisp/old/org-mode/contrib/scripts/ditaa.jar"))
+ '(org-ditaa-jar-path "/Users/gmj/src/org-mode/contrib/scripts/ditaa.jar"))
 (put 'upcase-region 'disabled nil)
 
 ; load specific files
