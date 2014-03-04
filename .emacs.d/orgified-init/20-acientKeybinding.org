@@ -30,6 +30,7 @@
 #+END_SRC
 
 
+* Newer Keybinding
 ;
 ; Somewhat newer keybindings
 ;
@@ -38,6 +39,21 @@
 (global-set-key "\C-X5" 'split-window-horizontally)
 (global-set-key (kbd "C-h SPC") 'man)
 #+END_SRC
+
+* Override bad defaults
+
+
+(defun use-gnus-to-send-mail ()
+  (interactive)
+  (error (substitute-command-keys "Use GNUS to send mail.")))
+
+(global-set-key "\C-Xm" 'use-gnus-to-send-mail)
+
+(defun dont-kill-emacs ()
+  (interactive)
+  (error (substitute-command-keys "To exit emacs: \\[kill-emacs]")))
+
+(global-set-key "\C-x\C-c" 'dont-kill-emacs)
 
 (message "locationLocationLocation.org finished.")
 
