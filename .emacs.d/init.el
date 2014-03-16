@@ -7,7 +7,10 @@
 ; $ mkdir -p ~/src
 ; $ cd ~/src/
 ; $ git clone git://orgmode.org/org-mode.git
-; $ make autoloads
+					; $ make autoloads
+
+; workaround? from: http://lists.gnu.org/archive/html/emacs-orgmode/2013-11/msg00174.html
+(defun org-element-cache-reset (&optional all) (interactive))
 
 ; standard eamcs.d stuff first
 (add-to-list 'load-path "~/.emacs.d/orgified-init")
