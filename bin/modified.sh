@@ -41,4 +41,5 @@
 OLDEST=${1:-7}
 YOUNGEST=${2:-0}
 
-ls -ltd `find . -mtime +${YOUNGEST} -mtime -${OLDEST} -print | sed 's/ /*/g'`
+#ls -ltd `find . -mtime +${YOUNGEST} -mtime -${OLDEST} -print | sed 's/ /*/g'`
+ls -ltd `find . -mtime -${OLDEST} -print | sed 's/ /*/g'`
