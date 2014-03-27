@@ -205,3 +205,21 @@ Foo.
    - Probably a conditional in the export hook.  Look for this file
      name and skip ifdef processing, or find a way to quote the
      #ifdefs
+** TODO Seems to only work with one #define, fix this
+** TODO Add #else or #ifndef
+
+* Test
+
+This is some text
+
+#define foo
+#define bar
+
+#ifdef foo
+   foo - should see this
+#endif
+
+#ifdef bar
+   bar - should see this too, but seems not to work.
+#endif
+
