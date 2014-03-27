@@ -43,6 +43,7 @@
 * Override bad defaults
 
 
+#+BEGIN_SRC emacs-lisp
 (defun use-gnus-to-send-mail ()
   (interactive)
   (error (substitute-command-keys "Use GNUS to send mail.")))
@@ -56,6 +57,7 @@
 (global-set-key "\C-x\C-c" 'dont-kill-emacs)
 
 (message "locationLocationLocation.org finished.")
+#+END_SRC
 
 #+RESULTS:
 
