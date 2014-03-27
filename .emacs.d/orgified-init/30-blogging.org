@@ -72,7 +72,7 @@
 
 ** org2blog configuration code
 #+BEGIN_SRC emacs-lisp
-(setq load-path (cons "~/.emacs.d/elpa/org2blog-20130704.323/" load-path))
+(setq load-path (cons "~/.emacs.d/elpa/org2blog-20130707.323/" load-path))
 (require 'org2blog-autoloads)
 
 (setq org2blog/wp-blog-alist

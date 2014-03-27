@@ -6,6 +6,26 @@
 ** How
    - See code below
 ** Code
+*** Fun
+
+#+BEGIN_SRC emacs-lisp
+(defun org-random-element ()
+  "Choose a random element from the buffer.
+See URL `http://thread.gmane.org/gmane.emacs.orgmode/83545'.
+After all, who would not want the random number generator 
+in emacs lisp to chose what they have for dinner :-)"
+  (interactive)
+  (let ((element-start -1)
+        (count 1))
+    (while (not (org-first-sibling-p))
+      (org-goto-sibling t))
+    (save-excursion
+      (while (org-goto-sibling)
+              (setq count (+ 1 count))))
+    (org-forward-heading-same-level (random count))))
+(global-set-key "\eR" 'org-random-element)
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp
 
 ;(require 'ox-bibtex) ;; BIBTEX export to LaTeX not working.  Fix.
