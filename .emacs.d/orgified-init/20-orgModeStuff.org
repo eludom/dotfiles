@@ -6,8 +6,15 @@
 ** How
    - See code below
 ** Code
-*** Fun
+** Flyspell
 
+#+BEGIN_SRC emacs-lisp
+    (dolist (hook '(text-mode-hook))
+      (add-hook hook (lambda () (flyspell-mode 1))))
+#+END_SRC
+
+
+** Randomness
 #+BEGIN_SRC emacs-lisp
 (defun org-random-element ()
   "Choose a random element from the buffer.
@@ -26,18 +33,24 @@ in emacs lisp to chose what they have for dinner :-)"
 (global-set-key "\eR" 'org-random-element)
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
 
+#+BEGIN_SRC emacs-lisp
 ;(require 'ox-bibtex) ;; BIBTEX export to LaTeX not working.  Fix.
 ;(setenv "TMPDIR" ".") ;; Why was this here ?  Breaks dired via ssh to to some hosts
+
+; gneral org mode settings
+
 (setq org-return-follows-link t)
 (setq org-use-property-inheritance t)
 (setq org-export-with-toc nil)
+
+; planning and agenda things
+
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-(global-set-key "\M-\C-g" 'org-plot/gnuplot)
+;(global-set-key "\C-ca" 'org-agenda)
+;(global-set-key "\C-cb" 'org-iswitchb)
+;(global-set-key "\M-\C-g" 'org-plot/gnuplot)
 (setq org-agenda-include-diary t)
 (setq org-todo-keywords '((sequence "TODO" "IN-PROGRESS"  "|" "DONE" "WAITING" "DELEGATED" "CANCELED")))
 (setq org-directory "~/plans/")
@@ -73,10 +86,16 @@ in emacs lisp to chose what they have for dinner :-)"
              "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
                            "#E6E1DC" "#232323"))))
 ;
-; Capture mode setup
+; Contacts setup
 ;
 
 (require 'org-contacts)
+(setq org-contacts-files '("~/Org/contacts.org"))
+
+
+;      org-capture-templates '(("c" "contacts" entry (file "~/org/contacts.org")
+;                               "* %(mu4e-view-snarf-from 'name)
+
 (require 'org-capture)
 
 (setq org-directory "~/Org")
@@ -110,7 +129,6 @@ in emacs lisp to chose what they have for dinner :-)"
                   :PROPERTIES:
                   :EMAIL: %(org-contacts-template-email)
                   :END:"))
-
 
 (require 'ox-confluence)
 
