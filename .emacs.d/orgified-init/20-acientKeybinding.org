@@ -33,12 +33,11 @@
 * Newest Keybinding
 
 ; Courtesy of Xah Lee  http://ergoemacs.org/emacs/emacs_keybinding_power_of_keys_sequence.html
-bzzz 
 
+#+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<f9> <f6>") 'visual-line-mode)
 (global-set-key (kbd "<f9> <f7>") 'linum-mode)
 (global-set-key (kbd "<f9> <f8>") 'whitespace-mode)    
-...    ....''''	
 (global-set-key (kbd "<f9> <f9>") 'shell)
 (global-set-key (kbd "<f9> <f10>") 'calc)
 (global-set-key (kbd "<f9> <f11>") 'calendar)
@@ -50,8 +49,7 @@ bzzz
 
 ;(global-set-key (kbd "<f9> <return>") 'xah-run-current-file)
 (global-set-key (kbd "<f9> SPC") 'flyspell-buffer)
- 
-
+ #+END_SRC
 
 * Newer Keybinding
 
