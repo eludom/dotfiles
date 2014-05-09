@@ -6,15 +6,8 @@
 ** How
    - See code below
 ** Code
-** Flyspell
 
-#+BEGIN_SRC emacs-lisp
-    (dolist (hook '(text-mode-hook))
-      (add-hook hook (lambda () (flyspell-mode 1))))
-#+END_SRC
-
-
-** Randomness
+*** Randomness
 #+BEGIN_SRC emacs-lisp
 (defun org-random-element ()
   "Choose a random element from the buffer.
@@ -34,6 +27,7 @@ in emacs lisp to chose what they have for dinner :-)"
 #+END_SRC
 
 
+*** Genreal Org stuff
 #+BEGIN_SRC emacs-lisp
 ;(require 'ox-bibtex) ;; BIBTEX export to LaTeX not working.  Fix.
 ;(setenv "TMPDIR" ".") ;; Why was this here ?  Breaks dired via ssh to to some hosts
