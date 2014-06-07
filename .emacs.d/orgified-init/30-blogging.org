@@ -92,13 +92,25 @@
 	 :url "http://amusingfoo.wordpress.com/xmlrpc.php"
 	 :username "eludom"
 	 :default-title "Set a title next time"
-	 :default-categories ("amusing" "geeky")
+	 :default-categories ("amusing")
+	 :tags-as-categories nil)
+	("securityfoo"
+	 :url "http://securityfoo.wordpress.com/xmlrpc.php"
+	 :username "eludom"
+	 :default-title "Set a title next time"
+	 :default-categories ("security")
+	 :tags-as-categories nil)
+	("rawfoo"
+	 :url "http://rawfoo.wordpress.com/xmlrpc.php"
+	 :username "eludom"
+	 :default-title "Set a title next time"
+	 :default-categories ("raw")
 	 :tags-as-categories nil)
 	("usefulfoo"
 	 :url "http://usefulfoo.wordpress.com/xmlrpc.php"
 	 :username "eludom"
 	 :default-title "Set a title next time"
-	 :default-categories ("useful" "geeky")
+	 :default-categories ("useful")
 	 :tags-as-categories nil)
 	))
 #+END_SRC
