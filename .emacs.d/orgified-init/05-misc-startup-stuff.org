@@ -31,11 +31,12 @@
 
   (setq ido-use-filename-at-point 'guess)
   (setq ido-create-new-buffer 'always) ; not working?  Still prompts
-  (setq ido-file-extensions-order '(".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
+  (setq ido-file-extensions-order '(".org" ".txt" ".py" ".log" ".el" ))
+  (setq ido-separator "\n")
 #+END_SRC
 
 #+RESULTS:
-| .org | .txt | .py | .emacs | .xml | .el | .ini | .cfg | .cnf |
+: 
 
 *** Command abbrevs
     See  http://ergoemacs.org/misc/emacs_abbrev_shell_elisp.html
