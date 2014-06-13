@@ -38,6 +38,19 @@
 #+RESULTS:
 : 
 
+*** Recent files
+
+    See http://stackoverflow.com/questions/3527150/open-recent-in-emacs
+
+#+BEGIN_SRC emacs-lisp :output none
+(require 'recentf)
+(recentf-mode 1)
+(global-set-key "\C-xf" 'recentf-open-files)
+(setq recentf-auto-cleanup 'never)
+#+END_SRC
+
+
+
 *** Command abbrevs
     See  http://ergoemacs.org/misc/emacs_abbrev_shell_elisp.html
 #+BEGIN_SRC emacs-lisp
@@ -82,3 +95,4 @@
 : xah-shell-commands
 
 ** Things To Do
+?
