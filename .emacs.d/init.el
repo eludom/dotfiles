@@ -58,9 +58,16 @@
  '(display-time-mode t)
  '(doc-view-continuous t)
  '(org-contacts-files (quote ("~/Org/contacts.org")))
- '(org-ditaa-jar-path "/Users/gmj/src/org-mode/contrib/scripts/ditaa.jar"))
+ '(org-ditaa-jar-path "/Users/gmj/src/org-mode/contrib/scripts/ditaa.jar")
+ '(send-mail-function (quote smtpmail-send-it)))
 (put 'upcase-region 'disabled nil)
 
 ; load specific files
 
 ;(load "bibhook.el")
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

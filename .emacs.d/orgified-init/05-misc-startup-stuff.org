@@ -6,11 +6,19 @@
 
 *** random cusotmizations
 #+BEGIN_SRC emacs-lisp
+(setq visible-bell t)
 (setq require-final-newline t
       default-major-mode 'text-mode
       text-mode-hook 'turn-on-auto-fill
       describe-function-show-arglist t)
 #+END_SRC 
+
+*** Pathexec stuff for OSX paths
+#+BEGIN_SRC emacs-lisp
+(require 'exec-path-from-shell) ;; if not using the ELPA package
+(exec-path-from-shell-initialize)
+#+END_SRC 
+
 
 
 *** Flyspell

@@ -5,8 +5,8 @@
 ;
 
 #+BEGIN_SRC emacs-lisp
-(load "~/elisp/emacs-rc-override") 
-(eval-after-load "org-exp" '(load "~/elisp/emacs-rc-override"))
+;(load "~/elisp/emacs-rc-override") 
+;(eval-after-load "org-exp" '(load "~/elisp/emacs-rc-override"))
 (message ".emacs finished")
 
 (message "99-runLast.org finished.")
