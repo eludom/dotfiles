@@ -8,9 +8,9 @@
 # Before anything else, fix the CTRL key !!!
 #
 
-if [ -x $HOME/bin/fixctrl.sh ]; then
-  $HOME/bin/fixctrl.sh
-fi
+#if [ -x $HOME/bin/fixctrl.sh ]; then
+#  $HOME/bin/fixctrl.sh
+#fi
 
 #
 # Generic things
@@ -107,7 +107,7 @@ alias emacs='		emacs-snapshot'
 if [ "$TERM" == "dumb" ]; then
   color="";
 elif [ "$myOS" == "mac" ]; then
-  pathadd /opt/local/bin;
+  pathadd /usr/local/bin;
   color="-G";
 elif [ "$myOS" == "linux" ]; then
   color="--color";
