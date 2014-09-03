@@ -51,6 +51,11 @@
 (global-set-key (kbd "<f9> SPC") 'flyspell-buffer)
  #+END_SRC
 
+# Other stuff from Xah lee
+
+(global-set-key (kbd "<f8> <f8>") 'xah-copy-file-path)
+
+
 * Newer Keybinding
 
 #+BEGIN_SRC emacs-lisp
