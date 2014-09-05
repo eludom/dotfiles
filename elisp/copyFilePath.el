@@ -14,3 +14,6 @@ If `universal-argument' is called, copy only the dir path."
        (file-name-directory fPath))))
   (message "File path copied."))
 
+(global-set-key (kbd "<f8> <f8>") 'xah-copy-file-path)
+
+
