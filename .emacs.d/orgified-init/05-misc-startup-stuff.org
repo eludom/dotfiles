@@ -4,6 +4,13 @@
 ** How
 ** Code
 
+
+*** Load up various code snippits
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/elisp")
+#+END_SRC 
+
+
 *** random cusotmizations
 #+BEGIN_SRC emacs-lisp
 (setq visible-bell t)
