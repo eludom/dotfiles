@@ -8,6 +8,9 @@
 *** Load up various code snippits
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/elisp")
+(load "copyFilePath")
+(load "netWrapper")
+(load "git-timemachine")
 #+END_SRC 
 
 
