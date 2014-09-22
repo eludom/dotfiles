@@ -60,6 +60,7 @@
  '(custom-enabled-themes (quote (manoj-dark)))
  '(display-time-mode t)
  '(doc-view-continuous t)
+ '(major-mode (quote org-mode))
  '(org-contacts-files (quote ("~/Org/contacts.org")))
  '(org-ditaa-jar-path "/Users/gmj/src/org-mode/contrib/scripts/ditaa.jar")
  '(send-mail-function (quote smtpmail-send-it)))

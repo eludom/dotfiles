@@ -4,6 +4,14 @@
 ** How
 ** Code
 
+*** Misc
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
+
+*** Set org-mode as the default major mode.
+#+BEGIN_SRC emacs-lisp
+; (setq major-mode 'org-mode)
+#+END_SRC 
 
 *** Load up various code snippits
 #+BEGIN_SRC emacs-lisp
@@ -114,3 +122,7 @@
 
 ** Things To Do
 ?
+
+#+BEGIN_SRC emacs-lisp
+(message "05-misc-startup.org finished.")
+#+END_SRC

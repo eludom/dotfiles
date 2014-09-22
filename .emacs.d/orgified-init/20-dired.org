@@ -8,6 +8,9 @@
 * Code
 #+BEGIN_SRC emacs-lisp
 
+
+
+
 ; Dired setup
 ;
 ; Ideas from:
@@ -16,6 +19,9 @@
 ;
 
 (require 'dired)
+
+; sort by modified time by default
+(setq dired-listing-switches "-alt")
 
 ; I kinda like having "." and ".." for navigation... (gmj)
 ;
@@ -104,7 +110,7 @@ For those times when dired just wont do.
 
 ; set up sorting options
 
-(load-file "~/.emacs.d/dired-sort-map.el")
+;(load-file "~/.emacs.d/dired-sort-map.el")
 
 ;;;; dired-sort-map.el --- in Dired: press s then s, x, t or n to sort by Size, eXtension, Time or Name
 ;
@@ -154,9 +160,9 @@ For those times when dired just wont do.
 ;(provide 'dired-sort-map)
 ;;;; dired-sort-map.el ends here
 
-(message "dired.org finished.")
+(message "20-dired.org finished.")
 #+END_SRC
-
+* 
 * To Do
 ** TODO Merge darwin and ubuntu open fuctions  
   

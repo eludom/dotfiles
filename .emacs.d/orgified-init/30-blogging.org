@@ -115,7 +115,7 @@
 	))
 #+END_SRC
 
-#+BEGIN_SRC
-(message "blogging.org finished.")
+#+BEGIN_SRC emacs-lisp
+(message "30-blogging.org finished.")
 #+END_SRC
 
