@@ -32,6 +32,10 @@
 
 * Newest Keybinding
 
+: http://emacsredux.com/blog/2013/05/19/delete-whitespace-around-point/
+
+(global-set-key (kbd "C-c j") 'just-one-space)
+
 ; Courtesy of Xah Lee  http://ergoemacs.org/emacs/emacs_keybinding_power_of_keys_sequence.html
 
 #+BEGIN_SRC emacs-lisp
