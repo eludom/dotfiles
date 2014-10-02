@@ -124,6 +124,9 @@ alias lssr='	ls '$color' -a -1s | sort -nr'
 # Set up silk repositories if they exist
 #
 
+# See https://github.com/rafmagana/mush
+alias bitly='bitly -l `cat ~/creds/bitly.username` -k `cat ~/creds/bitly.key` -u'
+
 if [ -f /data/sensors.conf ]; then
     export SILK_DATA_ROOTDIR=/data
     export SILK_IPV6_POLICY=asv4
