@@ -120,6 +120,24 @@
 #+RESULTS:
 : xah-shell-commands
 
+
+* R and ESS set up
+  See  http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#sec-2
+#+BEGIN_SRC emacs-lisp :output none
+(add-to-list 'load-path "~/.emacs.d/elpa/ess-20141010.1619/lisp")
+(require 'ess-site)
+#+END_SRC
+
+#+RESULTS:
+: ess-site
+
+#+header: :width 8 :height 8 :R-dev-args bg="olivedrab", fg="hotpink"
+#+begin_src R :file z.pdf :results graphics
+,plot(matrix(rnorm(100), ncol=2), type="l")
+#+end_src
+
+#+RESULTS:
+
 ** Things To Do
 ?
 
