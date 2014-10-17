@@ -19,6 +19,8 @@
 (load "copyFilePath")
 (load "netWrapper")
 (load "git-timemachine")
+(load "gmj-orgDemoteNext")
+(load "gmj-wikilink")
 #+END_SRC 
 
 
