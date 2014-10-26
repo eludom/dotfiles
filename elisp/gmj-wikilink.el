@@ -3,7 +3,11 @@
 
 For Example: 「Emacs」 ⇒ [[http://en.wikipedia.org/wiki/Emacs][Emacs]]
 
-Adapted from From http://xahlee.blogspot.com/2014/10/emacs-lisp-change-current-word-to.html" 
+Adapted from From http://xahlee.blogspot.com/2014/10/emacs-lisp-change-current-word-to.html
+
+TODO List
+   - Check to see if the page exists first
+" 
   (interactive)
   (let (linkText bds p0 p1 p2 wikiTerm resultStr)
 
