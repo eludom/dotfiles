@@ -8,9 +8,9 @@
 # Before anything else, fix the CTRL key !!!
 #
 
-#if [ -x $HOME/bin/fixctrl.sh ]; then
-#  $HOME/bin/fixctrl.sh
-#fi
+if [ -x $HOME/bin/fixctrl.sh ]; then
+  $HOME/bin/fixctrl.sh
+fi
 
 #
 # Generic things
@@ -26,6 +26,18 @@ alias fegi='	find . -print | egrep -i'
 alias egi='	egrep -i' 
 alias psg='	/bin/ps -auxww | grep'
 
+# Preserve history across sesssions
+# 
+# http://unix.stackexchange.com/questions/1288/preserve-bash-history-in-multiple-terminal-windows
+#
+export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
+export HISTSIZE=100000                   # big big history
+export HISTFILESIZE=100000               # big big history
+shopt -s histappend                      # append to history, don't overwrite it
+
+# Save and reload the history after each command finishes
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
 # Useful functions 
 
 pathadd() {
@@ -39,6 +51,8 @@ pathadd() {
 
 pathadd $HOME/bin
 
+pathadd /usr/local/mongodb/mongodb-linux-x86_64-2.6.5/bin/
+
 #
 # Determine location, OS etc.
 #
@@ -50,39 +64,44 @@ export myPublicDomainName=
 
 # try to determine location, first by wireless SSIDs, then by reverse DNS
 
-if [ -x $HOME/bin/whatsMyLocation.sh ]; then
-  export myLocation=`$HOME/bin/whatsMyLocation.sh`
-fi
+#
+# This stuff is slow, error prone and buggy.  Redo it...
+#
 
-if [ -x $HOME/bin/whatsMyOS.sh ]; then
-  export myOS=`$HOME/bin/whatsMyOS.sh`
-fi
-
-if [ -x $HOME/bin/whatsMyPublicIP.sh ]; then
-  export myPublicIP=`$HOME/bin/whatsMyPublicIP.sh`
-fi
-
-if [ "$myPublicIP" != "" ]; then
-  if [ -x $HOME/bin/rdns.sh ]; then
-    export myPublicDomainName=`$HOME/bin/rdns.sh $myPublicIP`
-  fi
-fi
-
-if [ "$myLocation" == "" ]; then
-  if [[ "$myPublicDomainName" == *comcast.net* ]]; then
-      export myLocation="home"
-  fi
-fi
-
-if [ "$myLocation" == "work" ]; then
-  if [ -f $HOME/.bashrc.atWork ]; then
-    . $HOME/.bashrc.atWork
-  fi
-elif [ "$myLocation" == "home" ]; then
-    echo at home
-    unset http_proxy
-    unset https_proxy
-fi
+#if [ -x $HOME/bin/whatsMyLocation.sh ]; then
+#  export myLocation=`$HOME/bin/whatsMyLocation.sh`
+#fi
+#
+#if [ -x $HOME/bin/whatsMyOS.sh ]; then
+#  export myOS=`$HOME/bin/whatsMyOS.sh`
+#fi
+#
+#if [ -x $HOME/bin/whatsMyPublicIP.sh ]; then
+#  export myPublicIP=`$HOME/bin/whatsMyPublicIP.sh`
+#fi
+#
+#if [ "$myPublicIP" != "" ]; then
+#  if [ -x $HOME/bin/rdns.sh ]; then
+#    export myPublicDomainName=`$HOME/bin/rdns.sh $myPublicIP`
+#  fi
+#fi
+#
+#
+#if [ "$myLocation" == "" ]; then
+#  if [[ "$myPublicDomainName" == *comcast.net* ]]; then
+#      export myLocation="home"
+#  fi
+#fi
+#
+#if [ "$myLocation" == "work" ]; then
+#  if [ -f $HOME/.bashrc.atWork ]; then
+#    . $HOME/.bashrc.atWork
+#  fi
+#elif [ "$myLocation" == "home" ]; then
+#    echo at home
+#    unset http_proxy
+#    unset https_proxy
+#fi
 
 
 #
@@ -94,7 +113,7 @@ if [ `which emacs 2>/dev/null` ]; then
     export EDITOR=emacs
 fi
 
-alias emacs='		emacs-snapshot'
+#alias emacs='		emacs-snapshot'
 
 
 
