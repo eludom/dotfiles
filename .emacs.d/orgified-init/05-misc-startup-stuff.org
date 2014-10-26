@@ -126,7 +126,8 @@
 * R and ESS set up
   See  http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#sec-2
 #+BEGIN_SRC emacs-lisp :output none
-(add-to-list 'load-path "~/.emacs.d/elpa/ess-20141010.1619/lisp")
+(add-to-list 'load-path "~/.emacs.d/elpa/ess-20141024.1610/lisp")
+
 (require 'ess-site)
 #+END_SRC
 

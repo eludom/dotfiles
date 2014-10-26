@@ -23,14 +23,14 @@
 ; it seems to be setting the theme, but 
 ; then something is overriding it.
 
-(if (require 'color-theme nil t)
-    (progn
-      (setq color-theme-is-global t)
-      (color-theme-initialize)
-      (color-theme-charcoal-black)
-      )
-     (message "You need to install color-theme package")
-)
+;(if (require 'color-theme nil t)
+;    (progn
+;      (setq color-theme-is-global t)
+;      (color-theme-initialize)
+;      (color-theme-charcoal-black)
+;      )
+;     (message "You need to install color-theme package")
+;)
 
 
 (message "80-appearance done.")
