@@ -2,16 +2,30 @@
   "demote current and next /howManyTimes/ -1 org mode elements.
 
   TODO List
-    - Take negative count to promote instead of demote
     - Operate on region
+    - Need error handling on (org-forward-element) with negagive counts.
+     Starting on '**** a' below with a negative 2 count returns an error
+
+     * one
+     ***** a
+     ***** b
+     * c
+     * two
   "
+  
   (interactive "p")
   (let ((count 0))
-    (while (< count howManyTimes)
+    (while (< count (abs howManyTimes))
       (progn
-	(message "foo")
-	(org-demote-subtree)
+	(if (< howManyTimes 0)
+	    (org-promote-subtree)
+	  (org-demote-subtree))
+        (message "org-forward-element")
 	(org-forward-element)
+        (message "incr count")
 	(setq count (+ count 1))))))
+
+
+
 
 
