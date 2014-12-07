@@ -113,6 +113,22 @@
 	 :default-categories ("useful")
 	 :tags-as-categories nil)
 	))
+
+(setq org2blog/wp-buffer-template
+      "-----------------------
+#+TITLE: %s
+#+DATE: %s
+#+CATEGORY: useful
+#+TAGS: 
+#+DESCRIPTION:
+-----------------------\n")
+(defun my-format-function (format-string)
+  (format format-string
+          org2blog/wp-default-title
+          (format-time-string "%Y-%m-%d %a %T" (current-time))))
+(setq org2blog/wp-buffer-format-function 'my-format-function)
+
+
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
