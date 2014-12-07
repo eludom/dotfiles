@@ -61,6 +61,15 @@
   (setq ido-create-new-buffer 'always) ; not working?  Still prompts
   (setq ido-file-extensions-order '(".org" ".txt" ".py" ".log" ".el" ))
   (setq ido-separator "\n")
+
+; Bug (< 5 years old now) causes pinging on ^x^f
+; https://github.com/technomancy/emacs-starter-kit/issues/39
+; this fixes it
+(setq ffap-machine-p-known 'reject)
+
+; Consider other settings from 
+; https://github.com/janv/dotfiles/blob/master/starter-kit-misc.el
+
 #+END_SRC
 
 #+RESULTS:

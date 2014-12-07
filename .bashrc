@@ -36,7 +36,8 @@ export HISTFILESIZE=100000               # big big history
 shopt -s histappend                      # append to history, don't overwrite it
 
 # Save and reload the history after each command finishes
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+#export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+export PROMPT_COMMAND="history -a; history -c; history -r;"
 
 # Useful functions 
 
@@ -151,6 +152,10 @@ if [ -f /data/sensors.conf ]; then
     export SILK_IPV6_POLICY=asv4
 fi
 
+# Because I should never have to start emacs
+
+export ALTERNATE_EDITOR=""
+#emacsclient -c &
 
 
 # Let somebody know we finished running
