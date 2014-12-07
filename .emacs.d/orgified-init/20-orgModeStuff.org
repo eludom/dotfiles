@@ -29,6 +29,15 @@ in emacs lisp to chose what they have for dinner :-)"
 
 *** Genreal Org stuff
 #+BEGIN_SRC emacs-lisp
+;
+; Update Org mode DATE timestamps on write
+;
+; See http://www.emacswiki.org/TimeStamp
+;(setq time-stamp-pattern  "8/Time-stamp:[ \t]+\\\\?[\"<]+%:y-%02m-%02d %02H:%02M:%02S %u\\\\?[\">]")
+(setq time-stamp-pattern  "8/DATE:[ \t]+\\\\?[\"<]+%:y-%02m-%02d %02H:%02M:%02S %:a\\\\?[\">]")
+(add-hook 'before-save-hook 'time-stamp)
+
+
 ;(require 'ox-bibtex) ;; BIBTEX export to LaTeX not working.  Fix.
 ;(setenv "TMPDIR" ".") ;; Why was this here ?  Breaks dired via ssh to to some hosts
 
