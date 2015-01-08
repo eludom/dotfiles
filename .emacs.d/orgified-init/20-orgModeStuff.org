@@ -26,6 +26,19 @@ in emacs lisp to chose what they have for dinner :-)"
 (global-set-key "\eR" 'org-random-element)
 #+END_SRC
 
+*** Time tracking stuff
+; from http://lists.gnu.org/archive/html/emacs-orgmode/2014-08/msg00974.html
+#+BEGIN_SRC emacs-lisp
+(defun org-clocktable-indent-string (level)
+  (if (= level 1) ""
+    (let ((str " "))
+      (dotimes (k (1- level) str)
+;;      (setq str (concat "\\emsp" str))))))
+        (setq str (concat "__" str))))))
+#+END_SRC
+
+#+RESULTS:
+: org-clocktable-indent-string
 
 *** Genreal Org stuff
 #+BEGIN_SRC emacs-lisp
