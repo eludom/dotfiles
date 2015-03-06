@@ -110,8 +110,6 @@ This command does the inverse of `fill-region'."
   (with-current-buffer (Buffer-menu-buffer t)
     (rename-buffer newname))
   (revert-buffer))
-Buffer-menu-rename-buffer
-
 
 (define-key Buffer-menu-mode-map "R" 'Buffer-menu-rename-buffer)
 
