@@ -18,9 +18,12 @@
 * Code
 ** ifdef keybindings and function definitions
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-x # i") 'ifdef-ifdef)
-  (global-set-key (kbd "C-x # d") 'ifdef-define)
-  (global-set-key (kbd "C-x # b") 'ifdef-buffer)
+
+; May need to remap
+;
+;  (global-set-key (kbd "C-x # i") 'ifdef-ifdef)
+;  (global-set-key (kbd "C-x # d") 'ifdef-define)
+;  (global-set-key (kbd "C-x # b") 'ifdef-buffer)
 
   ; define global config things for ifdef.
   ; I'm pretty sure global setq is not the right way...
