@@ -24,22 +24,21 @@ DOTFILES=~/git/dotfiles
 NOW=`date "+%Y-%m-%d:%H:%M:%S"`
 
 if [ ! -d ${DOTFILES} ]; then
-    echo "You need to install dotfiles from github first"
-    cat <<EOF
-cd ~
+    echo "installing dotfiles from github"
 
-mkdir -p git
-cd git
-git clone git://github.com/eludom/dotfiles.git
-    exit
-EOF
+    cd ~
+    mkdir -p git
+    cd git
+    git clone git://github.com/eludom/dotfiles.git
 fi
 
-linkThese=( .bashrc .gitconfig bin elisp .emacs.d)
-
-cd ~
 
 # install
+
+linkThese=(elisp .emacs.d)
+#linkThese=( .bashrc .gitconfig bin elisp .emacs.d)
+cd ~
+
 
 if [ "$op" == "install" ]; then
 
@@ -50,9 +49,8 @@ if [ "$op" == "install" ]; then
       mv ${linkThis} ${linkThis}.${NOW}.old
       ln -s ${DOTFILES}/${linkThis} .
     elif [ -d ~/${linkThis} ]; then
-#      mv ${linkThis} ${linkThis}.${NOW}.old
-#      ln -s ${DOTFILES}/${linkThis} .
-      cp -R ${DOTFILES}/${linkThis}/* ${linkThis}
+       mv ${linkThis} ${linkThis}.${NOW}.old
+       ln -s ${DOTFILES}/${linkThis} .
     else
       ln -s ${DOTFILES}/${linkThis} .
     fi
