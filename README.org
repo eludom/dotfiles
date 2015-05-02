@@ -1,24 +1,15 @@
-                              README.org
-                              ==========
+#+TITLE: George Jones's dotfiles and supporting code
+#+DATE: <2015-05-02 Sat>
 
-Author: George M. Jones
-Date: 2015-05-02
-
-George Jone's dotfiles and suppporting code
-
-
-1 Emacs 
-========
+* Emacs
   - Emacs configs moved.  See https://github.com/eludom/.emacs.d
 
-2 Bash 
-=======
-  .bashrc :: my .bashrc
+* Bash
+  - .bashrc :: my .bashrc
 
-3 ~/bin/ 
-=========
-  rdns.sh: reverse DNS lookup on myself
-  whatsMyOS.sh: figure out my OS     
-  whatsMyPublicIP.sh: get my public IP address
-  whereAmI.sh: figure out where I am based on SSIDs found
-  whatsMyLocation.sh: figure out where I am based on SSIDs found (redundant?)
+* ~/bin
+  - rdns.sh :: reverse DNS lookup on myself
+  - whatsMyOS.sh :: figure out my OS     
+  - whatsMyPublicIP.sh :: get my public IP address
+  - whereAmI.sh :: figure out where I am based on SSIDs found
+  - whatsMyLocation.sh :: figure out where I am based on SSIDs found (redundant?)
