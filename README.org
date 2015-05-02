@@ -2,16 +2,14 @@
                               ==========
 
 Author: George M. Jones
-Date: 2013-04-30 Tue
-
+Date: 2015-05-02
 
 George Jone's dotfiles and suppporting code
 
 
 1 Emacs 
 ========
-  - .emacs converted to .emacs.d/*.org per [http://orgmode.org/worg/org-contrib/babel/intro.html]
-  - dired hacks loosely per [http://truongtx.me/2013/04/24/dired-as-default-file-manager-1-introduction/]
+  - Emacs configs moved.  See https://github.com/eludom/.emacs.d
 
 2 Bash 
 =======
