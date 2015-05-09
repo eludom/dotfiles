@@ -1,0 +1,152 @@
+* OrgMode Settings
+** What
+   - Set up various org-mode things
+** Why
+   - Because org-mode config stuff needs to be collected somewhere
+** How
+   - See code below
+** Code
+
+*** Randomness
+#+BEGIN_SRC emacs-lisp
+(defun org-random-element ()
+  "Choose a random element from the buffer.
+See URL `http://thread.gmane.org/gmane.emacs.orgmode/83545'.
+After all, who would not want the random number generator 
+in emacs lisp to chose what they have for dinner :-)"
+  (interactive)
+  (let ((element-start -1)
+        (count 1))
+    (while (not (org-first-sibling-p))
+      (org-goto-sibling t))
+    (save-excursion
+      (while (org-goto-sibling)
+              (setq count (+ 1 count))))
+    (org-forward-heading-same-level (random count))))
+(global-set-key "\eR" 'org-random-element)
+#+END_SRC
+
+
+*** Genreal Org stuff
+#+BEGIN_SRC emacs-lisp
+;(require 'ox-bibtex) ;; BIBTEX export to LaTeX not working.  Fix.
+;(setenv "TMPDIR" ".") ;; Why was this here ?  Breaks dired via ssh to to some hosts
+
+; gneral org mode settings
+
+(setq org-return-follows-link t)
+(setq org-use-property-inheritance t)
+(setq org-export-with-toc nil)
+
+; planning and agenda things
+
+;  
+
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+
+(add-to-list 'org-structure-template-alist '("Q" "#+BEGIN_QUOTE\n?\"...\"\n#+END_QUOTE" "<quote>\n?\"...\"\n</quote>") )
+(global-set-key "\C-cl" 'org-store-link)
+;(global-set-key "\C-ca" 'org-agenda)
+;(global-set-key "\C-cb" 'org-iswitchb)
+;(global-set-key "\M-\C-g" 'org-plot/gnuplot)
+(setq org-agenda-include-diary t)
+(setq org-todo-keywords '((sequence "TODO" "IN-PROGRESS"  "|" "DONE" "WAITING" "DELEGATED" "CANCELED")))
+(setq org-directory "~/plans/")
+
+; org-mode babel settings
+
+;(require 'org-exp-blocks)
+(org-babel-do-load-languages
+    'org-babel-load-languages '((python . t) (sh . t) (lisp . t) (R . t) (ditaa . t)))
+(setq org-export-babel-evaluate nil)
+(setq org-confirm-babel-evaluate nil)
+(setq org-babel-sh-command "bash")
+
+; org-mode HTMLize email
+
+(require 'org-mime)
+(setq org-mime-library 'mml)
+(add-hook 'message-mode-hook
+          (lambda ()
+            (local-set-key "\C-c\M-o" 'org-mime-htmlize)))
+(add-hook 'org-mode-hook
+          (lambda ()
+            (local-set-key "\C-c\M-o" 'org-mime-org-buffer-htmlize)))
+
+(add-hook 'org-mime-html-hook
+          (lambda ()
+            (org-mime-change-element-style
+             "blockquote" "border-left: 2px solid gray; padding-left: 4px;")))  
+
+(add-hook 'org-mime-html-hook
+          (lambda ()
+            (org-mime-change-element-style
+             "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
+                           "#E6E1DC" "#232323"))))
+;
+; Contacts setup
+;
+
+(require 'org-contacts)
+(setq org-contacts-files '("~/Org/contacts.org"))
+
+
+;      org-capture-templates '(("c" "contacts" entry (file "~/org/contacts.org")
+;                               "* %(mu4e-view-snarf-from 'name)
+
+(require 'org-capture)
+
+(setq org-directory "~/Org")
+(setq org-default-notes-file "~/Org/refile.org")
+
+;; I use C-M-r to start capture mode
+;(global-set-key (kbd "C-M-r") 'org-capture)
+(global-set-key (kbd "\C-cc") 'org-capture)
+;; I use C-c r to start capture mode when using SSH from my Android phone
+;(global-set-key (kbd "C-c r") 'org-capture)
+;; Capture templates for: TODO tasks, Notes, appointments, phone calls, and org-protocol
+(setq org-capture-templates
+      (quote (("t" "todo" entry (file "~/Org/refile.org")
+               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("r" "respond" entry (file "~/Org/refile.org")
+               "* TODO Respond to %:from on %:subject\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+              ("n" "note" entry (file "~/Org/refile.org")
+               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("j" "Journal" entry (file+datetree "~/Org/diary.org")
+               "* %?\n     %U\n     %a\n")
+              ("w" "org-protocol" entry (file "~/Org/refile.org")
+               "* TODO Review %c\n%U\n" :immediate-finish t)
+              ("p" "Phone call" entry (file "~/Org/refile.org")
+               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+              ("h" "Habit" entry (file "~/Org/refile.org")
+               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+
+(add-to-list 'org-capture-templates
+             '("c" "Contacts" entry (file "~/Org/contacts.org")
+               "* %(org-contacts-template-name)
+                  :PROPERTIES:
+                  :EMAIL: %(org-contacts-template-email)
+                  :END:"))
+
+(require 'ox-confluence)
+
+(message "orgModeStuff.org finished.")
+#+END_SRC
+
+** Things to do
+*** TODO Think about splitting things out of here
+    - Stuff has accreted here over time
+*** TODO Clean up old cruft
+*** TODO Deal with different vesions of org here if needed
+    - curently ox-bibtex does not load on some older versions of org
+      (8.0.5), but org2blog/wp-new-entry has errors with newer versions
+    - Try to fix/and or isolate these failures here.
+*** TODO make bibtex export to LaTeX work
+*** TODO figure out why TMPDIR env was set and if unsetting breaks anything
+    - Was this needed for babel remote execution?
+    - was breaking DIRED on some hosts
+
+
+
+
+

@@ -1,0 +1,78 @@
+#+TITLE: README on installing my emacs environment
+#+DATE: <2013-11-29 Fri>
+#+AUTHOR: George Jones
+#+EMAIL: george@filge
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:(not LOGBOOK) date:t e:t
+#+OPTIONS: email:nil f:t inline:t num:t p:nil pri:nil prop:nil stat:t
+#+OPTIONS: tags:t tasks:t tex:t timestamp:t toc:nil todo:t |:t
+#+CREATOR: Emacs 24.3.50.1 (Org mode 8.2.1)
+#+DESCRIPTION:
+#+EXCLUDE_TAGS: noexport
+#+KEYWORDS:
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+
+
+* Instlaling my emacs envirioment
+  Thsee are note on seting up my emacs environment on a new system.
+  These could probably be =#+BEGIN_SRC= blocks for automation
+
+** Ubuntu Specific
+*** Install or update latest emacs-snapshot
+    - see https://launchpad.net/~cassou/+archive/emacs
+*** Install texinfo
+    #+BEGIN_EXAMPLE
+    $ apt-get install texinfo
+    #+END_EXAMPLE
+** Mac Specific
+*** Install or update latest emacs-snapshot
+    - Use macports
+** Pull dotfiles from github and install
+
+    Some/all of this README could go into installDotfiles.sh
+
+    #+BEGIN_EXAMPLE
+    $ cd ~/git
+    $ git clone https://github.com/eludom/dotfiles.git
+    $ cd ~/git/dotfiles/
+    $ ./installDotfiles.sh # or similar by hand
+     #+END_EXAMPLE
+
+** To switch versions
+
+    #+BEGIN_EXAMPLE
+    $ cd ~/src/org-mode
+    $ git tag
+    $ git checkout release_8.1.1
+    $ make
+    #+END_EXAMPLE
+
+
+** Generic
+*** Install the latest org-mode
+    #+BEGIN_EXAMPLE
+    $ mkdir -p ~/src
+    $ cd ~/src/
+    $ git clone git://orgmode.org/org-mode.git
+    $ make autoloads
+    #+END_EXAMPLE
+
+** Install packages
+   - color-theme
+   - org2blog
+     + then unistall the version of org that comes along because we
+       use git version in ~/src
+   - twittering-mode
+   - magit
+   
+** LaTeX Installation
+   - Install pdflatex (from whaterever package/ports are required)
+   - Install bibtex
+   - Install bibtex2html
+
+#+BEGIN_SRC emacs-lisp
+(message "See README.org for manual installation and setup requirements.")
+#+END_SRC
+
+
