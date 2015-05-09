@@ -1,15 +1,16 @@
 #+TITLE: George Jones's dotfiles and supporting code
-#+DATE: <2015-05-02 Sat>
+#+DATE: <2015-05-09 06:30:53 Saturday>
+
+
+* Dotfiles here
+  - .bashrc :: my .bashrc
+  - .gitconfig :: my .gitconfig
+  - bin/fixctrl.sh :: Fix control key placement
+  - bin/rdns :: reverse DNS lookup on myself
+  - bin/my :: get my public IP address
 
 * Emacs
   - Emacs configs moved.  See https://github.com/eludom/.emacs.d
+  - elisp configs moved.  See https://github.com/eludom/elisp
 
-* Bash
-  - .bashrc :: my .bashrc
 
-* ~/bin
-  - rdns.sh :: reverse DNS lookup on myself
-  - whatsMyOS.sh :: figure out my OS     
-  - whatsMyPublicIP.sh :: get my public IP address
-  - whereAmI.sh :: figure out where I am based on SSIDs found
-  - whatsMyLocation.sh :: figure out where I am based on SSIDs found (redundant?)
