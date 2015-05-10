@@ -1,16 +1,33 @@
 #+TITLE: George Jones's dotfiles and supporting code
-#+DATE: <2015-05-09 06:30:53 Saturday>
+#+DATE: <2015-05-10 09:08:03 Sunday>
 
+"dotfiles" in this context mean "non-sensitive configuration data"
+that is probably specific to me, e.g. the names of my blogs, shell
+aliases etc.
 
-* Dotfiles here
-  - .bashrc :: my .bashrc
-  - .gitconfig :: my .gitconfig
-  - bin/fixctrl.sh :: Fix control key placement
-  - bin/rdns :: reverse DNS lookup on myself
-  - bin/my :: get my public IP address
+This is as opposed to "secrets" which are things like ssh credentials,
+~/.authinfo files (technically a "dotfile") etc.
 
-* Emacs
-  - Emacs configs moved.  See https://github.com/eludom/.emacs.d
-  - elisp configs moved.  See https://github.com/eludom/elisp
+Things in my main configs (~/.emacs.d and ~/elisp) are ment for
+general consumption.   
+
+Things in my dotfiles are not particularly sensitive, but will change
+from environment to environment (home, work).
+
+Thinks in secrets are sensitive and will also change from environment
+to environment.
+
+* Action Items
+** Make repos match above description
+   - .emacs.d and elisp on github
+   - dotfiles on github
+   - secrets as private repos "elsewhere"
+
+** Make install.sh scripts for all environments to install things as symlinks
+   e.g.
+
+   ~/.ssh/config -> ~/git/${whereever}/${user}/.ssh/config
+   
+  
 
 
