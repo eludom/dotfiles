@@ -42,7 +42,8 @@ fi
 
 # install
 
-linkThese=( .bashrc .gitconfig bin)
+#linkThese=( .bashrc .gitconfig bin)
+#linkThese=( .bashrc bin)
 cd ${HOME}
 
 
