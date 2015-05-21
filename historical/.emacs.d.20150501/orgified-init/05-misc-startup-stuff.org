@@ -13,7 +13,7 @@
 ; (setq major-mode 'org-mode)
 #+END_SRC 
 
-*** Load up various code snippits
+*** DONE Load up various code snippits
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/elisp")
 (load "copyFilePath")
@@ -24,7 +24,7 @@
 #+END_SRC 
 
 
-*** random cusotmizations
+*** DONE random cusotmizations
 #+BEGIN_SRC emacs-lisp
 (setq visible-bell t)
 (setq require-final-newline t
@@ -41,14 +41,14 @@
 
 
 
-*** Flyspell
+*** DONE Flyspell
 
 #+BEGIN_SRC emacs-lisp
     (dolist (hook '(text-mode-hook))
       (add-hook hook (lambda () (flyspell-mode 1))))
 #+END_SRC
 
-*** IDO Mode
+*** DONE IDO Mode
 
     See http://www.masteringemacs.org/articles/2010/10/10/introduction-to-ido-mode/
 
@@ -61,21 +61,12 @@
   (setq ido-create-new-buffer 'always) ; not working?  Still prompts
   (setq ido-file-extensions-order '(".org" ".txt" ".py" ".log" ".el" ))
   (setq ido-separator "\n")
-
-; Bug (< 5 years old now) causes pinging on ^x^f
-; https://github.com/technomancy/emacs-starter-kit/issues/39
-; this fixes it
-(setq ffap-machine-p-known 'reject)
-
-; Consider other settings from 
-; https://github.com/janv/dotfiles/blob/master/starter-kit-misc.el
-
 #+END_SRC
 
 #+RESULTS:
 : 
 
-*** Recent files
+*** DONE Recent files
 
     See http://stackoverflow.com/questions/3527150/open-recent-in-emacs
 
@@ -85,6 +76,7 @@
 (global-set-key "\C-xf" 'recentf-open-files)
 (setq recentf-auto-cleanup 'never)
 #+END_SRC
+
 
 
 *** Command abbrevs
@@ -130,16 +122,11 @@
 #+RESULTS:
 : xah-shell-commands
 
-*** sudo via tramp and ssh
-; http://stackoverflow.com/questions/3465567/how-to-use-ssh-and-sudo-together-with-tramp-in-emacs
-(set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'"
-"/ssh:%h:"))))
 
 * R and ESS set up
   See  http://orgmode.org/worg/org-contrib/babel/languages/ob-doc-R.html#sec-2
 #+BEGIN_SRC emacs-lisp :output none
 (add-to-list 'load-path "~/.emacs.d/elpa/ess-20141024.1610/lisp")
-
 (require 'ess-site)
 #+END_SRC
 

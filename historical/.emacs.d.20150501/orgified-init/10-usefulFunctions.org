@@ -94,25 +94,5 @@ This command does the inverse of `fill-region'."
   (let ((fill-column 90002000))
     (fill-region start end)))
 
-; Rename buffer in dired with "R"
-;
-; From: http://www.emacswiki.org/emacs/BufferMenu
-;
-; What i really want is something that sets the buffer name
-; of tramp ssh sessions to the hostname (or IP address) of the host 
-; they are logged in to, e.g. *shell*<hostname> or *shell*<1.2.3.4>
-
-(defun Buffer-menu-rename-buffer (newname)
-  "Rename buffer at line in window."
-  (interactive
-   (list (read-buffer "Rename buffer (to new name): "
-		      (buffer-name (Buffer-menu-buffer t)))))
-  (with-current-buffer (Buffer-menu-buffer t)
-    (rename-buffer newname))
-  (revert-buffer))
-
-(define-key Buffer-menu-mode-map "R" 'Buffer-menu-rename-buffer)
-
-
 (message "usefulFunctions.org finished.")
 #+END_SRC

@@ -5,7 +5,7 @@
 #
 # Install my dotfiles on a new system. 
 #
-# Symlink everything from ~/ to ~/git/dotfiles/
+# Symlink everything from ~/ to ~/git/github.com/eludom/dotfiles
 #
 
 set -u -e
@@ -20,35 +20,42 @@ else
     exit
 fi
 
-DOTFILES=~/git/dotfiles
+GITREPO="git://github.com/eludom/dotfiles.git"
+GITHUBDIR="${HOME}/git/github.com/eludom"
+DOTFILES=${GITHUBDIR}/dotfiles
+
 NOW=`date "+%Y-%m-%d:%H:%M:%S"`
 
 if [ ! -d ${DOTFILES} ]; then
     echo "installing dotfiles from github"
 
-    cd ~
-    mkdir -p git
-    cd git
-    git clone git://github.com/eludom/dotfiles.git
+    if [ -d GITHUBDIR ]; then
+	cd ${GITHUBDIR}
+	git pull ${GITREPO}
+    else
+	mkdir -p ${GITHUBDIR}
+	cd ${GITHUBDIR}
+	git clone ${GITREPO}
+    fi
 fi
 
 
 # install
 
-linkThese=(elisp .emacs.d)
-#linkThese=( .bashrc .gitconfig bin elisp .emacs.d)
-cd ~
+linkThese=( .bashrc .gitconfig bin)
+cd ${HOME}
 
 
 if [ "$op" == "install" ]; then
 
   for linkThis in ${linkThese[@]}; do
-    if [ -L ~/${linkThis} ]; then
-      :
-    elif [ -f ~/${linkThis} ]; then
+    if [ -L ${HOME}/${linkThis} ]; then
+      rm ${HOME}/${linkThis} # always redo the link in case I move things
+      ln -s ${DOTFILES}/${linkThis} .
+    elif [ -f ${HOME}/${linkThis} ]; then
       mv ${linkThis} ${linkThis}.${NOW}.old
       ln -s ${DOTFILES}/${linkThis} .
-    elif [ -d ~/${linkThis} ]; then
+    elif [ -d ${HOME}/${linkThis} ]; then
        mv ${linkThis} ${linkThis}.${NOW}.old
        ln -s ${DOTFILES}/${linkThis} .
     else
@@ -60,8 +67,8 @@ if [ "$op" == "install" ]; then
 
 elif [ "$op" == "delete" ]; then
   for linkThis in ${linkThese[@]}; do
-    if [ -L ~/${linkThis} ]; then
-	rm ~/${linkThis}
+    if [ -L ${HOME}/${linkThis} ]; then
+	rm ${HOME}/${linkThis}
     fi
   done
 
@@ -69,10 +76,10 @@ elif [ "$op" == "delete" ]; then
 
 elif [ "$op" == "list" ]; then
   for linkThis in ${linkThese[@]}; do
-    if [ -e ~/${linkThis} ]; then
-	file ~/${linkThis}
+    if [ -e ${HOME}/${linkThis} ]; then
+	file ${HOME}/${linkThis}
     else
-	echo ~/${linkThis} does not exist
+	echo ${HOME}/${linkThis} does not exist
     fi
   done
 

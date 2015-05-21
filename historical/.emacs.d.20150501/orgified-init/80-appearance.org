@@ -1,6 +1,6 @@
 * What: Things that affect appearance
 
-  Put things here that affect appearance.
+ Put things here that affect appearance.
 
 ** How
 *** TODO Install "color-theme" pacakge
@@ -11,10 +11,8 @@
 
    Because the default text colors are sometimes bad.
 
-
 ** Code
 #+BEGIN_SRC emacs-lisp
-
 (if (eq system-type 'darwin)
     (set-face-attribute 'default nil :family "Andale_Mono" :height 200  :weight 'normal)
   (set-face-attribute 'default (selected-frame) :height 150))
@@ -23,16 +21,16 @@
 ; it seems to be setting the theme, but 
 ; then something is overriding it.
 
-;(if (require 'color-theme nil t)
-;    (progn
-;      (setq color-theme-is-global t)
-;      (color-theme-initialize)
-;      (color-theme-charcoal-black)
-;      )
-;     (message "You need to install color-theme package")
-;)
+(if (require 'color-theme nil t)
+    (progn
+      (setq color-theme-is-global t)
+      (color-theme-initialize)
+      (color-theme-charcoal-black)
+      )
+     (message "You need to install color-theme package")
+)
 
 
 (message "80-appearance done.")
 #+END_SRC
-   
+

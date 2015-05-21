@@ -61,13 +61,9 @@
  '(display-time-mode t)
  '(doc-view-continuous t)
  '(major-mode (quote org-mode))
- '(org-agenda-files
-   (quote
-    ("~/projects/current/network/201411_homeNetworkAndSystemsTodoList.org")))
  '(org-contacts-files (quote ("~/Org/contacts.org")))
  '(org-ditaa-jar-path "/Users/gmj/src/org-mode/contrib/scripts/ditaa.jar")
- '(send-mail-function (quote smtpmail-send-it))
- '(user-mail-address "gmj@pobox.com"))
+ '(send-mail-function (quote smtpmail-send-it)))
 (put 'upcase-region 'disabled nil)
 
 ; load specific files
