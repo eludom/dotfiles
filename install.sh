@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# Create a symlink in ~ to the current directory
+# Create a symlinks in ~ to a a list of things in the current directory. Save old versions.
 #
 
 set -e -u
@@ -16,8 +16,8 @@ linkThese=( .bashrc .gitconfig bin)
 for linkThis in ${linkThese[@]}; do
 
     if [ -e ~/${linkThis} ]; then
-	echo mv ~/${linkThis} ~/${linkThis}.${now}
+	mv ~/${linkThis} ~/${linkThis}.${now}
     fi
 
-    echo ln -s ~/${linkThis} ${linkThis}
+    ln -s ${REALDIR}/${linkThis} ~/${linkThis} 
 done

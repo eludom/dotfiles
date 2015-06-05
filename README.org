@@ -1,16 +1,11 @@
-#+TITLE: George Jones's dotfiles and supporting code
-#+DATE: <2015-05-09 06:30:53 Saturday>
+#+TITLE: George Jones's dotfiles and installation script
+#+DATE: <2015-06-05 Fri>
 
 
 * Dotfiles here
   - .bashrc :: my .bashrc
   - .gitconfig :: my .gitconfig
-  - bin/fixctrl.sh :: Fix control key placement
-  - bin/rdns :: reverse DNS lookup on myself
-  - bin/my :: get my public IP address
-
-* Emacs
-  - Emacs configs moved.  See https://github.com/eludom/.emacs.d
-  - elisp configs moved.  See https://github.com/eludom/elisp
+  - bin/ :: various small scripts
+  - install.sh :: a script that links everything here into ~
 
 
