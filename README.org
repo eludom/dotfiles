@@ -1,24 +1,29 @@
 #+TITLE: George Jones's dotfiles and installation script
-#+DATE: <2015-06-06 06:45:34 Saturday>
+#+DATE: <2015-06-06 08:50:03 Saturday>
 
-- dotfiles :: in this context means "non-sensitive configuration
-     data" that will likely be generic across all my environments 
+My config files are broken down into three categories:
 
-As opposed to 
 
-- configs :: which means "non-sensitive configuration data that is
-     probably specific to me, e.g. the names of my blogs,
-     environmentally specific (work vs home) shell aliases etc."
+- dotfiles :: This is the "sure, have a look" section.  This is
+     generally non-sensitive configuration data that will likely be
+     generic across all my environments.
 
-and
+- configs :: This is the "who wants to know?" section.  This is
+     generally non-sensitive configuration data that is probably
+     specific to me in specific environments (e.g. work vs home) such
+     as the names of my blogs, environmentally specific
+     shell aliases etc."
 
-- secrets :: which means "sensitive configuration data that is no
-     suitable for public consumption", e.g. things like ssh
-     credentials, passwords, etc.
+- secrets :: This is the "not on your life" section.  This is
+     generally sensitive configuration data that is not suitable for
+     public consumption, e.g. things like ssh credentials, passwords,
+     etc.
 
-These dotfiles are intended to work independent of configs and secrets.
+The dotfiles are intended to work independently from the configs and secrets.
 
 * Action Items
+** DONE Rewrite link2 utility, use use for installer.
+** TODO Use link2 in installers
 ** TODO Make repos match above description
 ** TODO merge .emacs.d and elisp into dotfiles
 ** TODO move .gitconfig to configs

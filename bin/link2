@@ -1,0 +1,55 @@
+#! /bin/bash
+#
+# Symlink a file in the current directory to a new location and save old versions
+#
+# Usage: link2 file [whereto]
+#
+# Arguments:
+#   file	- the file to symlink (basename used as link name)
+#   whereto	- where to link it (default ~/)
+# 
+
+set -e -u 
+
+if [ "$#" -lt 1 ]; then
+  echo "echo Usage: $0 file [whereto]"
+  exit 1
+fi
+
+file=$1
+whereto=${2:-"${HOME}"}
+
+# figure out the link target, make sure it exists
+
+target="`readlink -f $file`"
+echo target $target
+
+if [ ! -e ${target} ]; then
+  echo $0: ${target} does not exist >&2
+  exit 1
+fi
+
+# figure out the link source, using basename of target
+
+base=`basename $file`
+link="${whereto}""/""${base}"
+#link="${HOME}/${base}"
+
+## not sure why I have to do this, but "link" is not expanding properly otherwise
+#link2=`printf "%s" $link`   
+
+# move any pre-existing file to a dated save version, unless it's the same
+
+now=`date "+%Y%m%d:%H%M%S%Z"`
+
+if [ -e ${link} ]; then
+  mv ${link} "${link}.${now}"
+fi
+
+# finally, make the link
+
+echo link $link >&2
+echo target $target  >&2
+ln  -s ${target} ${link}
+
+
