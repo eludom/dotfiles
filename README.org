@@ -1,33 +1,31 @@
-#+TITLE: George Jones's dotfiles and supporting code
-#+DATE: <2015-05-10 09:08:03 Sunday>
+#+TITLE: George Jones's dotfiles and installation script
+#+DATE: <2015-06-06 06:45:34 Saturday>
 
-"dotfiles" in this context mean "non-sensitive configuration data"
-that is probably specific to me, e.g. the names of my blogs, shell
-aliases etc.
+- dotfiles :: in this context means "non-sensitive configuration
+     data" that will likely be generic across all my environments 
 
-This is as opposed to "secrets" which are things like ssh credentials,
-~/.authinfo files (technically a "dotfile") etc.
+As opposed to 
 
-Things in my main configs (~/.emacs.d and ~/elisp) are ment for
-general consumption.   
+- configs :: which means "non-sensitive configuration data that is
+     probably specific to me, e.g. the names of my blogs,
+     environmentally specific (work vs home) shell aliases etc."
 
-Things in my dotfiles are not particularly sensitive, but will change
-from environment to environment (home, work).
+and
 
-Thinks in secrets are sensitive and will also change from environment
-to environment.
+- secrets :: which means "sensitive configuration data that is no
+     suitable for public consumption", e.g. things like ssh
+     credentials, passwords, etc.
+
+These dotfiles are intended to work independent of configs and secrets.
 
 * Action Items
-** Make repos match above description
-   - .emacs.d and elisp on github
-   - dotfiles on github
-   - secrets as private repos "elsewhere"
+** TODO Make repos match above description
+** TODO merge .emacs.d and elisp into dotfiles
+** TODO move .gitconfig to configs
 
-** Make install.sh scripts for all environments to install things as symlinks
-   e.g.
 
-   ~/.ssh/config -> ~/git/${whereever}/${user}/.ssh/config
-   
+
+
   
 
 
