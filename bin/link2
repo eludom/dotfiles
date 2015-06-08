@@ -7,13 +7,66 @@
 # Arguments:
 #   file	- the file to symlink (basename used as link name)
 #   whereto	- where to link it (default ~/)
-# 
+#
+# George Jones
 
-set -e -u 
+
+set -e -u
+
+PROG_NAME=$0
+SHORT_OPTS='vhns:'
+LONG_OPTS='verbose,dry-run,help,stack-size:'
+OPTS=`getopt -o $SHORT_OPTS --long $LONG_OPTS -n 'parse-options' -- "$@"`
+
+function usage() {
+  echo "usage: $PROG_NAME [$SHORT_OPTS] [$LONG_OPTS] target [link]" >&2
+  exit 1
+}
+
+if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
+
+eval set -- "$OPTS"
+
+VERBOSE=false
+HELP=false
+DRY_RUN=false
+STACK_SIZE=0
+
+while true; do
+  case "$1" in
+    -v | --verbose ) VERBOSE=true; shift ;;
+    -h | --help )    HELP=true; shift ;;
+    -n | --dry-run ) DRY_RUN=true; shift ;;
+    -s | --stack-size ) STACK_SIZE="$2"; shift; shift ;;
+    -- ) shift; break ;;
+    * ) break ;;
+  esac
+done
+
+if $VERBOSE; then
+    echo VERBOSE=$VERBOSE
+    echo HELP=$HELP
+    echo DRY_RUN=$DRY_RUN
+    echo STACK_SIZE=$STACK_SIZE
+fi
+
+# validate arguments
+
+if [[ "$STACK_SIZE" =~ '"^[0-9]+$' ]]; then
+  echo "$PROG_NAME: stack_size must be an integer.  Got /$STACK_SIZE/" >&2
+  usage
+fi
+
+
+# get file arguments
 
 if [ "$#" -lt 1 ]; then
-  echo "echo Usage: $0 file [whereto]"
-  exit 1
+  echo need at leat one arg echo $#
+  usage
+fi
+
+if $HELP; then
+  usage
 fi
 
 file=$1
@@ -22,7 +75,7 @@ whereto=${2:-"${HOME}"}
 # figure out the link target, make sure it exists
 
 target="`readlink -f $file`"
-echo target $target
+if $VERBOSE; then echo target $target; fi
 
 if [ ! -e ${target} ]; then
   echo $0: ${target} does not exist >&2
@@ -40,16 +93,31 @@ link="${whereto}""/""${base}"
 
 # move any pre-existing file to a dated save version, unless it's the same
 
+
+
 now=`date "+%Y%m%d:%H%M%S%Z"`
 
 if [ -e ${link} ]; then
-  mv ${link} "${link}.${now}"
+
+    # TODO abort here if target already points to target.
+
+    if $DRY_RUN; then
+	echo mv ${link} "${link}.${now}"
+    else
+	mv ${link} "${link}.${now}"
+    fi
+  
 fi
 
 # finally, make the link
 
-echo link $link >&2
-echo target $target  >&2
-ln  -s ${target} ${link}
+if $VERBOSE; then echo target $target  >&2; fi
+
+if $DRY_RUN; then
+    echo ln  -s ${target} ${link}
+else
+    ln  -s ${target} ${link}
+fi
+
 
 

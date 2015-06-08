@@ -1,5 +1,5 @@
 #+TITLE: George Jones's dotfiles and installation script
-#+DATE: <2015-06-06 08:50:03 Saturday>
+#+DATE: <2015-06-08 04:02:51 Monday>
 
 My config files are broken down into three categories:
 
@@ -12,7 +12,7 @@ My config files are broken down into three categories:
      generally non-sensitive configuration data that is probably
      specific to me in specific environments (e.g. work vs home) such
      as the names of my blogs, environmentally specific
-     shell aliases etc."
+     shell aliases etc.
 
 - secrets :: This is the "not on your life" section.  This is
      generally sensitive configuration data that is not suitable for
@@ -22,7 +22,7 @@ My config files are broken down into three categories:
 The dotfiles are intended to work independently from the configs and secrets.
 
 * Action Items
-** DONE Rewrite link2 utility, use use for installer.
+** IN-PROGRESS Rewrite link2 utility, use use for installer.
 ** TODO Use link2 in installers
 ** TODO Make repos match above description
 ** TODO merge .emacs.d and elisp into dotfiles
