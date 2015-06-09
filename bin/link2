@@ -1,52 +1,95 @@
 #! /bin/bash
 #
-# Symlink a file in the current directory to a new location and save old versions
+# Symlink a existing file to a new location.  Rename and link to old versions with datestamps.
 #
-# Usage: link2 file [whereto]
+# usage: link2 [options] target [link]
+#     -v | --verbose	Echo command names
+#     -d | --debug	Additional debugging output
+#     -h | --help		This text
+#     -n | --dry-run	Do not execute
+#     -r | --remove 	Remove link/file if it exists
 #
-# Arguments:
-#   file	- the file to symlink (basename used as link name)
-#   whereto	- where to link it (default ~/)
+# Examples:
 #
-# George Jones
-
+#  $ link2 -v /etc/passwd
+#  ln -s /etc/passwd /home/george/bin/passwd
+#
+#  $ link2 -v /etc/issue passwd
+#  mv passwd passwd.20150609:052604EDT
+#  ln -s /etc/issue passwd
+#
+#  $ link2 -r -v /etc/issue passwd
+#  link2: passwd already points to /etc/issue
+#
+#  $ link2 -r -v /etc/issue passwd
+#  rm -f passwd
+#  ln -s /etc/issue passwd
+#
+#  $ link2 -v /etc/passwd $HOME
+#  ln -s /etc/passwd /home/george/passwd
+#
+#
+# Author:
+#   George Jones
 
 set -e -u
 
 PROG_NAME=$0
-SHORT_OPTS='vhns:'
-LONG_OPTS='verbose,dry-run,help,stack-size:'
+PROG_NAME=`basename $0`
+SHORT_OPTS='vdhnrs:'
+LONG_OPTS='verbose,debug,dry-run,help,remove,stack-size:'
 OPTS=`getopt -o $SHORT_OPTS --long $LONG_OPTS -n 'parse-options' -- "$@"`
 
 function usage() {
-  echo "usage: $PROG_NAME [$SHORT_OPTS] [$LONG_OPTS] target [link]" >&2
-  exit 1
+  cat <<END >&2
+usage: $PROG_NAME [options] target [link]
+    -v | --verbose	Echo command names
+    -d | --debug	Additional debugging output
+    -h | --help		This text
+    -n | --dry-run	Do not execute
+    -r | --remove 	Remove link/file if it exists
+END
+exit 1
 }
 
 if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
 
 eval set -- "$OPTS"
 
+# Default values
+
 VERBOSE=false
 HELP=false
 DRY_RUN=false
 STACK_SIZE=0
+DEBUG=false
+REMOVE=false
+
+# Set user selected options
 
 while true; do
   case "$1" in
     -v | --verbose ) VERBOSE=true; shift ;;
+    -d | --debug ) DEBUG=true; shift ;;
     -h | --help )    HELP=true; shift ;;
     -n | --dry-run ) DRY_RUN=true; shift ;;
+    -r | --remove ) REMOVE=true; shift ;;
     -s | --stack-size ) STACK_SIZE="$2"; shift; shift ;;
     -- ) shift; break ;;
     * ) break ;;
   esac
 done
 
-if $VERBOSE; then
+if $DEBUG; then
+  VERBOSE=true
+fi
+
+if $DEBUG; then
     echo VERBOSE=$VERBOSE
+    echo DEBUG=$DEBUG
     echo HELP=$HELP
     echo DRY_RUN=$DRY_RUN
+    echo REMOVE=$REMOVE
     echo STACK_SIZE=$STACK_SIZE
 fi
 
@@ -61,7 +104,7 @@ fi
 # get file arguments
 
 if [ "$#" -lt 1 ]; then
-  echo need at leat one arg echo $#
+  echo $PROG_NAME: Missing target
   usage
 fi
 
@@ -70,12 +113,12 @@ if $HELP; then
 fi
 
 file=$1
-whereto=${2:-"${HOME}"}
+whereto=${2:-"${PWD}"}
 
 # figure out the link target, make sure it exists
 
 target="`readlink -f $file`"
-if $VERBOSE; then echo target $target; fi
+if $DEBUG; then echo target $target; fi
 
 if [ ! -e ${target} ]; then
   echo $0: ${target} does not exist >&2
@@ -85,15 +128,27 @@ fi
 # figure out the link source, using basename of target
 
 base=`basename $file`
-link="${whereto}""/""${base}"
-#link="${HOME}/${base}"
 
-## not sure why I have to do this, but "link" is not expanding properly otherwise
-#link2=`printf "%s" $link`   
+if [ -d `readlink -f "${whereto}"` ]; then
+    link="${whereto}""/""${base}"
+else
+    link=${whereto}
+fi
+
+# Remove link if it exists
+
+if  $REMOVE && [ -h $link -o -f $link ]; then
+    if $DRY_RUN || $VERBOSE; then
+	echo rm -f $link
+    fi
+
+    if  ! $DRY_RUN; then
+	rm -f $link
+    fi
+fi
+
 
 # move any pre-existing file to a dated save version, unless it's the same
-
-
 
 now=`date "+%Y%m%d:%H%M%S%Z"`
 
@@ -101,9 +156,19 @@ if [ -e ${link} ]; then
 
     # TODO abort here if target already points to target.
 
-    if $DRY_RUN; then
+    expandedLink=`readlink -e ${link}`
+    expandedTarget=`readlink -e ${target}`
+
+    if [ ${expandedLink} == ${expandedTarget} ]; then
+       echo $PROG_NAME: ${link} already points to ${target} >&2
+       exit 0
+    fi
+
+    if $DRY_RUN || $VERBOSE; then
 	echo mv ${link} "${link}.${now}"
-    else
+    fi
+
+    if  ! $DRY_RUN; then
 	mv ${link} "${link}.${now}"
     fi
   
@@ -111,11 +176,13 @@ fi
 
 # finally, make the link
 
-if $VERBOSE; then echo target $target  >&2; fi
+if $DEBUG; then echo target $target  >&2; fi
 
-if $DRY_RUN; then
+if $DRY_RUN ||  $VERBOSE; then    
     echo ln  -s ${target} ${link}
-else
+fi
+
+if ! $DRY_RUN; then
     ln  -s ${target} ${link}
 fi
 
