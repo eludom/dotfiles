@@ -1,16 +1,36 @@
-#+TITLE: George Jones's dotfiles and supporting code
-#+DATE: <2015-05-09 06:30:53 Saturday>
+#+TITLE: George Jones's dotfiles and installation script
+#+DATE: <2015-06-08 04:02:51 Monday>
+
+My config files are broken down into three categories:
 
 
-* Dotfiles here
-  - .bashrc :: my .bashrc
-  - .gitconfig :: my .gitconfig
-  - bin/fixctrl.sh :: Fix control key placement
-  - bin/rdns :: reverse DNS lookup on myself
-  - bin/my :: get my public IP address
+- dotfiles :: This is the "sure, have a look" section.  This is
+     generally non-sensitive configuration data that will likely be
+     generic across all my environments.
 
-* Emacs
-  - Emacs configs moved.  See https://github.com/eludom/.emacs.d
-  - elisp configs moved.  See https://github.com/eludom/elisp
+- configs :: This is the "who wants to know?" section.  This is
+     generally non-sensitive configuration data that is probably
+     specific to me in specific environments (e.g. work vs home) such
+     as the names of my blogs, environmentally specific
+     shell aliases etc.
+
+- secrets :: This is the "not on your life" section.  This is
+     generally sensitive configuration data that is not suitable for
+     public consumption, e.g. things like ssh credentials, passwords,
+     etc.
+
+The dotfiles are intended to work independently from the configs and secrets.
+
+* Action Items
+** IN-PROGRESS Rewrite link2 utility, use use for installer.
+** TODO Use link2 in installers
+** TODO Make repos match above description
+** TODO merge .emacs.d and elisp into dotfiles
+** TODO move .gitconfig to configs
+
+
+
+
+  
 
 
