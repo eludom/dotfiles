@@ -1,0 +1,57 @@
+#! /usr/bin/python
+#
+# Read a list of domain names on stdin, look up the A records, print IPs on stdout
+#
+# Usgae:
+#
+#   echo google.com | dns2ip
+#
+
+import socket
+import fileinput
+import dns.resolver
+import sys
+
+printName = False
+printAll = False
+
+myResolver = dns.resolver.Resolver() #create a new instance named 'myResolver'
+
+
+import fileinput
+
+for name in fileinput.input():
+	name = name.strip()
+
+	atLeastOne = False
+
+	if printName:
+		sys.stdout.write("%s " % (name ))
+
+	try:
+		myAnswers = myResolver.query(name, "A") #Lookup the 'A' record(s) for google.com
+
+		for rdata in myAnswers: #for each response
+			sys.stdout.write("%s " % (rdata))
+
+			atLeastOne = True
+
+			if not printAll:
+				last
+	except:
+		pass
+
+
+	if atLeastOne:
+		print
+		
+	
+
+	
+
+
+	
+
+
+	
+	
