@@ -8,19 +8,68 @@
 #
 
 import socket
-import fileinput
+#import fileinput
 import dns.resolver
 import sys
+import getopt
 
+def usage():
+	sys.stderr.write("Usage: echo www.google.com | dnns2ip [options]\n")
+	sys.stderr.write("   or\n")
+	sys.stderr.write("       dns2ip [options]files-contianing-dns-names [files..]\n")
+	sys.stderr.write("\n")					 
+	sys.stderr.write("   options\n")
+	sys.stderr.write("\n")					 	
+	sys.stderr.write("     --names|-n	print name as well as resolved IPs\n")
+	sys.stderr.write("     --all|-a	print IPs for all A records\n")	
+	sys.exit(1)
+
+# defaults
 printName = False
 printAll = False
+verbose=False
+inputName=""
+
+options, remainder = getopt.getopt(sys.argv[1:], 'ahnvi:',
+                                   ["all",
+                                    'help',
+									'input='
+                                    'names',                                    
+                                    "verbose",
+								   ]
+                                   )
+for opt, arg in options:
+
+    if opt in ('-h', '--help'):
+        usage()
+        sys.exit(2)
+    elif opt in ('-i', '--input'):
+        inputName = arg
+    elif opt in ('-a', '--all'):
+        printAll= True
+    elif opt in ('-n', '--names'):
+        printNames= True
+    elif opt in ('-v', '--verbose'):
+        verbose=True
+    else:
+        usage()
+        sys.exit(2)
+
+if verbose:
+	print "printName", printName
+	print "printAll", printAll
+	print "verbose", verbose
+	print "inputName", inputName
+	print "remainder", remainder
 
 myResolver = dns.resolver.Resolver() #create a new instance named 'myResolver'
 
-
 import fileinput
 
-for name in fileinput.input():
+for name in fileinput.input(remainder):
+
+	if verbose:
+		print "name", name
 	name = name.strip()
 
 	atLeastOne = False
@@ -32,6 +81,9 @@ for name in fileinput.input():
 		myAnswers = myResolver.query(name, "A") #Lookup the 'A' record(s) for google.com
 
 		for rdata in myAnswers: #for each response
+			if printNames:
+				sys.stdout.write("%s " % (name))
+				
 			sys.stdout.write("%s " % (rdata))
 
 			atLeastOne = True
