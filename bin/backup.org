@@ -1,0 +1,85 @@
+* Backup my home directories 
+
+** Setup
+*** Define things to be backed up
+
+    Define a list of things to be backed up.   These will be
+    directories relative to root.
+
+    #+name: backUpThese
+    | old  |
+    | data |
+    | home |
+
+*** Define some parameters
+
+    Define some parameters.  First column is parameter name.  Second
+    column is the value.  They will be evaled in bash.
+
+    #+name: config
+    | WHERE_TO | /big2/backups/octo/                     |
+    | LOGDIR   | /home/george/projects/current/backups   |
+    | EXCLUDE  | ${LOGDIR}/rsync.exclude                 |
+    | LOGFILE  | ${LOGDIR}/rsync-octo-to-big2-${NOW}.log |
+    | RUNFROM  | "/"                                     |
+
+
+
+** Run the backups
+   #+begin_src sh :var names=config[,0] values=config[,1] :results output prepend :dir /sudo:: :exports both 
+   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+
+   # pull the org variables into arrays
+   configNames=($names)
+   configValues=($values)
+   len=${#configNames[@]}
+   NOW=`date +%F-%T`
+   
+   # eval to set and echo the config variables
+   for i in `seq 0 $((len - 1))`; do
+     evalThis=${configNames[$i]}=${configValues[$i]}
+     eval $evalThis
+     echoThis="echo ${configNames[$i]}=\$${configNames[$i]}"
+     eval $echoThis
+
+   done
+
+   echo NOW=$NOW
+
+   touch $LOGFILE
+   cd $RUNFROM
+
+   for BACK_THIS_UP in old data home; do
+     rsync -av  -exclude-from=$EXCLUDE $BACK_THIS_UP "$WHERE_TO" 2>&1 | grep -v '/$'  2>&1 | tee >> $LOGFILE || true
+   done
+
+   gzip $LOGFILE
+
+   cd $LOGDIR
+   ls -lt rsync* | head
+
+
+#+end_src
+
+#+RESULTS:
+#+begin_example
+# Tue Jun 30 15:52:31 EDT 2015
+WHERE_TO=/big2/backups/octo/
+LOGDIR=/home/george/projects/current/backups
+EXCLUDE=/home/george/projects/current/backups/rsync.exclude
+LOGFILE=/home/george/projects/current/backups/rsync-octo-to-big2-2015-06-30-15:52:31.log
+RUNFROM=/
+NOW=2015-06-30-15:52:31
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:31.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:30.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:29.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:27.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:26.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:08.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:07.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:06.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:51 rsync-octo-to-big2-2015-06-30-15:51:54.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:51 rsync-octo-to-big2-2015-06-30-15:51:47.log.gz
+#+end_example
+
+
