@@ -147,7 +147,10 @@ elif [ "$myOS" == "linux" ]; then
   color="--color";
 fi
 
+alias e='emacsclient -t'
 alias ls='	ls '$color' -a'
+alias llr=' 	ls -ltr '$color' -a'
+alias llrt=' 	ls -ltr '$color' -a | tail'
 alias llt=' 	ls -lt '$color' -a'
 alias lltm='	ls '$color' -a -lt | more'
 alias llth='	ls '$color' -a -lt | head'
