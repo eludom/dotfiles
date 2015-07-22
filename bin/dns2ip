@@ -4,7 +4,7 @@
 #
 # Usgae:
 #
-#   echo google.com | dns2ip
+#   echo google.com | dns2ip [-a]
 #
 
 import socket
@@ -25,7 +25,7 @@ def usage():
 	sys.exit(1)
 
 # defaults
-printName = False
+printName= False
 printAll = False
 verbose=False
 inputName=""
@@ -48,7 +48,7 @@ for opt, arg in options:
     elif opt in ('-a', '--all'):
         printAll= True
     elif opt in ('-n', '--names'):
-        printNames= True
+        printName= True
     elif opt in ('-v', '--verbose'):
         verbose=True
     else:
@@ -73,18 +73,18 @@ for name in fileinput.input(remainder):
 	name = name.strip()
 
 	atLeastOne = False
-
-	if printName:
-		sys.stdout.write("%s " % (name ))
-
+	
 	try:
 		myAnswers = myResolver.query(name, "A") #Lookup the 'A' record(s) for google.com
 
 		for rdata in myAnswers: #for each response
-			if printNames:
-				sys.stdout.write("%s " % (name))
 				
-			sys.stdout.write("%s " % (rdata))
+			sys.stdout.write("%s" % (rdata))
+
+			if printName:
+				sys.stdout.write(" %s\n" % (name))
+			else:
+				sys.stdout.write("\n")				
 
 			atLeastOne = True
 
@@ -94,9 +94,6 @@ for name in fileinput.input(remainder):
 		pass
 
 
-	if atLeastOne:
-		print
-		
 	
 
 	
