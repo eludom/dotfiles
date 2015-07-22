@@ -1,0 +1,127 @@
+#! /usr/bin/python
+#
+# Read a list of domain names on stdin, look up the A records, print IPs on stdout
+#
+# Usgae:
+#
+#   echo google.com | dns2ip [-a]
+#
+# or
+#
+#   echo 8.8.8.8 | ip2dns
+#
+#
+# The funcion (forward or reverse lookup) keys off the program name,
+# so install by doing:
+#
+#    $ ln dns2ip ip2dns
+#
+
+import socket
+#import fileinput
+import dns.resolver
+import sys
+import getopt
+
+def usage():
+	sys.stderr.write("Usage: echo www.google.com | dnns2ip [options]\n")
+	sys.stderr.write("   or\n")
+	sys.stderr.write("       dns2ip [options]files-contianing-dns-names [files..]\n")
+	sys.stderr.write("\n")					 
+	sys.stderr.write("   options\n")
+	sys.stderr.write("\n")					 	
+	sys.stderr.write("     --names|-n	print name as well as resolved IPs\n")
+	sys.stderr.write("     --all|-a	print IPs for all A records\n")	
+	sys.exit(1)
+
+# defaults
+printName= False
+printAll = False
+verbose=False
+inputName=""
+progName=sys.argv[0]
+
+options, remainder = getopt.getopt(sys.argv[1:], 'ahnvi:',
+                                   ["all",
+                                    'help',
+									'input='
+                                    'names',                                    
+                                    "verbose",
+								   ]
+                                   )
+for opt, arg in options:
+
+    if opt in ('-h', '--help'):
+        usage()
+        sys.exit(2)
+    elif opt in ('-i', '--input'):
+        inputName = arg
+    elif opt in ('-a', '--all'):
+        printAll= True
+    elif opt in ('-n', '--names'):
+        printName= True
+    elif opt in ('-v', '--verbose'):
+        verbose=True
+    else:
+        usage()
+        sys.exit(2)
+
+if verbose:
+	print "printName", printName
+	print "printAll", printAll
+	print "verbose", verbose
+	print "inputName", inputName
+	print "remainder", remainder
+
+myResolver = dns.resolver.Resolver() #create a new instance named 'myResolver'
+
+import fileinput
+
+for name in fileinput.input(remainder):
+
+	if verbose:
+		print "name", name
+	name = name.strip()
+
+	atLeastOne = False
+	
+	try:
+		myAnswers = []
+
+		if "dns2ip" in progName:
+			myAnswers = myResolver.query(name, "A") #Lookup the 'A' record(s) for google.com
+		elif "ip2dns" in progName:
+			addr=dns.reversename.from_address(name)
+			reverse = str(dns.resolver.query(addr,"PTR")[0])
+			myAnswers.append(reverse)
+		else:
+			usage()
+			sys.exit(2)
+
+		for rdata in myAnswers: #for each response
+				
+			sys.stdout.write("%s" % (rdata))
+
+			if printName:
+				sys.stdout.write(" %s\n" % (name))
+			else:
+				sys.stdout.write("\n")				
+
+			atLeastOne = True
+
+			if not printAll:
+				last
+	except:
+		pass
+
+
+	
+
+	
+
+
+	
+
+
+	
+	
