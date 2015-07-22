@@ -122,8 +122,10 @@ export myPublicDomainName=
 #
 
 if [ `which emacs 2>/dev/null` ]; then
-    export VISUAL=emacs
-    export EDITOR=emacs
+    # http://stackoverflow.com/questions/5570451/how-to-start-emacs-server-only-if-it-is-not-started
+    export ALTERNATE_EDITOR=""
+    export VISUAL="emacsclient -t"
+    export EDITOR="emacsclient -t"
 fi
 
 #alias emacs='		emacs-snapshot'
@@ -152,6 +154,8 @@ alias llth='	ls '$color' -a -lt | head'
 alias lss='	ls '$color' -a -1s | sort -n'
 alias lssr='	ls '$color' -a -1s | sort -nr'
 
+# "sd" == "Silk Data" ... are we getting SiLK data now?
+alias sd='find  "/data/in/`date '+%Y/%m/%d'`" -mmin -5 | xargs ls -lt'
 #
 # Set up silk repositories if they exist
 #
