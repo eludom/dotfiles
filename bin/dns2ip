@@ -6,6 +6,16 @@
 #
 #   echo google.com | dns2ip [-a]
 #
+# or
+#
+#   echo 8.8.8.8 | ip2dns
+#
+#
+# The funcion (forward or reverse lookup) keys off the program name,
+# so install by doing:
+#
+#    $ ln dns2ip ip2dns
+#
 
 import socket
 #import fileinput
@@ -29,6 +39,7 @@ printName= False
 printAll = False
 verbose=False
 inputName=""
+progName=sys.argv[0]
 
 options, remainder = getopt.getopt(sys.argv[1:], 'ahnvi:',
                                    ["all",
@@ -75,7 +86,17 @@ for name in fileinput.input(remainder):
 	atLeastOne = False
 	
 	try:
-		myAnswers = myResolver.query(name, "A") #Lookup the 'A' record(s) for google.com
+		myAnswers = []
+
+		if "dns2ip" in progName:
+			myAnswers = myResolver.query(name, "A") #Lookup the 'A' record(s) for google.com
+		elif "ip2dns" in progName:
+			addr=dns.reversename.from_address(name)
+			reverse = str(dns.resolver.query(addr,"PTR")[0])
+			myAnswers.append(reverse)
+		else:
+			usage()
+			sys.exit(2)
 
 		for rdata in myAnswers: #for each response
 				
