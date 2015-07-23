@@ -26,6 +26,8 @@ alias fegi='	find . -print | egrep -i'
 alias egi='	egrep -i' 
 alias psg='	/bin/ps -auxww | grep'
 
+# Add git stuff to prompt
+
 # http://thelucid.com/2008/12/02/git-setting-up-a-remote-repository-and-doing-an-initial-push/
 function git-branch-name {
   git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3
@@ -53,18 +55,30 @@ export PROMPT_COMMAND="history -a; history -c; history -r;"
 
 # Useful functions 
 
-pathadd() {
+# add path to the end if not there
+pathlast() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
         PATH="${PATH:+"$PATH:"}$1"
     fi
 }
 
+# add path to the front if not there
+pathfirst() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        PATH="$1:${PATH}"
+    fi
+}
+
 # Generic path
 
+pathlast $HOME/bin
 
-pathadd $HOME/bin
+# Run environment-specific setup stuff
 
-pathadd /usr/local/mongodb/mongodb-linux-x86_64-2.6.5/bin/
+for localrc in ${HOME}/.*rc.local; do
+  echo running localrc ${localrc} 1>&2
+  . ${localrc}
+done
 
 #
 # Determine location, OS etc.
@@ -129,7 +143,6 @@ if [ `which emacs 2>/dev/null` ]; then
     alias e='[ "$DISPLAY" == ""] && emacsclient -t || emacsclient -c'
 fi
 
-
 #
 # Do OS-specific setup
 #
@@ -137,7 +150,7 @@ fi
 if [ "$TERM" == "dumb" ]; then
   color="";
 elif [ "$myOS" == "mac" ]; then
-  pathadd /usr/local/bin;
+  pathlast /usr/local/bin;
   color="-G";
 elif [ "$myOS" == "linux" ]; then
   color="--color";
@@ -152,21 +165,9 @@ alias llth='	ls '$color' -a -lt | head'
 alias lss='	ls '$color' -a -1s | sort -n'
 alias lssr='	ls '$color' -a -1s | sort -nr'
 
-# "sd" == "Silk Data" ... are we getting SiLK data now?
-alias sd='find  "/data/in/`date '+%Y/%m/%d'`" -mmin -5 | xargs ls -lt'
-#
-# Set up silk repositories if they exist
-#
 
 # See https://github.com/rafmagana/mush
 alias bitly='bitly -l `cat ~/creds/bitly.username` -k `cat ~/creds/bitly.key` -u'
-
-if [ -f /data/sensors.conf ]; then
-    export SILK_DATA_ROOTDIR=/data
-    export SILK_IPV6_POLICY=asv4
-fi
-
-
 
 # Let somebody know we finished running
 
