@@ -118,20 +118,16 @@ export myPublicDomainName=
 
 
 #
-# Do location-specific setup
+# Invoking emacs
 #
 
 if [ `which emacs 2>/dev/null` ]; then
     # http://stackoverflow.com/questions/5570451/how-to-start-emacs-server-only-if-it-is-not-started
-    export ALTERNATE_EDITOR=""
+    export ALTERNATE_EDITOR="" # Because I should never have to start emacs
     export VISUAL="emacsclient -t"
     export EDITOR="emacsclient -t"
+    alias e='[ "$DISPLAY" == ""] && emacsclient -t || emacsclient -c'
 fi
-
-#alias emacs='		emacs-snapshot'
-
-
-
 
 
 #
@@ -147,7 +143,6 @@ elif [ "$myOS" == "linux" ]; then
   color="--color";
 fi
 
-alias e='emacsclient -t'
 alias ls='	ls '$color' -a'
 alias llr=' 	ls -ltr '$color' -a'
 alias llrt=' 	ls -ltr '$color' -a | tail'
@@ -171,10 +166,6 @@ if [ -f /data/sensors.conf ]; then
     export SILK_IPV6_POLICY=asv4
 fi
 
-# Because I should never have to start emacs
-
-export ALTERNATE_EDITOR=""
-#emacsclient -c &
 
 
 # Let somebody know we finished running
