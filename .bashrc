@@ -73,12 +73,15 @@ pathfirst() {
 
 pathlast $HOME/bin
 
-# Run environment-specific setup stuff
+# Run environment-specific setup stuff, if it exists
 
-for localrc in ${HOME}/.*rc.local; do
-  echo running localrc ${localrc} 1>&2
-  . ${localrc}
-done
+rcfiles=(`ls ${HOME}/.*rc.local 2>/dev/null`)
+if [ ${#rcfiles[@]} -gt 0 ]; then
+   for localrc in ${HOME}/.*rc.local; do
+       echo running localrc ${localrc} 1>&2
+       . ${localrc}
+   done
+fi
 
 #
 # Determine location, OS etc.
