@@ -53,19 +53,32 @@ shopt -s histappend                      # append to history, don't overwrite it
 #export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 export PROMPT_COMMAND="history -a; history -c; history -r;"
 
-# Useful functions 
+# Useful functions
+
+# remove an item from the path
+pathrm() {
+    if [ -d "$1" ]; then
+        echo 1 $1
+	removeThis="`echo $1 | sed -e 's#/#\\\/#'g`"
+	newPath=`echo $PATH | awk -v RS=: -v ORS=: "/$removeThis/ {next} {print}" | sed 's/[ :]*$//g'`
+        export PATH=$newPath
+    fi
+}
+
 
 # add path to the end if not there
 pathlast() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-        PATH="${PATH:+"$PATH:"}$1"
+	echo  pathlast $1
+        export PATH="${PATH:+"$PATH:"}$1"
     fi
 }
 
 # add path to the front if not there
 pathfirst() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-        PATH="$1:${PATH}"
+	echo  pathfirst $1
+        export PATH="$1:${PATH}"
     fi
 }
 
@@ -73,15 +86,12 @@ pathfirst() {
 
 pathlast $HOME/bin
 
-# Run environment-specific setup stuff, if it exists
+# Run environment-specific setup stuff
 
-rcfiles=(`ls ${HOME}/.*rc.local 2>/dev/null`)
-if [ ${#rcfiles[@]} -gt 0 ]; then
-   for localrc in ${HOME}/.*rc.local; do
-       echo running localrc ${localrc} 1>&2
-       . ${localrc}
-   done
-fi
+for localrc in ${HOME}/.*rc.local; do
+  echo running localrc ${localrc} 1>&2
+  source ${localrc}
+done
 
 #
 # Determine location, OS etc.
