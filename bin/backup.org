@@ -26,6 +26,7 @@
 
 
 ** Run the backups
+   #+name: backups.<2015-07-18 Sat 06:03>
    #+begin_src sh :var names=config[,0] values=config[,1] :results output prepend :dir /sudo:: :exports both 
    exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
 
@@ -54,14 +55,92 @@
    done
 
    gzip $LOGFILE
+   
 
    cd $LOGDIR
+   chmod +r rsync*
    ls -lt rsync* | head
 
 
 #+end_src
 
-#+RESULTS:
+#+RESULTS: backups.<2015-07-18 Sat 06:03>
+#+begin_example
+# Sat Jul 18 06:24:03 EDT 2015
+WHERE_TO=/big2/backups/octo/
+LOGDIR=/home/george/projects/current/backups
+EXCLUDE=/home/george/projects/current/backups/rsync.exclude
+LOGFILE=/home/george/projects/current/backups/rsync-octo-to-big2-2015-07-18-06:24:03.log
+RUNFROM=/
+NOW=2015-07-18-06:24:03
+-rw-r--r-- 1 root   root     17605 Jul 18 06:06 rsync-octo-to-big2-2015-07-18-06:04:00.log.gz
+-rw-r--r-- 1 root   root     93363 Jul 12 20:15 rsync-octo-to-big2-2015-07-12-20:10:23.log.gz
+-rw-r--r-- 1 root   root        63 Jul 12 20:06 rsync-octo-to-big2-2015-07-12-20:06:49.log.gz
+-rw-r--r-- 1 root   root    120329 Jul  3 21:36 rsync-octo-to-big2-2015-07-03-21:30:51.log.gz
+-rw-r--r-- 1 root   root       211 Jul  3 21:26 rsync-octo-to-big2-2015-07-03-21:26:14.log.gz
+-rw-r--r-- 1 root   root      1367 Jun 30 16:05 rsync-octo-to-big2-2015-06-30-16:02:53.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:58 rsync-octo-to-big2-2015-06-30-15:58:40.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:58 rsync-octo-to-big2-2015-06-30-15:58:26.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:58 rsync-octo-to-big2-2015-06-30-15:58:11.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:55 rsync-octo-to-big2-2015-06-30-15:55:36.log.gz
+#+end_example
+#+begin_example
+# Sat Jul 18 06:22:08 EDT 2015
+WHERE_TO=/big2/backups/octo/
+LOGDIR=/home/george/projects/current/backups
+EXCLUDE=/home/george/projects/current/backups/rsync.exclude
+LOGFILE=/home/george/projects/current/backups/rsync-octo-to-big2-2015-07-18-06:22:08.log
+RUNFROM=/
+NOW=2015-07-18-06:22:08
+-rw------- 1 root   root     17605 Jul 18 06:06 rsync-octo-to-big2-2015-07-18-06:04:00.log.gz
+-rw-r--r-- 1 root   root     93363 Jul 12 20:15 rsync-octo-to-big2-2015-07-12-20:10:23.log.gz
+-rw-r--r-- 1 root   root        63 Jul 12 20:06 rsync-octo-to-big2-2015-07-12-20:06:49.log.gz
+-rw-r--r-- 1 root   root    120329 Jul  3 21:36 rsync-octo-to-big2-2015-07-03-21:30:51.log.gz
+-rw-r--r-- 1 root   root       211 Jul  3 21:26 rsync-octo-to-big2-2015-07-03-21:26:14.log.gz
+-rw-r--r-- 1 root   root      1367 Jun 30 16:05 rsync-octo-to-big2-2015-06-30-16:02:53.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:58 rsync-octo-to-big2-2015-06-30-15:58:40.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:58 rsync-octo-to-big2-2015-06-30-15:58:26.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:58 rsync-octo-to-big2-2015-06-30-15:58:11.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:55 rsync-octo-to-big2-2015-06-30-15:55:36.log.gz
+#+end_example
+#+begin_example
+# Sat Jul 18 06:04:00 EDT 2015
+WHERE_TO=/big2/backups/octo/
+LOGDIR=/home/george/projects/current/backups
+EXCLUDE=/home/george/projects/current/backups/rsync.exclude
+LOGFILE= /home/george/projects/current/backups/rsync-octo-to-big2-2015-07-18-06:04:00.log
+RUNFROM=/
+NOW=2015-07-18-06:04:00
+-rw------- 1 root   root     17605 Jul 18 06:06 rsync-octo-to-big2-2015-07-18-06:04:00.log.gz
+-rw-r--r-- 1 root   root     93363 Jul 12 20:15 rsync-octo-to-big2-2015-07-12-20:10:23.log.gz
+-rw-r--r-- 1 root   root        63 Jul 12 20:06 rsync-octo-to-big2-2015-07-12-20:06:49.log.gz
+-rw-r--r-- 1 root   root    120329 Jul  3 21:36 rsync-octo-to-big2-2015-07-03-21:30:51.log.gz
+-rw-r--r-- 1 root   root       211 Jul  3 21:26 rsync-octo-to-big2-2015-07-03-21:26:14.log.gz
+-rw-r--r-- 1 root   root      1367 Jun 30 16:05 rsync-octo-to-big2-2015-06-30-16:02:53.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:58 rsync-octo-to-big2-2015-06-30-15:58:40.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:58 rsync-octo-to-big2-2015-06-30-15:58:26.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:58 rsync-octo-to-big2-2015-06-30-15:58:11.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:55 rsync-octo-to-big2-2015-06-30-15:55:36.log.gz
+#+end_example
+#+begin_example
+# Tue Jun 30 16:02:53 EDT 2015
+WHERE_TO=/big2/backups/octo/
+LOGDIR=/home/george/projects/current/backups
+EXCLUDE=/home/george/projects/current/backups/rsync.exclude
+LOGFILE=/home/george/projects/current/backups/rsync-octo-to-big2-2015-06-30-16:02:53.log
+RUNFROM=/
+NOW=2015-06-30-16:02:53
+-rw-r--r-- 1 root   root      1367 Jun 30 16:05 rsync-octo-to-big2-2015-06-30-16:02:53.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:58 rsync-octo-to-big2-2015-06-30-15:58:40.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:58 rsync-octo-to-big2-2015-06-30-15:58:26.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:58 rsync-octo-to-big2-2015-06-30-15:58:11.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:55 rsync-octo-to-big2-2015-06-30-15:55:36.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:31.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:30.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:29.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:27.log.gz
+-rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:26.log.gz
+#+end_example
 #+begin_example
 # Tue Jun 30 15:52:31 EDT 2015
 WHERE_TO=/big2/backups/octo/
@@ -81,5 +160,31 @@ NOW=2015-06-30-15:52:31
 -rw-r--r-- 1 root   root        63 Jun 30 15:51 rsync-octo-to-big2-2015-06-30-15:51:54.log.gz
 -rw-r--r-- 1 root   root        63 Jun 30 15:51 rsync-octo-to-big2-2015-06-30-15:51:47.log.gz
 #+end_example
+
+   #+name: backups.<2015-07-18 Sat 06:03>
+   #+begin_src sh :var names=config[,0] values=config[,1] :results output prepend :dir /sudo:: :exports both 
+   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+
+   # pull the org variables into arrays
+   configNames=($names)
+   configValues=($values)
+   len=${#configNames[@]}
+   NOW=`date +%F-%T`
+   
+   # eval to set and echo the config variables
+   for i in `seq 0 $((len - 1))`; do
+     evalThis=${configNames[$i]}=${configValues[$i]}
+     eval $evalThis
+     echoThis="echo ${configNames[$i]}=\$${configNames[$i]}"
+     eval $echoThis
+
+   done
+
+   echo NOW=$NOW
+
+   cd $LOGDIR
+   chmod 644 rsync*
+   ls -lt rsync* | head
+   #+end_src
 
 
