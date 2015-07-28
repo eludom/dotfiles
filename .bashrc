@@ -26,6 +26,8 @@ alias fegi='	find . -print | egrep -i'
 alias egi='	egrep -i' 
 alias psg='	/bin/ps -auxww | grep'
 
+# Add git stuff to prompt
+
 # http://thelucid.com/2008/12/02/git-setting-up-a-remote-repository-and-doing-an-initial-push/
 function git-branch-name {
   git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3
@@ -51,20 +53,45 @@ shopt -s histappend                      # append to history, don't overwrite it
 #export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 export PROMPT_COMMAND="history -a; history -c; history -r;"
 
-# Useful functions 
+# Useful functions
 
-pathadd() {
+# remove an item from the path
+pathrm() {
+    if [ -d "$1" ]; then
+        echo 1 $1
+	removeThis="`echo $1 | sed -e 's#/#\\\/#'g`"
+	newPath=`echo $PATH | awk -v RS=: -v ORS=: "/$removeThis/ {next} {print}" | sed 's/[ :]*$//g'`
+        export PATH=$newPath
+    fi
+}
+
+
+# add path to the end if not there
+pathlast() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-        PATH="${PATH:+"$PATH:"}$1"
+	echo  pathlast $1
+        export PATH="${PATH:+"$PATH:"}$1"
+    fi
+}
+
+# add path to the front if not there
+pathfirst() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+	echo  pathfirst $1
+        export PATH="$1:${PATH}"
     fi
 }
 
 # Generic path
 
+pathlast $HOME/bin
 
-pathadd $HOME/bin
+# Run environment-specific setup stuff
 
-pathadd /usr/local/mongodb/mongodb-linux-x86_64-2.6.5/bin/
+for localrc in ${HOME}/.*rc.local; do
+  echo running localrc ${localrc} 1>&2
+  source ${localrc}
+done
 
 #
 # Determine location, OS etc.
@@ -118,19 +145,16 @@ export myPublicDomainName=
 
 
 #
-# Do location-specific setup
+# Invoking emacs
 #
 
 if [ `which emacs 2>/dev/null` ]; then
-    export VISUAL=emacs
-    export EDITOR=emacs
+    # http://stackoverflow.com/questions/5570451/how-to-start-emacs-server-only-if-it-is-not-started
+    export ALTERNATE_EDITOR="" # Because I should never have to start emacs
+    export VISUAL="emacsclient -t"
+    export EDITOR="emacsclient -t"
+    alias e='[ "$DISPLAY" == ""] && emacsclient -t || emacsclient -c'
 fi
-
-#alias emacs='		emacs-snapshot'
-
-
-
-
 
 #
 # Do OS-specific setup
@@ -139,36 +163,24 @@ fi
 if [ "$TERM" == "dumb" ]; then
   color="";
 elif [ "$myOS" == "mac" ]; then
-  pathadd /usr/local/bin;
+  pathlast /usr/local/bin;
   color="-G";
 elif [ "$myOS" == "linux" ]; then
   color="--color";
 fi
 
 alias ls='	ls '$color' -a'
+alias llr=' 	ls -ltr '$color' -a'
+alias llrt=' 	ls -ltr '$color' -a | tail'
 alias llt=' 	ls -lt '$color' -a'
 alias lltm='	ls '$color' -a -lt | more'
 alias llth='	ls '$color' -a -lt | head'
 alias lss='	ls '$color' -a -1s | sort -n'
 alias lssr='	ls '$color' -a -1s | sort -nr'
 
-#
-# Set up silk repositories if they exist
-#
 
 # See https://github.com/rafmagana/mush
 alias bitly='bitly -l `cat ~/creds/bitly.username` -k `cat ~/creds/bitly.key` -u'
-
-if [ -f /data/sensors.conf ]; then
-    export SILK_DATA_ROOTDIR=/data
-    export SILK_IPV6_POLICY=asv4
-fi
-
-# Because I should never have to start emacs
-
-export ALTERNATE_EDITOR=""
-#emacsclient -c &
-
 
 # Let somebody know we finished running
 

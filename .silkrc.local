@@ -1,0 +1,21 @@
+#
+# Aliases useful for running https://tools.netsa.cert.org/silk/
+#
+
+
+if [ `which rwcut 2>/dev/null` ]; then
+   alias sd='find  "/data/in/`date '+%Y/%m/%d'`" -mmin -5 | xargs ls -lt'
+fi
+
+
+#
+# Set up silk repositories if they exist
+#
+
+if [ -f /data/sensors.conf ]; then
+
+    "sd" == "Silk Data" ... are we getting SiLK data now?
+
+    export SILK_DATA_ROOTDIR=/data
+    export SILK_IPV6_POLICY=asv4
+fi
