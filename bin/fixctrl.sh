@@ -1,7 +1,7 @@
 #! /bin/bash
 # Fix control keys on X or linux console
 
-set -e; set -u; echo "$0: `date;`" >&2
+set -e; set -u; echo "$0: `date;`" 
 
 # Fix in X
 

@@ -88,10 +88,15 @@ pathlast $HOME/bin
 
 # Run environment-specific setup stuff
 
-for localrc in ${HOME}/.*rc.local; do
-  echo running localrc ${localrc} 1>&2
-  source ${localrc}
-done
+
+if test -n "$(cd ${HOME}; find . -maxdepth 1 -name '.*rc.local' -print -quit)"
+then
+    for localrc in ${HOME}/.*rc.local; do
+	echo running localrc ${localrc} 
+	source ${localrc}
+    done
+fi
+
 
 #
 # Determine location, OS etc.
