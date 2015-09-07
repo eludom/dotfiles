@@ -4,5 +4,8 @@
 [core]
 	editor = emacs
 [status]
+#	showUntrackedFiles = no
 	showUntrackedFiles = normal
 	
+[push]
+	default = simple

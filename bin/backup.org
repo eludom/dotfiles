@@ -51,7 +51,7 @@
    cd $RUNFROM
 
    for BACK_THIS_UP in old data home; do
-     rsync -av  -exclude-from=$EXCLUDE $BACK_THIS_UP "$WHERE_TO" 2>&1 | grep -v '/$'  2>&1 | tee >> $LOGFILE || true
+     rsync -av  --exclude-from=$EXCLUDE $BACK_THIS_UP "$WHERE_TO" 2>&1 | grep -v '/$'  2>&1 | tee >> $LOGFILE || true
    done
 
    gzip $LOGFILE
@@ -140,7 +140,7 @@ NOW=2015-06-30-16:02:53
 -rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:29.log.gz
 -rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:27.log.gz
 -rw-r--r-- 1 root   root        63 Jun 30 15:52 rsync-octo-to-big2-2015-06-30-15:52:26.log.gz
-#+end_example
+#+end_examplep
 #+begin_example
 # Tue Jun 30 15:52:31 EDT 2015
 WHERE_TO=/big2/backups/octo/
