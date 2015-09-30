@@ -3,6 +3,8 @@
 
 # deal with timeouts?
 #myIP=`dig +short @resolver1.opendns.com myip.opendns.com`
-myIP=`curl -s ifconfig.me`
-echo "$myIP"
+#myIP=`curl -s ifconfig.me`
+#echo "$myIP"
+curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//' 
+
 
