@@ -10,18 +10,14 @@
 
 eth0Addr=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 
-VAR1="${1:-${eth0Addr}}"
-
-echo VAR1 $VAR1
-exit
-
-baseIP=`echo $eth0Addr | cut -d"." -f1-3`
+addrWith4Octets="${1:-${eth0Addr}}"
 
 
+addrWith3Octets=`echo $addrWith4Octets | cut -d"." -f1-3`
 
 i=1;
 while [ "$i" -lt 255 ]; do 
-    host ${baseIP}.$i | grep -v NX; 
+    host ${addrWith3Octets}.$i | grep -v NX; 
     i=$((i+1)); 
 done
 
