@@ -3,13 +3,21 @@
 # A quick script to see who (DNS names) are on the same subnet.  
 # Assumes eth0 and /24.
 #
-# Usage: onMySubnet
+# Usage: onMySubnet [ip]
 #
 # George Jones <gmj@pobox.com>, Wed Sep 30 05:50:02 2015
 #
 
 eth0Addr=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
+
+VAR1="${1:-foo}"
+
+echo VAR1 $VAR1
+exit
+
 baseIP=`echo $eth0Addr | cut -d"." -f1-3`
+
+
 
 i=1;
 while [ "$i" -lt 255 ]; do 
