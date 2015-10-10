@@ -10,7 +10,7 @@
 
 eth0Addr=`ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 
-VAR1="${1:-foo}"
+VAR1="${1:-${eth0Addr}}"
 
 echo VAR1 $VAR1
 exit
