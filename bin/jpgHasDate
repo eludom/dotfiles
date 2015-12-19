@@ -28,8 +28,8 @@ if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
 eval set -- "$TEMP"
 
 # Selection Parameters
-SELECT_WITH_DATES=ture		# print files that have dates
-SELECT_MISSING_DATES=ture	# print files with no date
+SELECT_WITH_DATES=false		# print files that have dates
+SELECT_MISSING_DATES=false	# print files with no date
 # Output Parameters
 VERBOSE=false			# verbose output
 DEBUG=false			# debugging output
@@ -57,14 +57,31 @@ done
 if ! ( $PRINT_PATH || $PRINT_DATES ); then 
     PRINT_PATH=true
     PRINT_DATES=true
+fi
+
+# Defualt to selectiing all
+if ! ( $SELECT_WITH_DATES || $SELECT_MISSING_DATES ); then 
+    SELECT_WITH_DATES=true
+    SELECT_MISSING_DATES=true
 fi    
 
 for file in $*; do
     if $DEBUG; then echo file $file >&2; fi
-    text=$(exiftool $file | grep Orig || echo "NONE")
-    text=$(echo $text | sed -e 's/Date\/Time Original\s*\:\s*//')
+    date=$(exiftool $file | grep Orig || echo "NONE")
+    date=$(echo $date | sed -e 's/Date\/Time Original\s*\:\s*//')
     output=""
     if $PRINT_PATH; then output="$file"; fi
-    if $PRINT_DATES; then output="$output : $text"; fi
-    echo $output
+    if $PRINT_DATES; then output="$output : $date"; fi
+
+    if $SELECT_MISSING_DATES; then 
+	if [[ $date == *"NONE"* ]]; then
+	    echo $output
+	fi
+    fi
+
+    if $SELECT_WITH_DATES; then 
+	if [[ $date != *"NONE"* ]]; then
+	    echo $output
+	fi
+    fi    
 done
