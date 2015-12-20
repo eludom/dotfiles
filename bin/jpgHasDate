@@ -13,13 +13,44 @@ set -u   # exit on undefined
 set -e   # exit on error
 # set -x # echo during execution
 
+# Useful tips
+# http://www.kfirlavi.com/blog/2012/11/14/defensive-bash-programming/
+readonly PROGNAME=$(basename $0)
+readonly PROGDIR=$(readlink -m $(dirname $0))
+readonly ARGS="$@"
+
+usage() {
+    if [ $# -gt 0 ]; then echo  "${PROGNAME}: $@"; echo; fi
+    cat <<- EOF
+usage: $PROGNAME [options] FILE [FILE...]
+    
+This program determins if a JPEG file has an Original Date stored
+with it and prints the filename and/or date.
+
+OPTIONS:
+   -w --withdates	Select files with dates
+   -m --missingdates	Select files with no dates
+   -p --path		Print path of matching files
+   -t --dates		Print dates of matching files
+   -v --verbose         Verbose. You can specify more then one -v to have more verbose
+   -d --debug           debug
+   -h --help            show this help
+    
+Examples:
+   print info about a single file
+   $PROGNAME --test all
+
+EOF
+}
+
+
 # Option parsing courtesy of 
 # http://stackoverflow.com/questions/402377/using-getopts-in-bash-shell-script-to-get-long-and-short-command-line-options
 
 
 # NOTE: This requires GNU getopt.  On Mac OS X and FreeBSD, you have to install this
 # separately; see below.
-TEMP=`getopt -o wmptvd --long withdates,missingdates,path,dates,verbose,debug \
+TEMP=`getopt -o wmptvdh --long withdates,missingdates,path,dates,verbose,debug,help \
              -n 'jpghasDate' -- "$@"`
 
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
@@ -46,12 +77,14 @@ while true; do
     -p | --path ) PRINT_PATH=true; shift ;;
     -t | --dates ) PRINT_DATES=true; shift ;;
     -v | --verbose ) VERBOSE=true; shift ;;
-    -d | --debug ) DEBUG=true; shift ;;    
+    -d | --debug ) DEBUG=true; shift ;;
+    -h | --help ) usage; exit 0;shift ;;        
     -- ) shift; break ;;
     * ) break ;;
   esac
 done
 
+if [ $# -lt 1 ] ; then usage "Missing argument.  Need at least one filename."; exit 1; fi
 
 # Defualt to printing all
 if ! ( $PRINT_PATH || $PRINT_DATES ); then 
@@ -63,7 +96,9 @@ fi
 if ! ( $SELECT_WITH_DATES || $SELECT_MISSING_DATES ); then 
     SELECT_WITH_DATES=true
     SELECT_MISSING_DATES=true
-fi    
+fi
+
+
 
 for file in $*; do
     if $DEBUG; then echo file $file >&2; fi
