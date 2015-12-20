@@ -5,7 +5,7 @@
 #date            :Sat Dec 19 15:35:06 2015
 #version         :0.1
 #usage		 :jpgHasDate.sh [optinos] FILE [FILE...]
-#notes           :
+#notes           :Experimeting with well-writtne bash
 #bash_version    :
 #==============================================================================
 
@@ -44,79 +44,106 @@ EOF
 }
 
 
-# Option parsing courtesy of 
-# http://stackoverflow.com/questions/402377/using-getopts-in-bash-shell-script-to-get-long-and-short-command-line-options
+parseArgs() {
+    # Option parsing courtesy of 
+    # http://stackoverflow.com/questions/402377/using-getopts-in-bash-shell-script-to-get-long-and-short-command-line-options
 
 
-# NOTE: This requires GNU getopt.  On Mac OS X and FreeBSD, you have to install this
-# separately; see below.
-TEMP=`getopt -o wmptvdh --long withdates,missingdates,path,dates,verbose,debug,help \
-             -n 'jpghasDate' -- "$@"`
+    # NOTE: This requires GNU getopt.  On Mac OS X and FreeBSD, you have to install this
+    # separately; see below.
+    TEMP=`getopt -o wmptvdh --long withdates,missingdates,path,dates,verbose,debug,help \
+            	  -n 'jpghasDate' -- "$@"`
 
-if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+    if [ $? != 0 ] ; then echo "getopt failed. Terminating..." >&2 ; exit 1 ; fi
 
-# Note the quotes around `$TEMP': they are essential!
-eval set -- "$TEMP"
-
-# Selection Parameters
-SELECT_WITH_DATES=false		# print files that have dates
-SELECT_MISSING_DATES=false	# print files with no date
-# Output Parameters
-VERBOSE=false			# verbose output
-DEBUG=false			# debugging output
-PRINT_PATH=false  		# print path
-PRINT_DATES=false		# print date
-PRINT_ALL=true			# print all (default)
-
-DEBUGFILE=
-JAVA_MISC_OPT=
-while true; do
-  case "$1" in
-    -w | --withdates ) SELECT_WITH_DATES=true; shift ;;
-    -m | --missingdates ) SELECT_MISSING_DATES=true; shift ;;
-    -p | --path ) PRINT_PATH=true; shift ;;
-    -t | --dates ) PRINT_DATES=true; shift ;;
-    -v | --verbose ) VERBOSE=true; shift ;;
-    -d | --debug ) DEBUG=true; shift ;;
-    -h | --help ) usage; exit 0;shift ;;        
-    -- ) shift; break ;;
-    * ) break ;;
-  esac
-done
-
-if [ $# -lt 1 ] ; then usage "Missing argument.  Need at least one filename."; exit 1; fi
-
-# Defualt to printing all
-if ! ( $PRINT_PATH || $PRINT_DATES ); then 
-    PRINT_PATH=true
-    PRINT_DATES=true
-fi
-
-# Defualt to selectiing all
-if ! ( $SELECT_WITH_DATES || $SELECT_MISSING_DATES ); then 
-    SELECT_WITH_DATES=true
-    SELECT_MISSING_DATES=true
-fi
+    # Note the quotes around `$TEMP': they are essential!
+    eval set -- "$TEMP"
 
 
+    # Set default values
 
-for file in $*; do
-    if $DEBUG; then echo file $file >&2; fi
-    date=$(exiftool $file | grep Orig || echo "NONE")
-    date=$(echo $date | sed -e 's/Date\/Time Original\s*\:\s*//')
-    output=""
-    if $PRINT_PATH; then output="$file"; fi
-    if $PRINT_DATES; then output="$output : $date"; fi
+    # Selection Parameters
+    OPT_SELECT_WITH_DATES=false		# print files that have dates
+    OPT_SELECT_MISSING_DATES=false	# print files with no date
+    # Output Parameters
+    OPT_VERBOSE=false			# verbose output
+    OPT_DEBUG=false			# debugging output
+    OPT_PRINT_PATH=false  		# print path
+    OPT_PRINT_DATES=false		# print date
+    OPT_PRINT_ALL=true			# print all (default)
 
-    if $SELECT_MISSING_DATES; then 
-	if [[ $date == *"NONE"* ]]; then
-	    echo $output
-	fi
+    while true; do
+	case "$1" in
+	    -w | --withdates ) OPT_SELECT_WITH_DATES=true; shift ;;
+	    -m | --missingdates ) OPT_SELECT_MISSING_DATES=true; shift ;;
+	    -p | --path ) OPT_PRINT_PATH=true; shift ;;
+	    -t | --dates ) OPT_PRINT_DATES=true; shift ;;
+	    -v | --verbose ) OPT_VERBOSE=true; shift ;;
+	    -d | --debug ) OPT_DEBUG=true; shift ;;
+	    -h | --help ) usage; exit 0;shift ;;        
+	    -- ) shift; break ;;
+	    * ) break ;;
+	esac
+    done
+    
+    if [ $# -lt 1 ] ; then usage "Missing argument.  Need at least one filename."; exit 1; fi
+
+    # Defualt to printing all
+    if ! ( $OPT_PRINT_PATH || $OPT_PRINT_DATES ); then 
+	OPT_PRINT_PATH=true
+	OPT_PRINT_DATES=true
+    fi
+    
+    # Defualt to selectiing all
+    if ! ( $OPT_SELECT_WITH_DATES || $OPT_SELECT_MISSING_DATES ); then 
+	OPT_SELECT_WITH_DATES=true
+	OPT_SELECT_MISSING_DATES=true
     fi
 
-    if $SELECT_WITH_DATES; then 
-	if [[ $date != *"NONE"* ]]; then
-	    echo $output
+    # Make parsing paramters readonly
+
+    readonly OPT_SELECT_WITH_DATES=${OPT_SELECT_WITH_DATES}	# print files that have dates
+    readonly OPT_SELECT_MISSING_DATES=${OPT_SELECT_MISSING_DATES}	# print files with no date
+    readonly OPT_VERBOSE=${OPT_VERBOSE}				# verbose output
+    readonly OPT_DEBUG=${OPT_DEBUG}				# debugging output
+    readonly OPT_PRINT_PATH=${OPT_PRINT_PATH}			# print path
+    readonly OPT_PRINT_DATES=${OPT_PRINT_DATES}			# print date
+    readonly OPT_PRINT_ALL=${OPT_PRINT_ALL}			# print all (default)
+
+    readonly OPT_ARGS="$@"
+}
+
+printSelectedFiles () {
+    for file in $*; do
+	if $OPT_DEBUG; then echo file $file >&2; fi
+	date=$(exiftool $file | grep Orig || echo "NONE")
+	date=$(echo $date | sed -e 's/Date\/Time Original\s*\:\s*//')
+	output=""
+
+	if $OPT_PRINT_PATH; then output="$file"; fi
+
+	if $OPT_PRINT_DATES; then output="$output : $date"; fi
+	
+	if $OPT_SELECT_MISSING_DATES; then 
+	    if [[ $date == *"NONE"* ]]; then
+		echo $output
+	    fi
 	fi
-    fi    
-done
+
+	if $OPT_SELECT_WITH_DATES; then 
+	    if [[ $date != *"NONE"* ]]; then
+		echo $output
+	    fi
+	fi    
+    done
+}
+
+main() {
+    echo ARGS $ARGS
+    parseArgs $ARGS
+
+    echo OPT_ARGS $OPT_ARGS
+    printSelectedFiles $OPT_ARGS
+}
+
+main
