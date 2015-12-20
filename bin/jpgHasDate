@@ -37,8 +37,20 @@ OPTIONS:
    -h --help            show this help
     
 Examples:
-   print info about a single file
-   $PROGNAME --test all
+   Fine info about a single file
+       $PROGNAME sample.jpg 
+
+   Find info about all jpg files in directory
+       find . -type f -name \*.jpg -print0 | xargs -L 1 -0 $PROGNAME
+
+   Find only Pathnames of jpg files Missing dates:
+       find . -type f -name \*.jpg -print0 | xargs -L 1 -0 $PROGNAME -m -p
+
+   Find all info about jpg files With dates
+       find . -type f -name \*.jpg -print0 | xargs -L 1 -0 $PROGNAME -w 
+
+   Horrible real world invocation to look at the last 10 files of the first 40 available:
+       find . -type f -name \*.jpg -print0 | tr '\0\n' '\n\0' |  head -40 | tail -10 |  tr '\0\n' '\n\0'| xargs -L 1 -n 1 -0 $PROGNAME
 
 EOF
 }
@@ -114,9 +126,9 @@ parseArgs() {
 }
 
 printSelectedFiles () {
-    for file in $*; do
+    for file in "$*"; do
 	if $OPT_DEBUG; then echo file $file >&2; fi
-	date=$(exiftool $file | grep Orig || echo "NONE")
+	date=$(exiftool "$file" | grep Orig || echo "NONE")
 	date=$(echo $date | sed -e 's/Date\/Time Original\s*\:\s*//')
 	output=""
 
@@ -139,10 +151,7 @@ printSelectedFiles () {
 }
 
 main() {
-    echo ARGS $ARGS
     parseArgs $ARGS
-
-    echo OPT_ARGS $OPT_ARGS
     printSelectedFiles $OPT_ARGS
 }
 
