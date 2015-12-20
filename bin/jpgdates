@@ -5,6 +5,7 @@
 #date            :Sat Dec 19 15:35:06 2015
 #version         :0.1
 #usage		 :jpgdates [optinos] FILE [FILE...]
+#dependancies	 :http://owl.phy.queensu.ca/~phil/exiftool/
 #notes           :Also experimeting with well-written bash scripts
 #bash_version    :
 #
