@@ -34,9 +34,9 @@ set -e   # exit on error
 # http://www.kfirlavi.com/blog/2012/11/14/defensive-bash-programming/
 readonly PROGNAME=$(basename $0)
 readonly PROGDIR=$(readlink -m $(dirname $0))
-readonly ARGS="$@"
+readonly ARGS=("$@")
 
-usage() {
+function usage() {
     if [ $# -gt 0 ]; then echo  "${PROGNAME}: $@"; echo; fi
     cat <<- EOF
 usage: $PROGNAME [options] FILE [FILE...]
@@ -73,7 +73,8 @@ EOF
 }
 
 
-parseArgs() {
+function parseArgs() {
+    
     # Option parsing courtesy of 
     # http://stackoverflow.com/questions/402377/using-getopts-in-bash-shell-script-to-get-long-and-short-command-line-options
 
@@ -139,11 +140,20 @@ parseArgs() {
     readonly OPT_PRINT_DATES=${OPT_PRINT_DATES}			# print date
     readonly OPT_PRINT_ALL=${OPT_PRINT_ALL}			# print all (default)
 
-    readonly OPT_ARGS="$@"
+    OPT_ARGS=("$@")
+
+
 }
 
-printSelectedFiles () {
-    for file in "$*"; do
+function printSelectedFiles () {
+    if $OPT_DEBUG; then 
+	echo ARGS TO printSelectedFiles
+	for ARG in "$@"; do
+ 	    printf 'ARG %s\n' "$ARG"
+	done
+    fi
+
+    for file in "$@"; do
 	if $OPT_DEBUG; then echo file $file >&2; fi
 	date=$(exiftool "$file" | grep Orig || echo "NONE")
 	date=$(echo $date | sed -e 's/Date\/Time Original\s*\:\s*//')
@@ -167,9 +177,16 @@ printSelectedFiles () {
     done
 }
 
-main() {
-    parseArgs $ARGS
-    printSelectedFiles $OPT_ARGS
+function main() {
+    parseArgs "$@"
+
+    printSelectedFiles "${OPT_ARGS[@]}"    
 }
 
-main
+#main
+
+if [ ${#ARGS[@]} -lt 1 ] ; then usage "Missing argument.  Need at least one filename."; exit 1; fi
+    
+main "${ARGS[@]}"
+
+
