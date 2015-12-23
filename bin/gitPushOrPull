@@ -1,0 +1,22 @@
+#!/bin/sh
+# Check if pull or push is needed
+#
+# Usage: gitPushOrPull
+#
+# Source: http://stackoverflow.com/questions/3258243/git-check-if-pull-needed
+
+git fetch --all
+
+LOCAL=$(git rev-parse @)
+REMOTE=$(git rev-parse @{u})
+BASE=$(git merge-base @ @{u})
+
+if [ $LOCAL = $REMOTE ]; then
+    echo "Up-to-date (LOCAL $LOCAL = REMOTE $REMOTE)"
+elif [ $LOCAL = $BASE ]; then
+    echo "Need to pull (LOCAL $LOCAL = BASE $BASE)"
+elif [ $REMOTE = $BASE ]; then
+    echo "Need to push (REMOTE $REMOTE = BASE $BASE)"
+else
+    echo "Diverged"
+fi

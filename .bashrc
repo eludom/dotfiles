@@ -187,6 +187,8 @@ alias lssr='	ls '$color' -a -1s | sort -nr'
 # See https://github.com/rafmagana/mush
 alias bitly='bitly -l `cat ~/creds/bitly.username` -k `cat ~/creds/bitly.key` -u'
 
+complete -C aws_completer aws
+
 # Let somebody know we finished running
 
 touch $HOME/.bashrc-ran
