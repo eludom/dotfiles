@@ -49,6 +49,7 @@ OPTIONS:
    -m --missingdates	Select files with no dates
    -p --path		Print path of matching files
    -t --dates		Print dates of matching files
+   -i --isomtime	Print ISO-formatted mtime before file
    -v --verbose         Verbose. You can specify more then one -v to have more verbose
    -d --debug           debug
    -h --help            show this help
@@ -81,7 +82,7 @@ function parseArgs() {
 
     # NOTE: This requires GNU getopt.  On Mac OS X and FreeBSD, you have to install this
     # separately; see below.
-    TEMP=`getopt -o wmptvdh --long withdates,missingdates,path,dates,verbose,debug,help \
+    TEMP=`getopt -o wmptvdih --long withdates,missingdates,path,dates,isomtime,verbose,debug,help \
             	  -n 'jpghasDate' -- "$@"`
 
     if [ $? != 0 ] ; then echo "getopt failed. Terminating..." >&2 ; exit 1 ; fi
@@ -100,6 +101,7 @@ function parseArgs() {
     OPT_DEBUG=false			# debugging output
     OPT_PRINT_PATH=false  		# print path
     OPT_PRINT_DATES=false		# print date
+    OPT_ISO_MTIME=false			# print iso mtime of file before path
     OPT_PRINT_ALL=true			# print all (default)
 
     while true; do
@@ -108,6 +110,7 @@ function parseArgs() {
 	    -m | --missingdates ) OPT_SELECT_MISSING_DATES=true; shift ;;
 	    -p | --path ) OPT_PRINT_PATH=true; shift ;;
 	    -t | --dates ) OPT_PRINT_DATES=true; shift ;;
+	    -i | --isomtime ) OPT_ISO_MTIME=true; shift ;;	    
 	    -v | --verbose ) OPT_VERBOSE=true; shift ;;
 	    -d | --debug ) OPT_DEBUG=true; shift ;;
 	    -h | --help ) usage; exit 0;shift ;;        
@@ -155,22 +158,28 @@ function printSelectedFiles () {
 
     for file in "$@"; do
 	if $OPT_DEBUG; then echo file $file >&2; fi
-	date=$(exiftool "$file" | grep Orig || echo "NONE")
-	date=$(echo $date | sed -e 's/Date\/Time Original\s*\:\s*//')
+	exifDate=$(exiftool "$file" | grep Orig || echo "NONE")
+	exifDate=$(echo $exifDate | sed -e 's/Date\/Time Original\s*\:\s*//')
 	output=""
 
-	if $OPT_PRINT_PATH; then output="$file"; fi
+	if $OPT_ISO_MTIME; then 	    
+	    epochTime=`stat --printf='%Y' "$file" `
+	    isoTime=`date --date="@$epochTime" -Iminutes`
+	    output="$isoTime $output"
+	fi
 
-	if $OPT_PRINT_DATES; then output="$output : $date"; fi
+	if $OPT_PRINT_PATH; then output="$output$file"; fi
+
+	if $OPT_PRINT_DATES; then output="$output : $exifDate"; fi
 	
 	if $OPT_SELECT_MISSING_DATES; then 
-	    if [[ $date == *"NONE"* ]]; then
+	    if [[ $exifDate == *"NONE"* ]]; then
 		echo $output
 	    fi
 	fi
 
 	if $OPT_SELECT_WITH_DATES; then 
-	    if [[ $date != *"NONE"* ]]; then
+	    if [[ $exifDate != *"NONE"* ]]; then
 		echo $output
 	    fi
 	fi    
