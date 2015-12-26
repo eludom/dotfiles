@@ -86,17 +86,16 @@ pathfirst() {
 
 pathlast $HOME/bin
 
-# Run environment-specific setup stuff
+#
+# Execute any .sh files in ~/rc.local/*.sh
+#
 
-
-if test -n "$(cd ${HOME}; find . -maxdepth 1 -name '.*rc.local' -print -quit)"
-then
-    for localrc in ${HOME}/.*rc.local; do
-	echo running localrc ${localrc} 
-	source ${localrc}
+if [ -d ${HOME}/rc.local ]; then
+    for rcfile in $(find ${HOME}/rc.local -type f -name \*.sh); do
+	echo running localrc ${rcfile} 
+	${rcfile}
     done
 fi
-
 
 #
 # Determine location, OS etc.
