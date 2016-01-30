@@ -13,7 +13,7 @@
 #+LANGUAGE: en
 #+SELECT_TAGS: export
 
-* [9/11] [81%] Install My github repos to make a new system functional
+* [10/12] [83%] Install My github repos to make a new system functional
    This installs my common things from github on a new system.
 
    Some of these are in [[https://github.com/eludom/chef/tree/master/cookbooks][my chef cookboks]].  All of this should probably
@@ -474,8 +474,7 @@ Host github-as-ME
    #+RESULTS:
    : /home/ubuntu/git/github.com/eludom: directory
 
-
-** TODO Install dotfiles (my .bashrc, ~/bin etc)
+** DONE Install dotfiles (my .bashrc, ~/bin etc)
 
    Need to install my ~/bin to get ~/bin/link2 which my makelinks script uses
 
@@ -500,24 +499,40 @@ Host github-as-ME
    : -rwxrwxr-x 1 ubuntu ubuntu  211 Jan 30 10:08 makelinks
    : -rw-rw-r-- 1 ubuntu ubuntu 1139 Jan 30 10:08 README.org
 
-
-
 ** TODO Install ~/.emacs.d
    #+BEGIN_SRC sh  :results output :exports both  :dir ~/git/github.com/eludom
-   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+   exec 2>&1;set -e; set -u; set -x; echo '#' `date;`
 
-   if [ -d .emacs.d ]; then
-     (cd .emacs.d; git pull -v )
+   if [ -f ~/.emacs.d/george.org ]; then
+
+     # my stuff is there, just update if needd
+
+     (cd .emacs.d; git pull -v ) || true
    else
-     git clone -v git@github.com:eludom/.emacs.d.git   || true
+
+     # my stuff is not there, start from scratch
+
+     git clone -v git@github.com:eludom/.emacs.d.git   || true 
+     (cd .emacs.d;  ./makelinks) || true
    fi
-   ls -l .emacs.d
+
+
+   ls -l ~/.emacs.d
    #+END_SRC
 
    #+RESULTS:
    #+begin_example
-   # Sat Jan 30 10:05:24 UTC 2016
-   Cloning into '.emacs.d'...
+   ++ date
+   + echo '#' Sat Jan 30 10:28:34 UTC 2016
+   # Sat Jan 30 10:28:34 UTC 2016
+   + '[' -f .emacs.d/george.org ']'
+   + cd .emacs.d
+   + git pull -v
+   From github.com:eludom/.emacs.d
+    = [up to date]      master     -> origin/master
+    = [up to date]      octo       -> origin/octo
+   Already up-to-date.
+   + ls -l .emacs.d
    total 88
    -rw-rw-r-- 1 ubuntu ubuntu    29 Jan 30 10:05 description
    drwxrwxr-x 2 ubuntu ubuntu  4096 Jan 30 10:05 etc
