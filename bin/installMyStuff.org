@@ -1,0 +1,533 @@
+#+TITLE: Install my stuff
+#+DATE: <2016-01-30 Sat>
+#+AUTHOR: George Jones
+#+EMAIL: gmj@port111.com
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:(not "LOGBOOK") date:t
+#+OPTIONS: e:t email:nil f:t inline:t num:t p:nil pri:nil stat:t
+#+OPTIONS: tags:t tasks:t tex:t timestamp:t toc:t todo:t |:t
+#+CREATOR: Emacs 25.1.50.1 (Org mode 8.2.10)
+#+DESCRIPTION:
+#+EXCLUDE_TAGS: noexport
+#+KEYWORDS:
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+
+* [9/11] [81%] Install My github repos to make a new system functional
+   This installs my common things from github on a new system.
+
+   Some of these are in [[https://github.com/eludom/chef/tree/master/cookbooks][my chef cookboks]].  All of this should probably
+   migrate there once I've worked it out here in a more manual
+   fashion. 
+** DONE First, set up babel to execute the rest
+
+   I tend to organize things and run them as [[http://orgmode.org/worg/org-contrib/babel/][emacs org-babel]] blocks.
+   This does minimal setup to to enable that.  The shell commands below
+   can be run by hand (not as org-bable souce blocks)
+
+    #+BEGIN_SRC emacs-lisp :exports code
+    (org-babel-do-load-languages
+        'org-babel-load-languages '((python . t) (sh . t) (lisp . t) (R . t) (ditaa . t)))
+    (setq org-export-babel-evaluate nil)
+    (setq org-confirm-babel-evaluate nil)
+    (setq org-babel-sh-command "bash")
+    #+END_SRC
+
+    #+RESULTS:
+    : bash
+
+** DONE Make sure we are root   
+   #+BEGIN_SRC sh  :results output :exports both  :dir /sudo::
+   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+   whoami
+   #+END_SRC
+
+   #+RESULTS:
+   : # Sat Jan 30 09:11:32 UTC 2016
+   : root
+
+** DONE Update the system
+   Assume ubuntu for the moment.
+
+   #+BEGIN_SRC sh  :results output :exports both  :dir /sudo::
+   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+   apt-get update -y
+   apt-get upgrade -y
+   #+END_SRC
+
+   #+RESULTS:
+   #+begin_example
+   # Sat Jan 30 09:13:04 UTC 2016
+   0% [Working]            Hit http://us-west-2.ec2.archive.ubuntu.com wily InRelease
+               0% [Connecting to security.ubuntu.com (91.189.88.152)]                                                      Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates InRelease
+                                                         Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports InRelease
+   0% [Connecting to security.ubuntu.com (91.189.88.152)]                                                      0% [InRelease gpgv 218 kB] [Connecting to security.ubuntu.com (91.189.88.152)]                                                                              6% [Connecting to security.ubuntu.com (91.189.88.152)]                                                      6% [InRelease gpgv 64.4 kB] [Waiting for headers] [Connecting to security.ubunt                                                                               Hit http://us-west-2.ec2.archive.ubuntu.com wily/main Sources
+   6% [InRelease gpgv 64.4 kB] [Connecting to security.ubuntu.com (91.189.88.152)]                                                                               Hit http://us-west-2.ec2.archive.ubuntu.com wily/restricted Sources
+   6% [InRelease gpgv 64.4 kB] [Waiting for headers] [Connecting to security.ubunt                                                                               Hit http://us-west-2.ec2.archive.ubuntu.com wily/universe Sources
+   6% [InRelease gpgv 64.4 kB] [Waiting for headers] [Connecting to security.ubunt                                                                               Hit http://us-west-2.ec2.archive.ubuntu.com wily/multiverse Sources
+   6% [InRelease gpgv 64.4 kB] [Waiting for headers] [Connecting to security.ubunt                                                                               7% [Waiting for headers] [Connecting to security.ubuntu.com (91.189.88.152)]                                                                            Hit http://us-west-2.ec2.archive.ubuntu.com wily/main amd64 Packages
+   7% [Waiting for headers] [Connecting to security.ubuntu.com (91.189.88.152)]                                                                            7% [InRelease gpgv 64.5 kB] [Waiting for headers] [Connecting to security.ubunt                                                                               Hit http://us-west-2.ec2.archive.ubuntu.com wily/restricted amd64 Packages
+   7% [InRelease gpgv 64.5 kB] [Waiting for headers] [Connecting to security.ubunt7% [Sources 0 B] [InRelease gpgv 64.5 kB] [Waiting for headers] [Connecting to                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily/universe amd64 Packages
+   7% [Sources 0 B] [InRelease gpgv 64.5 kB] [Waiting for headers] [Connecting to                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily/multiverse amd64 Packages
+   7% [Sources 0 B] [InRelease gpgv 64.5 kB] [Waiting for headers] [Connecting to                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily/main Translation-en
+   7% [Sources 0 B] [InRelease gpgv 64.5 kB] [Waiting for headers] [Connecting to                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily/multiverse Translation-en
+   7% [Sources 0 B] [InRelease gpgv 64.5 kB] [Waiting for headers] [Connecting to                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily/restricted Translation-en
+   7% [Sources 0 B] [InRelease gpgv 64.5 kB] [Waiting for headers] [Connecting to                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily/universe Translation-en
+   7% [Sources 0 B] [InRelease gpgv 64.5 kB] [Waiting for headers] [Connecting to                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates/main Sources
+   7% [Sources 0 B] [InRelease gpgv 64.5 kB] [Waiting for headers] [Connecting to                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates/restricted Sources
+   7% [Sources 0 B] [InRelease gpgv 64.5 kB] [Waiting for headers] [Connecting to 7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates/universe Sources
+                                                                                  7% [Sources 5,357 kB] [Connecting to security.ubuntu.com (91.189.88.152)]                                                                         Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates/multiverse Sources
+                                                                            7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates/main amd64 Packages
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates/restricted amd64 Packages
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates/universe amd64 Packages
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates/multiverse amd64 Packages
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates/main Translation-en
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates/multiverse Translation-en
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates/restricted Translation-en
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-updates/universe Translation-en
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports/main Sources
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports/restricted Sources
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports/universe Sources
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports/multiverse Sources
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports/main amd64 Packages
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports/restricted amd64 Packages
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports/universe amd64 Packages
+   7% [Sources 5,357 kB] [Waiting for headers] [Connecting to security.ubuntu.com                                                                                Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports/multiverse amd64 Packages
+                                                                                  7% [Sources 5,357 kB] [Connecting to security.ubuntu.com (91.189.88.152)]                                                                         Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports/main Translation-en
+                                                                            7% [Sources 5,357 kB] [Waiting for headers] [Waiting for headers]                                                                 Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports/multiverse Translation-en
+   7% [Sources 5,357 kB] [Waiting for headers] [Waiting for headers]                                                                 Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports/restricted Translation-en
+   7% [Sources 5,357 kB] [Waiting for headers] [Waiting for headers]                                                                 Hit http://us-west-2.ec2.archive.ubuntu.com wily-backports/universe Translation-en
+                                                                    7% [Sources 5,357 kB] [Waiting for headers]                                           100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        Hit http://security.ubuntu.com wily-security InRelease
+                                           100% [Sources 32.3 MB]                      100% [Sources 32.3 MB] [InRelease gpgv 64.4 kB]                                               100% [Sources 32.3 MB]                      Hit http://security.ubuntu.com wily-security/main Sources
+   100% [Sources 32.3 MB]                      Hit http://security.ubuntu.com wily-security/restricted Sources
+   100% [Sources 32.3 MB]                      100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Packages 0 B] [Waiting for headers]                                         Hit http://security.ubuntu.com wily-security/universe Sources
+                                            100% [Packages 8,565 kB]                        100% [Connecting to security.ubuntu.com (91.189.88.152)]                                                        100% [Packages 0 B] [Connecting to security.ubuntu.com (91.189.88.152)]                                                                       100% [Connecting to security.ubuntu.com (91.189.88.152)]                                                        100% [Packages 0 B] [Connecting to security.ubuntu.com (91.189.88.152)]                                                                       100% [Packages 36.8 MB] [Waiting for headers]                                             100% [Waiting for headers]                          100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          100% [Translation-en 0 B] [Waiting for headers]                                               100% [Waiting for headers]                          100% [Translation-en 0 B] [Waiting for headers]                                               100% [Waiting for headers]                          100% [Translation-en 0 B] [Waiting for headers]                                               100% [Waiting for headers]                          100% [Translation-en 0 B] [Waiting for headers]                                               Hit http://security.ubuntu.com wily-security/multiverse Sources
+                                                  100% [Translation-en 21.0 MB]                             Hit http://security.ubuntu.com wily-security/main amd64 Packages
+   100% [Translation-en 21.0 MB]                             Hit http://security.ubuntu.com wily-security/restricted amd64 Packages
+   100% [Translation-en 21.0 MB]                             100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          100% [Translation-en 0 B] [Waiting for headers]                                               100% [Waiting for headers]                          100% [Translation-en 0 B] [Waiting for headers]                                               100% [Waiting for headers]                          100% [Translation-en 0 B] [Waiting for headers]                                               100% [Waiting for headers]                          100% [Translation-en 0 B] [Waiting for headers]                                               100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          100% [Translation-en 0 B] [Waiting for headers]                                               100% [Waiting for headers]                          100% [Translation-en 0 B] [Waiting for headers]                                               100% [Waiting for headers]                          100% [Translation-en 0 B] [Waiting for headers]                                               100% [Waiting for headers]                          100% [Translation-en 0 B] [Waiting for headers]                                               100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Sources 0 B] [Waiting for headers]                                        100% [Waiting for headers]                          100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          Hit http://security.ubuntu.com wily-security/universe amd64 Packages
+                             100% [Working]              100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          Hit http://security.ubuntu.com wily-security/multiverse amd64 Packages
+                             100% [Working]              100% [Packages 0 B] [Waiting for headers]                                         100% [Waiting for headers]                          Hit http://security.ubuntu.com wily-security/main Translation-en
+                             100% [Working]              100% [Translation-en 359 kB] [Waiting for headers]                                                  100% [Waiting for headers]                          Hit http://security.ubuntu.com wily-security/multiverse Translation-en
+                             100% [Working]              100% [Translation-en 0 B] [Waiting for headers]                                               100% [Waiting for headers]                          Hit http://security.ubuntu.com wily-security/restricted Translation-en
+                             100% [Working]100% [Working]              Hit http://security.ubuntu.com wily-security/universe Translation-en
+   100% [Working]              100% [Translation-en 128 kB]                            100% [Working]              Reading package lists... 0%Reading package lists... 0%Reading package lists... 1%Reading package lists... 11%Reading package lists... 11%Reading package lists... 11%Reading package lists... 11%Reading package lists... 55%Reading package lists... 59%Reading package lists... 59%Reading package lists... 60%Reading package lists... 60%Reading package lists... 66%Reading package lists... 66%Reading package lists... 67%Reading package lists... 67%Reading package lists... 67%Reading package lists... 67%Reading package lists... 94%Reading package lists... 94%Reading package lists... 95%Reading package lists... 95%Reading package lists... 95%Reading package lists... 95%Reading package lists... 96%Reading package lists... 96%Reading package lists... 96%Reading package lists... 96%Reading package lists... 96%Reading package lists... 96%Reading package lists... 96%Reading package lists... 96%Reading package lists... 96%Reading package lists... 96%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 97%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 98%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
+   Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+   Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+   Reading state information... 0%Reading state information... 1%Reading state information... Done
+   Calculating upgrade... Done
+   The following packages have been kept back:
+     linux-headers-generic linux-headers-virtual linux-image-virtual
+     linux-virtual sosreport
+   The following packages will be upgraded:
+     aptitude aptitude-common bind9-host cloud-init curl distro-info-data
+     dnsutils git git-core git-man grub-common grub-legacy-ec2 grub-pc
+     grub-pc-bin grub2-common initscripts isc-dhcp-client isc-dhcp-common
+     libbind9-90 libcurl3-gnutls libdns-export100 libdns100 libirs-export91
+     libisc-export95 libisc95 libisccc90 libisccfg-export90 libisccfg90
+     liblwres90 libnss3 libnss3-nssdb libpng12-0 libssl1.0.0 libxml2
+     linux-libc-dev nano openssh-client openssh-server openssh-sftp-server
+     openssl perl perl-base perl-modules python-apt-common python3-apt rsync
+     sysv-rc sysvinit-utils unattended-upgrades
+   49 upgraded, 0 newly installed, 0 to remove and 5 not upgraded.
+   Need to get 24.2 MB of archives.
+   After this operation, 1,568 kB of additional disk space will be used.
+   0% [Working]            Get:1 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main perl amd64 5.20.2-6ubuntu0.1 [2,652 kB]
+               0% [1 perl 2,510 B/2,652 kB 0%]                               11% [Working]             Get:2 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main perl-base amd64 5.20.2-6ubuntu0.1 [1,205 kB]
+                11% [2 perl-base 0 B/1,205 kB 0%]                                 16% [Working]             Get:3 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main perl-modules all 5.20.2-6ubuntu0.1 [2,491 kB]
+                16% [3 perl-modules 0 B/2,491 kB 0%]                                    26% [Working]             Get:4 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main sysvinit-utils amd64 2.88dsf-59.2ubuntu2.1 [25.7 kB]
+                26% [4 sysvinit-utils 0 B/25.7 kB 0%]                                     26% [Working]             Get:5 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main sysv-rc all 2.88dsf-59.2ubuntu2.1 [36.1 kB]
+                26% [5 sysv-rc 2,530 B/36.1 kB 7%]                                  26% [Waiting for headers]                         Get:6 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main initscripts amd64 2.88dsf-59.2ubuntu2.1 [24.8 kB]
+                            26% [6 initscripts 2,530 B/24.8 kB 10%]                                       27% [Waiting for headers]                         Get:7 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libisc-export95 amd64 1:9.9.5.dfsg-11ubuntu1.2 [121 kB]
+                            27% [7 libisc-export95 2,400 B/121 kB 2%]                                         27% [Working]             Get:8 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libdns-export100 amd64 1:9.9.5.dfsg-11ubuntu1.2 [430 kB]
+                27% [8 libdns-export100 2,400 B/430 kB 1%]                                          29% [Working]             Get:9 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libisccfg-export90 amd64 1:9.9.5.dfsg-11ubuntu1.2 [20.2 kB]
+                29% [9 libisccfg-export90 0 B/20.2 kB 0%]                                         29% [Working]             Get:10 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libirs-export91 amd64 1:9.9.5.dfsg-11ubuntu1.2 [17.8 kB]
+                29% [10 libirs-export91 954 B/17.8 kB 5%]                                         29% [Waiting for headers]                         Get:11 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main isc-dhcp-client amd64 4.3.1-5ubuntu3.1 [228 kB]
+                            29% [11 isc-dhcp-client 2,511 B/228 kB 1%]                                          30% [Working]             Get:12 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main isc-dhcp-common amd64 4.3.1-5ubuntu3.1 [188 kB]
+                30% [12 isc-dhcp-common 2,511 B/188 kB 1%]                                          31% [Working]             Get:13 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libssl1.0.0 amd64 1.0.2d-0ubuntu1.3 [1,081 kB]
+                31% [13 libssl1.0.0 0 B/1,081 kB 0%]                                    35% [Working]             Get:14 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libxml2 amd64 2.9.2+zdfsg1-4ubuntu0.3 [692 kB]
+                35% [14 libxml2 0 B/692 kB 0%]                              38% [Working]             Get:15 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main dnsutils amd64 1:9.9.5.dfsg-11ubuntu1.2 [98.2 kB]
+                38% [15 dnsutils 0 B/98.2 kB 0%]                                38% [Working]             Get:16 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main bind9-host amd64 1:9.9.5.dfsg-11ubuntu1.2 [47.0 kB]
+                38% [16 bind9-host 2,402 B/47.0 kB 5%]                                      39% [Waiting for headers]                         Get:17 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libisc95 amd64 1:9.9.5.dfsg-11ubuntu1.2 [148 kB]
+                            39% [17 libisc95 2,401 B/148 kB 2%]                                   39% [Working]             Get:18 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libdns100 amd64 1:9.9.5.dfsg-11ubuntu1.2 [653 kB]
+                39% [18 libdns100 2,400 B/653 kB 0%]                                    42% [Working]             Get:19 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libisccc90 amd64 1:9.9.5.dfsg-11ubuntu1.2 [15.9 kB]
+                42% [19 libisccc90 0 B/15.9 kB 0%]                                  42% [Working]             Get:20 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libisccfg90 amd64 1:9.9.5.dfsg-11ubuntu1.2 [36.6 kB]
+                42% [20 libisccfg90 954 B/36.6 kB 3%]                                     42% [Waiting for headers]                         Get:21 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main liblwres90 amd64 1:9.9.5.dfsg-11ubuntu1.2 [33.1 kB]
+                            42% [21 liblwres90 2,402 B/33.1 kB 7%]                                      42% [Waiting for headers]                         Get:22 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libbind9-90 amd64 1:9.9.5.dfsg-11ubuntu1.2 [22.7 kB]
+                            42% [22 libbind9-90 2,402 B/22.7 kB 11%]                                        42% [Waiting for headers]                         Get:23 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main curl amd64 7.43.0-1ubuntu2.1 [134 kB]
+                            42% [23 curl 2,401 B/134 kB 2%]                               43% [Working]             Get:24 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libcurl3-gnutls amd64 7.43.0-1ubuntu2.1 [183 kB]
+                43% [24 libcurl3-gnutls 5,297 B/183 kB 3%]                                          44% [Working]             Get:25 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libpng12-0 amd64 1.2.51-0ubuntu3.15.10.2 [119 kB]
+                44% [25 libpng12-0 2,311 B/119 kB 2%]                                     44% [Working]             Get:26 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main nano amd64 2.4.2-1ubuntu0.1 [191 kB]
+                44% [26 nano 2,415 B/191 kB 1%]                               45% [Working]             Get:27 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main openssh-sftp-server amd64 1:6.9p1-2ubuntu0.1 [38.3 kB]
+                45% [27 openssh-sftp-server 2,408 B/38.3 kB 6%]                                               45% [Waiting for headers]                         Get:28 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main openssh-server amd64 1:6.9p1-2ubuntu0.1 [348 kB]
+                            45% [28 openssh-server 958 B/348 kB 0%]                                       47% [Working]             Get:29 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main openssh-client amd64 1:6.9p1-2ubuntu0.1 [601 kB]
+                47% [29 openssh-client 2,406 B/601 kB 0%]                                         49% [Working]             Get:30 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main openssl amd64 1.0.2d-0ubuntu1.3 [511 kB]
+                49% [30 openssl 0 B/511 kB 0%]                              51% [Working]             Get:31 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main python-apt-common all 1.0.1ubuntu0.1 [18.3 kB]
+                51% [31 python-apt-common 0 B/18.3 kB 0%]                                         51% [Working]             Get:32 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main python3-apt amd64 1.0.1ubuntu0.1 [141 kB]
+                51% [32 python3-apt 2,406 B/141 kB 2%]                                      52% [Working]             Get:33 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main rsync amd64 3.1.1-3ubuntu0.15.10.1 [329 kB]
+                52% [33 rsync 2,512 B/329 kB 1%]                                53% [Working]             Get:34 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main aptitude amd64 0.7.3-1ubuntu1.1 [1,348 kB]
+                53% [34 aptitude 0 B/1,348 kB 0%]                                 59% [Working]             Get:35 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main aptitude-common all 0.7.3-1ubuntu1.1 [747 kB]
+                59% [35 aptitude-common 0 B/747 kB 0%]                                      62% [Working]             Get:36 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main distro-info-data all 0.27ubuntu1.1 [3,944 B]
+                62% [36 distro-info-data 0 B/3,944 B 0%]                                        62% [Working]             Get:37 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main git-man all 1:2.5.0-1ubuntu0.1 [728 kB]
+                62% [37 git-man 2,512 B/728 kB 0%]                                  65% [Working]             Get:38 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main git amd64 1:2.5.0-1ubuntu0.1 [3,009 kB]
+                65% [38 git 0 B/3,009 kB 0%]                            77% [Working]             Get:39 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main git-core all 1:2.5.0-1ubuntu0.1 [1,456 B]
+                77% [39 git-core 0 B/1,456 B 0%]                                77% [Working]             Get:40 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main grub-pc amd64 2.02~beta2-29ubuntu0.3 [197 kB]
+                77% [40 grub-pc 2,511 B/197 kB 1%]                                  78% [Working]             Get:41 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main grub-pc-bin amd64 2.02~beta2-29ubuntu0.3 [884 kB]
+                78% [41 grub-pc-bin 2,511 B/884 kB 0%]                                      82% [Working]             Get:42 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main grub2-common amd64 2.02~beta2-29ubuntu0.3 [509 kB]
+                82% [42 grub2-common 0 B/509 kB 0%]                                   84% [Working]             Get:43 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main grub-common amd64 2.02~beta2-29ubuntu0.3 [1,703 kB]
+                84% [43 grub-common 0 B/1,703 kB 0%]                                    91% [Working]             Get:44 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libnss3-nssdb all 2:3.19.2.1-0ubuntu0.15.10.2 [10.6 kB]
+                91% [44 libnss3-nssdb 0 B/10.6 kB 0%]                                     91% [Working]             Get:45 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main libnss3 amd64 2:3.19.2.1-0ubuntu0.15.10.2 [1,129 kB]
+                91% [45 libnss3 966 B/1,129 kB 0%]                                  96% [Working]             Get:46 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main linux-libc-dev amd64 4.2.0-25.30 [816 kB]
+                96% [46 linux-libc-dev 0 B/816 kB 0%]                                     99% [Working]             Get:47 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main unattended-upgrades all 0.86.2ubuntu1.1 [30.2 kB]
+                99% [47 unattended-upgrades 0 B/30.2 kB 0%]                                           99% [Working]             Get:48 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main cloud-init all 0.7.7~bzr1149-0ubuntu5 [220 kB]
+                99% [48 cloud-init 2,512 B/220 kB 1%]                                     100% [Waiting for headers]                          Get:49 http://us-west-2.ec2.archive.ubuntu.com/ubuntu/ wily-updates/main grub-legacy-ec2 all 0.7.7~bzr1149-0ubuntu5 [20.9 kB]
+                             100% [49 grub-legacy-ec2 2,514 B/20.9 kB 12%]                                             100% [Working]              Fetched 24.2 MB in 2s (11.5 MB/s)
+   debconf: unable to initialize frontend: Dialog
+   debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+   debconf: falling back to frontend: Readline
+   Extracting templates from packages: 61%Extracting templates from packages: 100%
+   Preconfiguring packages ...
+   (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 108095 files and directories currently installed.)
+   Preparing to unpack .../perl_5.20.2-6ubuntu0.1_amd64.deb ...
+   Unpacking perl (5.20.2-6ubuntu0.1) over (5.20.2-6) ...
+   Preparing to unpack .../perl-base_5.20.2-6ubuntu0.1_amd64.deb ...
+   Unpacking perl-base (5.20.2-6ubuntu0.1) over (5.20.2-6) ...
+   Processing triggers for man-db (2.7.4-1) ...
+   Setting up perl-base (5.20.2-6ubuntu0.1) ...
+   (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 108095 files and directories currently installed.)
+   Preparing to unpack .../perl-modules_5.20.2-6ubuntu0.1_all.deb ...
+   Unpacking perl-modules (5.20.2-6ubuntu0.1) over (5.20.2-6) ...
+   Preparing to unpack .../sysvinit-utils_2.88dsf-59.2ubuntu2.1_amd64.deb ...
+   Unpacking sysvinit-utils (2.88dsf-59.2ubuntu2.1) over (2.88dsf-59.2ubuntu2) ...
+   Processing triggers for man-db (2.7.4-1) ...
+   Setting up sysvinit-utils (2.88dsf-59.2ubuntu2.1) ...
+   (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 108095 files and directories currently installed.)
+   Preparing to unpack .../sysv-rc_2.88dsf-59.2ubuntu2.1_all.deb ...
+   Unpacking sysv-rc (2.88dsf-59.2ubuntu2.1) over (2.88dsf-59.2ubuntu2) ...
+   Processing triggers for man-db (2.7.4-1) ...
+   Processing triggers for ureadahead (0.100.0-19) ...
+   Setting up sysv-rc (2.88dsf-59.2ubuntu2.1) ...
+   Processing triggers for systemd (225-1ubuntu9) ...
+   (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 108095 files and directories currently installed.)
+   Preparing to unpack .../initscripts_2.88dsf-59.2ubuntu2.1_amd64.deb ...
+   Unpacking initscripts (2.88dsf-59.2ubuntu2.1) over (2.88dsf-59.2ubuntu2) ...
+   Processing triggers for man-db (2.7.4-1) ...
+   Processing triggers for ureadahead (0.100.0-19) ...
+   Processing triggers for systemd (225-1ubuntu9) ...
+   Setting up initscripts (2.88dsf-59.2ubuntu2.1) ...
+   (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 108095 files and directories currently installed.)
+   Preparing to unpack .../libisc-export95_1%3a9.9.5.dfsg-11ubuntu1.2_amd64.deb ...
+   Unpacking libisc-export95 (1:9.9.5.dfsg-11ubuntu1.2) over (1:9.9.5.dfsg-11ubuntu1) ...
+   Preparing to unpack .../libdns-export100_1%3a9.9.5.dfsg-11ubuntu1.2_amd64.deb ...
+   Unpacking libdns-export100 (1:9.9.5.dfsg-11ubuntu1.2) over (1:9.9.5.dfsg-11ubuntu1) ...
+   Preparing to unpack .../libisccfg-export90_1%3a9.9.5.dfsg-11ubuntu1.2_amd64.deb ...
+   Unpacking libisccfg-export90 (1:9.9.5.dfsg-11ubuntu1.2) over (1:9.9.5.dfsg-11ubuntu1) ...
+   Preparing to unpack .../libirs-export91_1%3a9.9.5.dfsg-11ubuntu1.2_amd64.deb ...
+   Unpacking libirs-export91 (1:9.9.5.dfsg-11ubuntu1.2) over (1:9.9.5.dfsg-11ubuntu1) ...
+   Preparing to unpack .../isc-dhcp-client_4.3.1-5ubuntu3.1_amd64.deb ...
+   Unpacking isc-dhcp-client (4.3.1-5ubuntu3.1) over (4.3.1-5ubuntu3) ...
+   Preparing to unpack .../isc-dhcp-common_4.3.1-5ubuntu3.1_amd64.deb ...
+   Unpacking isc-dhcp-common (4.3.1-5ubuntu3.1) over (4.3.1-5ubuntu3) ...
+   Preparing to unpack .../libssl1.0.0_1.0.2d-0ubuntu1.3_amd64.deb ...
+   Unpacking libssl1.0.0:amd64 (1.0.2d-0ubuntu1.3) over (1.0.2d-0ubuntu1) ...
+   Preparing to unpack .../libxml2_2.9.2+zdfsg1-4ubuntu0.3_amd64.deb ...
+   Unpacking libxml2:amd64 (2.9.2+zdfsg1-4ubuntu0.3) over (2.9.2+zdfsg1-4ubuntu0.1) ...
+   Preparing to unpack .../dnsutils_1%3a9.9.5.dfsg-11ubuntu1.2_amd64.deb ...
+   Unpacking dnsutils (1:9.9.5.dfsg-11ubuntu1.2) over (1:9.9.5.dfsg-11ubuntu1) ...
+   Preparing to unpack .../bind9-host_1%3a9.9.5.dfsg-11ubuntu1.2_amd64.deb ...
+   Unpacking bind9-host (1:9.9.5.dfsg-11ubuntu1.2) over (1:9.9.5.dfsg-11ubuntu1) ...
+   Preparing to unpack .../libisc95_1%3a9.9.5.dfsg-11ubuntu1.2_amd64.deb ...
+   Unpacking libisc95 (1:9.9.5.dfsg-11ubuntu1.2) over (1:9.9.5.dfsg-11ubuntu1) ...
+   Preparing to unpack .../libdns100_1%3a9.9.5.dfsg-11ubuntu1.2_amd64.deb ...
+   Unpacking libdns100 (1:9.9.5.dfsg-11ubuntu1.2) over (1:9.9.5.dfsg-11ubuntu1) ...
+   Preparing to unpack .../libisccc90_1%3a9.9.5.dfsg-11ubuntu1.2_amd64.deb ...
+   Unpacking libisccc90 (1:9.9.5.dfsg-11ubuntu1.2) over (1:9.9.5.dfsg-11ubuntu1) ...
+   Preparing to unpack .../libisccfg90_1%3a9.9.5.dfsg-11ubuntu1.2_amd64.deb ...
+   Unpacking libisccfg90 (1:9.9.5.dfsg-11ubuntu1.2) over (1:9.9.5.dfsg-11ubuntu1) ...
+   Preparing to unpack .../liblwres90_1%3a9.9.5.dfsg-11ubuntu1.2_amd64.deb ...
+   Unpacking liblwres90 (1:9.9.5.dfsg-11ubuntu1.2) over (1:9.9.5.dfsg-11ubuntu1) ...
+   Preparing to unpack .../libbind9-90_1%3a9.9.5.dfsg-11ubuntu1.2_amd64.deb ...
+   Unpacking libbind9-90 (1:9.9.5.dfsg-11ubuntu1.2) over (1:9.9.5.dfsg-11ubuntu1) ...
+   Preparing to unpack .../curl_7.43.0-1ubuntu2.1_amd64.deb ...
+   Unpacking curl (7.43.0-1ubuntu2.1) over (7.43.0-1ubuntu2) ...
+   Preparing to unpack .../libcurl3-gnutls_7.43.0-1ubuntu2.1_amd64.deb ...
+   Unpacking libcurl3-gnutls:amd64 (7.43.0-1ubuntu2.1) over (7.43.0-1ubuntu2) ...
+   Preparing to unpack .../libpng12-0_1.2.51-0ubuntu3.15.10.2_amd64.deb ...
+   Unpacking libpng12-0:amd64 (1.2.51-0ubuntu3.15.10.2) over (1.2.51-0ubuntu3.15.10.1) ...
+   Preparing to unpack .../nano_2.4.2-1ubuntu0.1_amd64.deb ...
+   Unpacking nano (2.4.2-1ubuntu0.1) over (2.4.2-1) ...
+   Preparing to unpack .../openssh-sftp-server_1%3a6.9p1-2ubuntu0.1_amd64.deb ...
+   Unpacking openssh-sftp-server (1:6.9p1-2ubuntu0.1) over (1:6.9p1-2) ...
+   Preparing to unpack .../openssh-server_1%3a6.9p1-2ubuntu0.1_amd64.deb ...
+   Unpacking openssh-server (1:6.9p1-2ubuntu0.1) over (1:6.9p1-2) ...
+   Preparing to unpack .../openssh-client_1%3a6.9p1-2ubuntu0.1_amd64.deb ...
+   Unpacking openssh-client (1:6.9p1-2ubuntu0.1) over (1:6.9p1-2) ...
+   Preparing to unpack .../openssl_1.0.2d-0ubuntu1.3_amd64.deb ...
+   Unpacking openssl (1.0.2d-0ubuntu1.3) over (1.0.2d-0ubuntu1) ...
+   Preparing to unpack .../python-apt-common_1.0.1ubuntu0.1_all.deb ...
+   Unpacking python-apt-common (1.0.1ubuntu0.1) over (1.0.1build1) ...
+   Preparing to unpack .../python3-apt_1.0.1ubuntu0.1_amd64.deb ...
+   Unpacking python3-apt (1.0.1ubuntu0.1) over (1.0.1build1) ...
+   Preparing to unpack .../rsync_3.1.1-3ubuntu0.15.10.1_amd64.deb ...
+   Unpacking rsync (3.1.1-3ubuntu0.15.10.1) over (3.1.1-3) ...
+   Preparing to unpack .../aptitude_0.7.3-1ubuntu1.1_amd64.deb ...
+   Unpacking aptitude (0.7.3-1ubuntu1.1) over (0.7.3-1ubuntu1) ...
+   Preparing to unpack .../aptitude-common_0.7.3-1ubuntu1.1_all.deb ...
+   Unpacking aptitude-common (0.7.3-1ubuntu1.1) over (0.7.3-1ubuntu1) ...
+   Preparing to unpack .../distro-info-data_0.27ubuntu1.1_all.deb ...
+   Unpacking distro-info-data (0.27ubuntu1.1) over (0.27ubuntu1) ...
+   Preparing to unpack .../git-man_1%3a2.5.0-1ubuntu0.1_all.deb ...
+   Unpacking git-man (1:2.5.0-1ubuntu0.1) over (1:2.5.0-1) ...
+   Preparing to unpack .../git_1%3a2.5.0-1ubuntu0.1_amd64.deb ...
+   Unpacking git (1:2.5.0-1ubuntu0.1) over (1:2.5.0-1) ...
+   Preparing to unpack .../git-core_1%3a2.5.0-1ubuntu0.1_all.deb ...
+   Unpacking git-core (1:2.5.0-1ubuntu0.1) over (1:2.5.0-1) ...
+   Preparing to unpack .../grub-pc_2.02~beta2-29ubuntu0.3_amd64.deb ...
+   Unpacking grub-pc (2.02~beta2-29ubuntu0.3) over (2.02~beta2-29) ...
+   Preparing to unpack .../grub-pc-bin_2.02~beta2-29ubuntu0.3_amd64.deb ...
+   Unpacking grub-pc-bin (2.02~beta2-29ubuntu0.3) over (2.02~beta2-29) ...
+   Preparing to unpack .../grub2-common_2.02~beta2-29ubuntu0.3_amd64.deb ...
+   Unpacking grub2-common (2.02~beta2-29ubuntu0.3) over (2.02~beta2-29) ...
+   Preparing to unpack .../grub-common_2.02~beta2-29ubuntu0.3_amd64.deb ...
+   Unpacking grub-common (2.02~beta2-29ubuntu0.3) over (2.02~beta2-29) ...
+   Preparing to unpack .../libnss3-nssdb_2%3a3.19.2.1-0ubuntu0.15.10.2_all.deb ...
+   Unpacking libnss3-nssdb (2:3.19.2.1-0ubuntu0.15.10.2) over (2:3.19.2.1-0ubuntu0.15.10.1) ...
+   Preparing to unpack .../libnss3_2%3a3.19.2.1-0ubuntu0.15.10.2_amd64.deb ...
+   Unpacking libnss3:amd64 (2:3.19.2.1-0ubuntu0.15.10.2) over (2:3.19.2.1-0ubuntu0.15.10.1) ...
+   Preparing to unpack .../linux-libc-dev_4.2.0-25.30_amd64.deb ...
+   Unpacking linux-libc-dev:amd64 (4.2.0-25.30) over (4.2.0-19.23) ...
+   Preparing to unpack .../unattended-upgrades_0.86.2ubuntu1.1_all.deb ...
+   Unpacking unattended-upgrades (0.86.2ubuntu1.1) over (0.86.2ubuntu1) ...
+   Preparing to unpack .../cloud-init_0.7.7~bzr1149-0ubuntu5_all.deb ...
+   Unpacking cloud-init (0.7.7~bzr1149-0ubuntu5) over (0.7.7~bzr1149-0ubuntu4) ...
+   Preparing to unpack .../grub-legacy-ec2_0.7.7~bzr1149-0ubuntu5_all.deb ...
+   Leaving 'diversion of /usr/sbin/grub-set-default to /usr/sbin/grub-set-default.real by grub-legacy-ec2'
+   Unpacking grub-legacy-ec2 (0.7.7~bzr1149-0ubuntu5) over (0.7.7~bzr1149-0ubuntu4) ...
+   Processing triggers for man-db (2.7.4-1) ...
+   Processing triggers for install-info (6.0.0.dfsg.1-3) ...
+   Processing triggers for ureadahead (0.100.0-19) ...
+   Processing triggers for systemd (225-1ubuntu9) ...
+   Processing triggers for ufw (0.34-2) ...
+   Setting up perl-modules (5.20.2-6ubuntu0.1) ...
+   Setting up perl (5.20.2-6ubuntu0.1) ...
+   Setting up libisc-export95 (1:9.9.5.dfsg-11ubuntu1.2) ...
+   Setting up libdns-export100 (1:9.9.5.dfsg-11ubuntu1.2) ...
+   Setting up libisccfg-export90 (1:9.9.5.dfsg-11ubuntu1.2) ...
+   Setting up libirs-export91 (1:9.9.5.dfsg-11ubuntu1.2) ...
+   Setting up isc-dhcp-common (4.3.1-5ubuntu3.1) ...
+   Setting up isc-dhcp-client (4.3.1-5ubuntu3.1) ...
+   debconf: unable to initialize frontend: Dialog
+   debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+   debconf: falling back to frontend: Readline
+   Setting up libssl1.0.0:amd64 (1.0.2d-0ubuntu1.3) ...
+   debconf: unable to initialize frontend: Dialog
+   debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+   debconf: falling back to frontend: Readline
+   Setting up libxml2:amd64 (2.9.2+zdfsg1-4ubuntu0.3) ...
+   Setting up libisc95 (1:9.9.5.dfsg-11ubuntu1.2) ...
+   Setting up libdns100 (1:9.9.5.dfsg-11ubuntu1.2) ...
+   Setting up libisccc90 (1:9.9.5.dfsg-11ubuntu1.2) ...
+   Setting up libisccfg90 (1:9.9.5.dfsg-11ubuntu1.2) ...
+   Setting up libbind9-90 (1:9.9.5.dfsg-11ubuntu1.2) ...
+   Setting up liblwres90 (1:9.9.5.dfsg-11ubuntu1.2) ...
+   Setting up bind9-host (1:9.9.5.dfsg-11ubuntu1.2) ...
+   Setting up dnsutils (1:9.9.5.dfsg-11ubuntu1.2) ...
+   Setting up libcurl3-gnutls:amd64 (7.43.0-1ubuntu2.1) ...
+   Setting up curl (7.43.0-1ubuntu2.1) ...
+   Setting up libpng12-0:amd64 (1.2.51-0ubuntu3.15.10.2) ...
+   Setting up nano (2.4.2-1ubuntu0.1) ...
+   Setting up openssh-client (1:6.9p1-2ubuntu0.1) ...
+   Setting up openssh-sftp-server (1:6.9p1-2ubuntu0.1) ...
+   Setting up openssh-server (1:6.9p1-2ubuntu0.1) ...
+   debconf: unable to initialize frontend: Dialog
+   debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+   debconf: falling back to frontend: Readline
+   Setting up openssl (1.0.2d-0ubuntu1.3) ...
+   Setting up python-apt-common (1.0.1ubuntu0.1) ...
+   Setting up python3-apt (1.0.1ubuntu0.1) ...
+   Setting up rsync (3.1.1-3ubuntu0.15.10.1) ...
+   Setting up aptitude-common (0.7.3-1ubuntu1.1) ...
+   Setting up aptitude (0.7.3-1ubuntu1.1) ...
+   Setting up distro-info-data (0.27ubuntu1.1) ...
+   Setting up git-man (1:2.5.0-1ubuntu0.1) ...
+   Setting up git (1:2.5.0-1ubuntu0.1) ...
+   Setting up git-core (1:2.5.0-1ubuntu0.1) ...
+   Setting up grub-common (2.02~beta2-29ubuntu0.3) ...
+   update-rc.d: warning: start and stop actions are no longer supported; falling back to defaults
+   Setting up grub2-common (2.02~beta2-29ubuntu0.3) ...
+   Setting up grub-pc-bin (2.02~beta2-29ubuntu0.3) ...
+   Setting up grub-pc (2.02~beta2-29ubuntu0.3) ...
+   debconf: unable to initialize frontend: Dialog
+   debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+   debconf: falling back to frontend: Readline
+   Installing for i386-pc platform.
+   Installation finished. No error reported.
+   Generating grub configuration file ...
+   Found linux image: /boot/vmlinuz-4.2.0-19-generic
+   Found initrd image: /boot/initrd.img-4.2.0-19-generic
+   done
+   Setting up linux-libc-dev:amd64 (4.2.0-25.30) ...
+   Setting up unattended-upgrades (0.86.2ubuntu1.1) ...
+   debconf: unable to initialize frontend: Dialog
+   debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+   debconf: falling back to frontend: Readline
+   update-rc.d: warning: start and stop actions are no longer supported; falling back to defaults
+   Setting up cloud-init (0.7.7~bzr1149-0ubuntu5) ...
+   debconf: unable to initialize frontend: Dialog
+   debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+   debconf: falling back to frontend: Readline
+   Leaving 'diversion of /etc/init/ureadahead.conf to /etc/init/ureadahead.conf.disabled by cloud-init'
+   Setting up grub-legacy-ec2 (0.7.7~bzr1149-0ubuntu5) ...
+   debconf: unable to initialize frontend: Dialog
+   debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+   debconf: falling back to frontend: Readline
+   Searching for GRUB installation directory ... found: /boot/grub
+   Searching for default file ... found: /boot/grub/default
+   Testing for an existing GRUB menu.lst file ... found: /boot/grub/menu.lst
+   Searching for splash image ... none found, skipping ...
+   Found kernel: /boot/vmlinuz-4.2.0-19-generic
+   Found kernel: /boot/vmlinuz-4.2.0-19-generic
+   Updating /boot/grub/menu.lst ... done
+   
+   Setting up libnss3-nssdb (2:3.19.2.1-0ubuntu0.15.10.2) ...
+   Setting up libnss3:amd64 (2:3.19.2.1-0ubuntu0.15.10.2) ...
+   Processing triggers for libc-bin (2.21-0ubuntu4) ...
+#+end_example
+
+** DONE Install git
+   #+BEGIN_SRC sh  :results output :exports both  :dir /sudo::
+   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+   apt-get install git -y
+   #+END_SRC
+
+   #+RESULTS:
+   : # Sat Jan 30 09:16:44 UTC 2016
+   : Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+   : Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree       
+   : Reading state information... 0%Reading state information... 1%Reading state information... Done
+   : git is already the newest version.
+   : 0 upgraded, 0 newly installed, 0 to remove and 5 not upgraded.
+
+** DONE Install ChefDK
+   I will use chef "solo" to install most of the rest of what I use
+   #+BEGIN_SRC sh  :results output :exports both  :dir /sudo::
+   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+  
+   wget -N https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chefdk_0.10.0-1_amd64.deb
+   ls -lt *deb
+   dpkg -i chefdk_0.10.0-1_amd64.deb
+   #+END_SRC
+
+   #+RESULTS:
+   #+begin_example
+   # Sat Jan 30 09:25:09 UTC 2016
+   --2016-01-30 09:25:09--  https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chefdk_0.10.0-1_amd64.deb
+   Resolving opscode-omnibus-packages.s3.amazonaws.com (opscode-omnibus-packages.s3.amazonaws.com)... 54.231.112.168
+   Connecting to opscode-omnibus-packages.s3.amazonaws.com (opscode-omnibus-packages.s3.amazonaws.com)|54.231.112.168|:443... connected.
+   HTTP request sent, awaiting response... 200 OK
+   Length: 141931804 (135M) [application/x-www-form-urlencoded]
+   Server file no newer than local file ‘chefdk_0.10.0-1_amd64.deb’ -- not retrieving.
+
+   -rw-r--r-- 1 root root 141931804 Nov  9 20:41 chefdk_0.10.0-1_amd64.deb
+   (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 108095 files and directories currently installed.)
+   Preparing to unpack chefdk_0.10.0-1_amd64.deb ...
+   Unpacking chefdk (0.10.0-1) over (0.10.0-1) ...
+   Setting up chefdk (0.10.0-1) ...
+   Thank you for installing Chef Development Kit!
+#+end_example
+
+** DONE Install necessary ssh keys
+   install necsssary ssh keys in =~/.ssh/=
+** DONE Run ssh-agent and add keys if necessary
+** DONE Set up ssh config aliases as needd
+   #+BEGIN_EXAMPLE
+# Needed to use git
+Host github.com
+  HostName github.com
+  User ME
+  IdentityFile ~/.ssh/id_rsa.FOO
+  IdentitiesOnly yes
+
+Host github-as-ME
+  HostName github.com
+  User ME
+  IdentityFile ~/.ssh/id_rsa.FOO
+  IdentitiesOnly yes
+   
+   #+END_EXAMPLE
+
+** TODO Install emacs
+   The blocks below assume that emacs has been installed.
+
+   Skip these for now
+
+*** TODO rewrite cookbooks using what I learn here
+*** TODO reinstall emacs using new chef cookbook
+*** TODO Install with X to get pdf, eww, menus, frames, etc.
+
+** DONE Create base git dir for my repos
+   #+BEGIN_SRC sh  :results output :exports both 
+   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+   mkdir -p  ~/git/github.com/eludom
+   file ~/git/github.com/eludom
+   #+END_SRC
+
+   #+RESULTS:
+   : /home/ubuntu/git/github.com/eludom: directory
+
+
+** TODO Install dotfiles (my .bashrc, ~/bin etc)
+
+   Need to install my ~/bin to get ~/bin/link2 which my makelinks script uses
+
+   #+BEGIN_SRC sh  :results output :exports both  :dir ~/git/github.com/eludom
+   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+
+   if [ -d dotfiles ]; then
+     (cd dotfiles git pull -v ) 
+   else
+     git clone -v git@github.com:eludom/dotfiles.git   || true
+   fi
+   ls -l dotfiles
+   (cd dotfiles; ./makelinks)
+   #+END_SRC
+
+   #+RESULTS:
+   : # Sat Jan 30 10:08:34 UTC 2016
+   : total 20
+   : drwxrwxr-x 3 ubuntu ubuntu 4096 Jan 30 10:08 bin
+   : -rw-rw-r-- 1 ubuntu ubuntu   22 Jan 30 10:08 description
+   : drwxrwxr-x 4 ubuntu ubuntu 4096 Jan 30 10:08 historical
+   : -rwxrwxr-x 1 ubuntu ubuntu  211 Jan 30 10:08 makelinks
+   : -rw-rw-r-- 1 ubuntu ubuntu 1139 Jan 30 10:08 README.org
+
+
+
+** TODO Install ~/.emacs.d
+   #+BEGIN_SRC sh  :results output :exports both  :dir ~/git/github.com/eludom
+   exec 2>&1;set -e; set -u; set +x; echo '#' `date;`
+
+   if [ -d .emacs.d ]; then
+     (cd .emacs.d; git pull -v )
+   else
+     git clone -v git@github.com:eludom/.emacs.d.git   || true
+   fi
+   ls -l .emacs.d
+   #+END_SRC
+
+   #+RESULTS:
+   #+begin_example
+   # Sat Jan 30 10:05:24 UTC 2016
+   Cloning into '.emacs.d'...
+   total 88
+   -rw-rw-r-- 1 ubuntu ubuntu    29 Jan 30 10:05 description
+   drwxrwxr-x 2 ubuntu ubuntu  4096 Jan 30 10:05 etc
+   drwxrwxr-x 2 ubuntu ubuntu  4096 Jan 30 10:05 examples
+   -rw-rw-r-- 1 ubuntu ubuntu 59402 Jan 30 10:05 george.org
+   -rw-rw-r-- 1 ubuntu ubuntu  2063 Jan 30 10:05 init.el
+   -rwxrwxr-x 1 ubuntu ubuntu   200 Jan 30 10:05 makelinks
+   drwxrwxr-x 2 ubuntu ubuntu  4096 Jan 30 10:05 project
+   -rw-rw-r-- 1 ubuntu ubuntu    47 Jan 30 10:05 README.org
+#+end_example
+
+
+   
