@@ -13,7 +13,7 @@
 #+LANGUAGE: en
 #+SELECT_TAGS: export
 
-* [10/12] [83%] Install My github repos to make a new system functional
+* [11/12] [91%] Install My github repos to make a new system functional
    This installs my common things from github on a new system.
 
    Some of these are in [[https://github.com/eludom/chef/tree/master/cookbooks][my chef cookboks]].  All of this should probably
@@ -499,7 +499,7 @@ Host github-as-ME
    : -rwxrwxr-x 1 ubuntu ubuntu  211 Jan 30 10:08 makelinks
    : -rw-rw-r-- 1 ubuntu ubuntu 1139 Jan 30 10:08 README.org
 
-** TODO Install ~/.emacs.d
+** DONE Install ~/.emacs.d
    #+BEGIN_SRC sh  :results output :exports both  :dir ~/git/github.com/eludom
    exec 2>&1;set -e; set -u; set -x; echo '#' `date;`
 
@@ -523,26 +523,39 @@ Host github-as-ME
    #+RESULTS:
    #+begin_example
    ++ date
-   + echo '#' Sat Jan 30 10:28:34 UTC 2016
-   # Sat Jan 30 10:28:34 UTC 2016
-   + '[' -f .emacs.d/george.org ']'
+   + echo '#' Sat Jan 30 10:32:33 UTC 2016
+   # Sat Jan 30 10:32:33 UTC 2016
+   + '[' -f /home/ubuntu/.emacs.d/george.org ']'
+   + git clone -v git@github.com:eludom/.emacs.d.git
+   Cloning into '.emacs.d'...
    + cd .emacs.d
-   + git pull -v
-   From github.com:eludom/.emacs.d
-    = [up to date]      master     -> origin/master
-    = [up to date]      octo       -> origin/octo
-   Already up-to-date.
-   + ls -l .emacs.d
-   total 88
-   -rw-rw-r-- 1 ubuntu ubuntu    29 Jan 30 10:05 description
-   drwxrwxr-x 2 ubuntu ubuntu  4096 Jan 30 10:05 etc
-   drwxrwxr-x 2 ubuntu ubuntu  4096 Jan 30 10:05 examples
-   -rw-rw-r-- 1 ubuntu ubuntu 59402 Jan 30 10:05 george.org
-   -rw-rw-r-- 1 ubuntu ubuntu  2063 Jan 30 10:05 init.el
-   -rwxrwxr-x 1 ubuntu ubuntu   200 Jan 30 10:05 makelinks
-   drwxrwxr-x 2 ubuntu ubuntu  4096 Jan 30 10:05 project
-   -rw-rw-r-- 1 ubuntu ubuntu    47 Jan 30 10:05 README.org
+   + ./makelinks
+   link2: /home/ubuntu/.emacs.d already points to /home/ubuntu/git/github.com/eludom/.emacs.d
+   + ls -l /home/ubuntu/.emacs.d
+   lrwxrwxrwx 1 ubuntu ubuntu 43 Jan 30 10:31 /home/ubuntu/.emacs.d -> /home/ubuntu/git/github.com/eludom/.emacs.d
 #+end_example
+
+
+** DONE Install ~/elisp
+   #+BEGIN_SRC sh  :results output :exports both  :dir ~/git/github.com/eludom
+   exec 2>&1;set -e; set -u; set -x; echo '#' `date;`
+
+   if [ -f ~/elisp/makelinks ]; then
+
+     # my stuff is there, just update if needd
+
+     (cd elisp; git pull -v ) || true
+   else
+
+     # my stuff is not there, start from scratch
+
+     git clone -v git@github.com:eludom/elisp.git   || true 
+     (cd elisp;  ./makelinks) || true
+   fi
+
+
+   ls -l ~/elisp
+   #+END_SRC
 
 
    
