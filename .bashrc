@@ -26,6 +26,13 @@ alias fegi='	find . -print | egrep -i'
 alias egi='	egrep -i' 
 alias psg='	/bin/ps -auxww | grep'
 
+# Set timezone if ~/bin/tz.sh exists
+
+if [ -e ~/bin/tz.sh ]; then
+  echo Setting timezone.
+  source ~/bin/tz.sh
+fi
+
 # Add git stuff to prompt
 
 # http://thelucid.com/2008/12/02/git-setting-up-a-remote-repository-and-doing-an-initial-push/
