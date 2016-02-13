@@ -33,6 +33,19 @@ if [ -e ~/bin/tz.sh ]; then
   source ~/bin/tz.sh
 fi
 
+
+# set up ssh agent
+#
+# Add keys by hand if needed via
+#
+#   ssh-add ~/.ssh/id_*
+
+if [ -e ~/bin/sshagent ]; then
+  echo Starting SSH agent
+  source ~/bin/sshagent
+fi
+
+
 # Add git stuff to prompt
 
 # http://thelucid.com/2008/12/02/git-setting-up-a-remote-repository-and-doing-an-initial-push/
