@@ -1,32 +1,13 @@
 #+TITLE: George Jones's dotfiles and installation script
-#+DATE: <2015-06-08 04:02:51 Monday>
+#+DATE: <2016-02-13 11:59:55 Saturday>
 
-My config files are broken down into three categories:
+This directory contains (for historical reasons) my misc homegrown
+~/bin/ utilities and my generic dotfiles (.bashrc, etc)
 
+They should be installed using the (in this order)
 
-- dotfiles :: This is the "sure, have a look" section.  This is
-     generally non-sensitive configuration data that will likely be
-     generic across all my environments.
-
-- configs :: This is the "who wants to know?" section.  This is
-     generally non-sensitive configuration data that is probably
-     specific to me in specific environments (e.g. work vs home) such
-     as the names of my blogs, environmentally specific
-     shell aliases etc.
-
-- secrets :: This is the "not on your life" section.  This is
-     generally sensitive configuration data that is not suitable for
-     public consumption, e.g. things like ssh credentials, passwords,
-     etc.
-
-The dotfiles are intended to work independently from the configs and secrets.
-
-* Action Items
-** IN-PROGRESS Rewrite link2 utility, use use for installer.
-** TODO Use link2 in installers
-** TODO Make repos match above description
-** TODO merge .emacs.d and elisp into dotfiles
-** TODO move .gitconfig to configs
+  bin/install.sh
+  install.sh
 
 
 
