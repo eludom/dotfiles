@@ -18,7 +18,9 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-echo DIR $DIR
+# ~/bin will be an actual directory because in different contexts and
+# scopes with different projects/people it might have
+# different/additional things.
 
 mkdir -p $HOME/bin
 
@@ -31,11 +33,8 @@ ${DIR}/link2 -r ${DIR}/linkall ~/bin/linkall
 
 ~/bin/linkall $DIR ~/bin/
 
-
-# See what we've done
-
-ls -l ~/bin
-
-# get rid of ~/bin/install.sh as it's too generic of a name and specific to this directory
+# get rid of ~/bin/install.sh as it's too generic of a name.
+# ~/bin will be on my path.  My other directories of things to install
+# will all have an install.sh
 
 rm ~/bin/install.sh
