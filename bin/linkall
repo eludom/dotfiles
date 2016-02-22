@@ -1,0 +1,161 @@
+#! /bin/bash
+#
+# symlink all files in an src directory to a target directory
+#
+# usage: link2 [options] srcDir [targetDir]
+#     -v | --verbose	Echo command names
+#     -d | --debug	Additional debugging output
+#     -h | --help		This text
+#     -n | --dry-run	Do not execute
+#     -r | --remove 	Remove link/file if it exists
+#
+# targetDir is created (mkdir -p) if it does not exist.   Existing
+# symlinks are replaced.
+#
+
+# Examples:
+#
+#  Link all files in /etc to ./etc, creating ~./etc if needed
+#
+#    $ linkall -v /etc
+#  
+#
+#  Link all files in ~/git/public/dotfiles to $HOME, replacing existing links
+#
+#    $ linkall ~/git/public/dotfiles $HOME
+#
+
+# Author:
+#   George Jones
+
+set -e -u
+
+PROG_NAME=$0
+PROG_NAME=`basename $0`
+SHORT_OPTS='vdhnrs:'
+LONG_OPTS='verbose,debug,dry-run,help,remove,stack-size:'
+OPTS=`getopt -o $SHORT_OPTS --long $LONG_OPTS -n 'parse-options' -- "$@"`
+
+function usage() {
+  cat <<END >&2
+usage: $PROG_NAME [options] srcDir targetDir
+    -v | --verbose	Echo command names
+    -d | --debug	Additional debugging output
+    -h | --help		This text
+    -n | --dry-run	Do not execute
+    -r | --remove 	Remove link/file if it exists
+END
+exit 1
+}
+
+if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
+
+eval set -- "$OPTS"
+
+# Default values
+
+VERBOSE=false
+HELP=false
+DRY_RUN=false
+STACK_SIZE=0
+DEBUG=false
+REMOVE=false
+
+# Set user selected options
+
+while true; do
+  case "$1" in
+    -v | --verbose ) VERBOSE=true; shift ;;
+    -d | --debug ) DEBUG=true; shift ;;
+    -h | --help )    HELP=true; shift ;;
+    -n | --dry-run ) DRY_RUN=true; shift ;;
+    -r | --remove ) REMOVE=true; shift ;;
+    -s | --stack-size ) STACK_SIZE="$2"; shift; shift ;;
+    -- ) shift; break ;;
+    * ) break ;;
+  esac
+done
+
+if $DEBUG; then
+  VERBOSE=true
+fi
+
+if $DEBUG; then
+    echo VERBOSE=$VERBOSE
+    echo DEBUG=$DEBUG
+    echo HELP=$HELP
+    echo DRY_RUN=$DRY_RUN
+    echo REMOVE=$REMOVE
+    echo STACK_SIZE=$STACK_SIZE
+fi
+
+# validate arguments
+
+if [[ "$STACK_SIZE" =~ '"^[0-9]+$' ]]; then
+  echo "$PROG_NAME: stack_size must be an integer.  Got /$STACK_SIZE/" >&2
+  usage
+fi
+
+
+# get file arguments
+
+if [ "$#" -lt 1 ]; then
+  echo $PROG_NAME: missing srcDir
+  usage
+fi
+
+if $HELP; then
+  usage
+fi
+
+srcDir=$1
+targetDir=${2:-"${PWD}"}
+
+# figure out the link target, make sure it exists
+
+if [ ! -d ${srcDir} ]; then
+  echo $0: ${srcDir} does not exist or is not a directory>&2
+  exit 1
+fi
+
+
+# Make sure targetDir exists, creating if necessary
+
+
+if [ -d `readlink -f "${targetDir}"` ]; then
+  if $DRY_RUN || $VERBOSE; then
+  	echo ${targetDir} exists
+  fi
+
+elif [ -e "${targetDir}" ]; then
+  echo $0: ${targetDir} exists but is not  or is not a directory>&2
+  exit 1
+else
+  if $DRY_RUN || $VERBOSE; then
+  	echo mkdir -p  ${targetDir}
+  fi
+  mkdir -p "${targetDir}"
+fi
+
+
+
+# Link all files in $srcDir to $targetDir
+
+cd "$srcDir"
+
+for f in `ls -1 -a`; do
+
+  if [ "$f" == '.' ] || [ "$f" == '..' ]; then
+    continue
+  fi
+
+  if $DRY_RUN || $VERBOSE; then
+        echo rm -f  "$targetDir/$f" || true
+  fi
+
+  rm -f  "$targetDir/$f" || true
+  ln -s  "$srcDir/$f" "$targetDir"
+done
+
+
+
