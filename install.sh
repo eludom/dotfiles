@@ -1,5 +1,7 @@
 #! /bin/bash
-# Symlink specific files from this directory in to ~/
+#
+# Link dotifles and bin into $HOME
+#
 
 set -e -u
 
@@ -15,10 +17,25 @@ done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 
+# ~/bin will be an actual directory because in different contexts and
+# scopes with different projects/people it might have
+# different/additional things.
+
+mkdir -p $HOME/bin
+
+bin/link2 -r bin/link2 ~/bin/link2
+bin/link2 -r bin/linkall ~/bin/linkall
+
+# link the rest of bin/
+
+~/bin/linkall $DIR/bin ~/bin/
+
+# link .dotfiles  into ~
+
 linkTo=$HOME
-linkThese=( .bashrc .gitconfig .signature)
-link2=~/bin/link2
+linkThese=( .bashrc .gitconfig)
+link2=./bin/link2
 
 for linkThis in ${linkThese[@]}; do
-  ${link2} -r ${DIR}/$linkThis $linkTo
+  ${link2} -r $linkThis $linkTo
 done

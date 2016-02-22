@@ -1,12 +1,9 @@
 #+TITLE: George Jones's dotfiles and installation script
-#+DATE: <2016-02-13 11:59:55 Saturday>
+#+DATE: <2016-02-22 04:32:55 Monday>
 
 This directory contains (for historical reasons) my misc homegrown
 ~/bin/ utilities and my generic dotfiles (.bashrc, etc)
 
-They should be installed using the (in this order)
-
-  bin/install.sh
   install.sh
 
 
