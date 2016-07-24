@@ -4,7 +4,7 @@
 #+OPTIONS: num:nil p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
 #+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
 #+TITLE: mailhacks with offline imap, org mode and notmuch
-#+DATE: <2016-07-24 16:13:18 Sunday>
+#+DATE: <2016-07-24 18:58:55 Sunday>
 #+AUTHOR: George M Jones
 #+EMAIL: gmj@pobox.com
 #+LANGUAGE: en
@@ -33,6 +33,7 @@ there's nothing left.   The goal is to keep inbox nearly empty
   - repeat
 
 * Ingesting Mail
+  - This works with multiple IMAP accounts 
 ** Pull my latest mail
   #+begin_src shell  :results output :exports both
   exec 2>&1;date;set -e; set -u; set -x
@@ -41,23 +42,17 @@ there's nothing left.   The goal is to keep inbox nearly empty
 
   #+RESULTS:
   #+begin_example
-  Sun Jul 24 16:06:26 EDT 2016
+  Sun Jul 24 18:33:33 EDT 2016
   + offlineimap
   OfflineIMAP 7.0.0
     Licensed under the GNU GPL v2 or any later version (with an OpenSSL exception)
-  Account sync Fooologist:
-   *** Processing account Fooologist
+  Account sync eludom:
+   *** Processing account eludom
    Establishing connection to imap.gmail.com:993
-  Folder 2016 [acc: Fooologist]:
+  Folder 2016 [acc: eludom]:
    Syncing 2016: Gmail -> Maildir
-  Folder 2015 [acc: Fooologist]:
-   Syncing 2015: Gmail -> Maildir
-  Folder 2016 [acc: Fooologist]:
-   Adding flag S to 5 messages on 2016
-  Folder 2015 [acc: Fooologist]:
-   Adding flag S to 6 messages on 2015
-  Account sync Fooologist:
-   *** Finished account 'Fooologist' in 0:05
+  Account sync eludom:
+   *** Finished account 'eludom' in 0:01
 #+end_example
 
 ** Tell notmuch about the new mail
@@ -74,28 +69,30 @@ there's nothing left.   The goal is to keep inbox nearly empty
 
 * Classifying Mail
 #+tblname: tagByHeader
-| tags              | header  | subject                      |
-|-------------------+---------+------------------------------|
-| +onion +lists     | to      | security-onion               |
-| +argus +lists     | subject | ARGUS                        |
-| +saag +lists      | to      | saag                         |
-| +shmoolabs +lists | subject | Labs-Alumni                  |
-| +honeypot +lists  | from    | honeynetproject@honeynet.org |
-| +opsec +lists     | subject | OPSEC                        |
-| +listmgt +lists   | from    | -owner                       |
-| +listmgt +lists   | from    | -requests
-| +sns              | from    | sns.amazonaws.com            |
-| +social           | from    | linkedin                     |
-| +social           | subject | Google+                      |
-| +accounts         | from    | Amazon Web Services          |
-| +accounts         | from    | southwest.com                |
-| +accounts         | from    | account-update@amazon.com    |
-| +accounts         | from    | accounts.google.com          |
-| +me               | from    | gmj                          |
-| +me               | from    | eludom                       |
-| +me               | from    | George Jones                 |
-| +me               | from    | fooologist                   |
-| +spam             | from    | noreply@youtube.com          |
+| tags              | header  | subject                      | comments |
+|-------------------+---------+------------------------------+----------|
+| +onion +lists     | to      | security-onion               |          |
+| +argus +lists     | subject | ARGUS                        |          |
+| +saag +lists      | to      | saag                         |          |
+| +shmoolabs +lists | subject | Labs-Alumni                  |          |
+| +honeypot +lists  | from    | honeynetproject@honeynet.org |          |
+| +opsec +lists     | subject | OPSEC                        |          |
+| +listmgt +lists   | from    | -owner                       |          |
+| +listmgt +lists   | from    | -requests                    |          |
+| +sns              | from    | sns.amazonaws.com            |          |
+| +social           | from    | linkedin                     |          |
+| +social           | subject | Google+                      |          |
+| +social           | from    | twitter.com                  |  eludom  |
+| +accounts         | from    | Amazon Web Services          |          |
+| +accounts         | from    | southwest.com                |          |
+| +accounts         | from    | account-update@amazon.com    |          |
+| +accounts         | from    | accounts.google.com          |          |
+| +accounts         | from    | livestream.com               | eludom   |
+| +me               | from    | gmj                          |          |
+| +me               | from    | eludom                       |          |
+| +me               | from    | George Jones                 |          |
+| +me               | from    | fooologist                   |          |
+| +spam             | from    | noreply@youtube.com          |          |
 
 ** Add tags by header
 
@@ -148,6 +145,8 @@ Running 'notmuch tag +social -- from:"linkedin"'... Child returned 0
 Done.
 Running 'notmuch tag +social -- subject:"Google+"'... Child returned 0
 Done.
+Running 'notmuch tag +social -- from:"twitter.com"'... Child returned 0
+Done.
 Running 'notmuch tag +accounts -- from:"Amazon Web Services"'... Child returned 0
 Done.
 Running 'notmuch tag +accounts -- from:"southwest.com"'... Child returned 0
@@ -155,6 +154,8 @@ Done.
 Running 'notmuch tag +accounts -- from:"account-update@amazon.com"'... Child returned 0
 Done.
 Running 'notmuch tag +accounts -- from:"accounts.google.com"'... Child returned 0
+Done.
+Running 'notmuch tag +accounts -- from:"livestream.com"'... Child returned 0
 Done.
 Running 'notmuch tag +me -- from:"gmj"'... Child returned 0
 Done.
