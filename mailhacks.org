@@ -4,7 +4,7 @@
 #+OPTIONS: num:nil p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
 #+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
 #+TITLE: mailhacks with offline imap, org mode and notmuch
-#+DATE: <2016-07-24 07:52:06 Sunday>
+#+DATE: <2016-07-24 16:13:18 Sunday>
 #+AUTHOR: George M Jones
 #+EMAIL: gmj@pobox.com
 #+LANGUAGE: en
@@ -22,9 +22,15 @@ the standard emacs message mode, though other options
 (e.g. Thunderbird) for reading/sending a possible since offlineimap is
 just dumping files in a MailDir format.
 
+This is an application of [[http://www.ranum.com/security/computer_security/papers/ai/][Marcus Ranum's concept "Artificial Ignorance"]] to
+my inbox, or =egrep -v ignoreThis\|ignoreThat\|ignoreTheOther= until
+there's nothing left.   The goal is to keep inbox nearly empty
 
-Here's my current set of hacks.  In testing on a lesser used gmail
-account for now, but probably moving to my main mail interface soon..
+* Basic process
+  - pull mail down to local store with offlineimap
+  - Look at inbox, apply tags to the largest unclassified entries
+  - move them out of inbox
+  - repeat
 
 * Ingesting Mail
 ** Pull my latest mail
@@ -35,7 +41,7 @@ account for now, but probably moving to my main mail interface soon..
 
   #+RESULTS:
   #+begin_example
-  Sun Jul 24 05:47:17 EDT 2016
+  Sun Jul 24 16:06:26 EDT 2016
   + offlineimap
   OfflineIMAP 7.0.0
     Licensed under the GNU GPL v2 or any later version (with an OpenSSL exception)
@@ -47,11 +53,11 @@ account for now, but probably moving to my main mail interface soon..
   Folder 2015 [acc: Fooologist]:
    Syncing 2015: Gmail -> Maildir
   Folder 2016 [acc: Fooologist]:
-   Adding flag S to 2 messages on 2016
+   Adding flag S to 5 messages on 2016
   Folder 2015 [acc: Fooologist]:
-   Adding flag S to 5 messages on 2015
+   Adding flag S to 6 messages on 2015
   Account sync Fooologist:
-   *** Finished account 'Fooologist' in 0:04
+   *** Finished account 'Fooologist' in 0:05
 #+end_example
 
 ** Tell notmuch about the new mail
@@ -62,27 +68,43 @@ account for now, but probably moving to my main mail interface soon..
   #+end_src
 
   #+RESULTS:
-  : Sun Jul 24 06:07:58 EDT 2016
+  : Sun Jul 24 16:06:59 EDT 2016
   : + notmuch new
   : No new mail.
 
-
 * Classifying Mail
-** Classifying mail
-*** Add tags by header
 #+tblname: tagByHeader
-| tag   | header  | subject        |
-|-------+---------+----------------|
-| onion | to      | security-onion |
-| argus | subject | ARGUS          |
-| saag  | to      | saag           |
+| tags              | header  | subject                      |
+|-------------------+---------+------------------------------|
+| +onion +lists     | to      | security-onion               |
+| +argus +lists     | subject | ARGUS                        |
+| +saag +lists      | to      | saag                         |
+| +shmoolabs +lists | subject | Labs-Alumni                  |
+| +honeypot +lists  | from    | honeynetproject@honeynet.org |
+| +opsec +lists     | subject | OPSEC                        |
+| +listmgt +lists   | from    | -owner                       |
+| +listmgt +lists   | from    | -requests
+| +sns              | from    | sns.amazonaws.com            |
+| +social           | from    | linkedin                     |
+| +social           | subject | Google+                      |
+| +accounts         | from    | Amazon Web Services          |
+| +accounts         | from    | southwest.com                |
+| +accounts         | from    | account-update@amazon.com    |
+| +accounts         | from    | accounts.google.com          |
+| +me               | from    | gmj                          |
+| +me               | from    | eludom                       |
+| +me               | from    | George Jones                 |
+| +me               | from    | fooologist                   |
+| +spam             | from    | noreply@youtube.com          |
+
+** Add tags by header
 
 #+begin_src python :var data=tagByHeader :results output
 import subprocess
 import sys
 
 for i in range(len(data)):
-    cmd = "notmuch tag +%s -- %s:\"%s\"" % (data[i][0],data[i][1],data[i][2])
+    cmd = "notmuch tag %s -- %s:\"%s\"" % (data[i][0],data[i][1],data[i][2])
     print "Running '%s'..." % (cmd),
 
     try:
@@ -103,37 +125,96 @@ for i in range(len(data)):
 #+end_src
 
 #+RESULTS:
-: Running 'notmuch tag +onion -- to:"security-onion"'... Child returned 0
-: Done.
-: Running 'notmuch tag +argus -- subject:"ARGUS"'... Child returned 0
-: Done.
-: Running 'notmuch tag +saag -- to:"saag"'... Child returned 0
-: Done.
+#+begin_example
+Running 'notmuch tag +onion +lists -- to:"security-onion"'... Child returned 0
+Done.
+Running 'notmuch tag +argus +lists -- subject:"ARGUS"'... Child returned 0
+Done.
+Running 'notmuch tag +saag +lists -- to:"saag"'... Child returned 0
+Done.
+Running 'notmuch tag +shmoolabs +lists -- subject:"Labs-Alumni"'... Child returned 0
+Done.
+Running 'notmuch tag +honeypot +lists -- from:"honeynetproject@honeynet.org"'... Child returned 0
+Done.
+Running 'notmuch tag +opsec +lists -- subject:"OPSEC"'... Child returned 0
+Done.
+Running 'notmuch tag +listmgt +lists -- from:"-owner"'... Child returned 0
+Done.
+Running 'notmuch tag +listmgt +lists -- from:"-requests"'... Child returned 0
+Done.
+Running 'notmuch tag +sns -- from:"sns.amazonaws.com"'... Child returned 0
+Done.
+Running 'notmuch tag +social -- from:"linkedin"'... Child returned 0
+Done.
+Running 'notmuch tag +social -- subject:"Google+"'... Child returned 0
+Done.
+Running 'notmuch tag +accounts -- from:"Amazon Web Services"'... Child returned 0
+Done.
+Running 'notmuch tag +accounts -- from:"southwest.com"'... Child returned 0
+Done.
+Running 'notmuch tag +accounts -- from:"account-update@amazon.com"'... Child returned 0
+Done.
+Running 'notmuch tag +accounts -- from:"accounts.google.com"'... Child returned 0
+Done.
+Running 'notmuch tag +me -- from:"gmj"'... Child returned 0
+Done.
+Running 'notmuch tag +me -- from:"eludom"'... Child returned 0
+Done.
+Running 'notmuch tag +me -- from:"George Jones"'... Child returned 0
+Done.
+Running 'notmuch tag +me -- from:"fooologist"'... Child returned 0
+Done.
+Running 'notmuch tag +spam -- from:"noreply@youtube.com"'... Child returned 0
+Done.
+#+end_example
 
-** Moving things out of "inbox"
-*** Move all security onion mail out of my inbox
-  #+begin_src shell  :results output :exports both
-  exec 2>&1;date;set -e; set -u; set -x
+
+
+*** Action Items
+**** TODO Do I need to tag everything all the time?
+     <2016-07-24 Sun>
+     - It might be more efficient to only tag new messages, or
+       messages in the inbox, etc.  Right now, I tag all messages
+       every time.  Think about this.  Is it a problem?
+
+* Moving things out of "inbox"
+
+For now, this is just a list.  I'm moving things out of inbox by hand.
+This could be fed to a code block like we're doing with tagByHeader
+above.
+
+#+tblname: moveOutOfInbox
+| tags     | comment |
+|----------+---------|
+| lists    |         |
+| sns      |         |
+| social   |         |
+| accounts |         |
+| spam     |         |
+
+
+** Move all list mail out of my inbox
+ #+begin_src shell  :results output :exports both
+ exec 2>&1;date;set -e; set -u; set -x
   
-  notmuch tag -inbox -- tag:onion
-  #+end_src
+ notmuch tag -inbox -- tag:lists
+ #+end_src
 
-  #+RESULTS:
-  : Sun Jul 24 06:25:00 EDT 2016
-  : + notmuch tag -inbox -- tag:onion
-    
-*** Move all argus mail out of my inbox
-  #+begin_src shell  :results output :exports both
-  exec 2>&1;date;set -e; set -u; set -x
+ #+RESULTS:
+ : Sun Jul 24 08:09:24 EDT 2016
+ : + notmuch tag -inbox -- tag:lists
+
+** Move a specific tag out of my inbox
+   Edit the tag below and execute the source block
+ #+begin_src shell  :results output :exports both
+ exec 2>&1;date;set -e; set -u; set -x
   
-  notmuch tag -inbox -- tag:argus
-  #+end_src
+ notmuch tag -inbox -- tag:spam
+ #+end_src
 
-  #+RESULTS:
-  : Sun Jul 24 06:29:15 EDT 2016
-  : + notmuch tag -inbox -- tag:argus
-    
-
+ #+RESULTS:
+ : Sun Jul 24 09:08:06 EDT 2016
+ : + notmuch tag -inbox -- tag:spam
 
 * Ideas and Docs
   - http://danamlund.dk/ubuntu_setup_old_notmuch.html
