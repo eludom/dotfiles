@@ -1,0 +1,139 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:nil arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t
+#+OPTIONS: num:nil p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
+#+TITLE: mailhacks with offline imap, org mode and notmuch
+#+DATE: <2016-07-24 07:52:06 Sunday>
+#+AUTHOR: George M Jones
+#+EMAIL: gmj@pobox.com
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 25.1.50.1 (Org mode 8.3.4)
+
+This is a set of hacks to pull email with
+https://github.com/OfflineIMAP/offlineimap,
+and classify it with https://notmuchmail.org/ tags and searches.
+
+Reading mail is also accomplished using the notmuch emacs interface
+https://notmuchmail.org/screenshots/, and sending is accomplished with
+the standard emacs message mode, though other options
+(e.g. Thunderbird) for reading/sending a possible since offlineimap is
+just dumping files in a MailDir format.
+
+
+Here's my current set of hacks.  In testing on a lesser used gmail
+account for now, but probably moving to my main mail interface soon..
+
+* Ingesting Mail
+** Pull my latest mail
+  #+begin_src shell  :results output :exports both
+  exec 2>&1;date;set -e; set -u; set -x
+  offlineimap
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+  Sun Jul 24 05:47:17 EDT 2016
+  + offlineimap
+  OfflineIMAP 7.0.0
+    Licensed under the GNU GPL v2 or any later version (with an OpenSSL exception)
+  Account sync Fooologist:
+   *** Processing account Fooologist
+   Establishing connection to imap.gmail.com:993
+  Folder 2016 [acc: Fooologist]:
+   Syncing 2016: Gmail -> Maildir
+  Folder 2015 [acc: Fooologist]:
+   Syncing 2015: Gmail -> Maildir
+  Folder 2016 [acc: Fooologist]:
+   Adding flag S to 2 messages on 2016
+  Folder 2015 [acc: Fooologist]:
+   Adding flag S to 5 messages on 2015
+  Account sync Fooologist:
+   *** Finished account 'Fooologist' in 0:04
+#+end_example
+
+** Tell notmuch about the new mail
+  #+begin_src shell  :results output :exports both
+  exec 2>&1;date;set -e; set -u; set -x
+  
+  notmuch new
+  #+end_src
+
+  #+RESULTS:
+  : Sun Jul 24 06:07:58 EDT 2016
+  : + notmuch new
+  : No new mail.
+
+
+* Classifying Mail
+** Classifying mail
+*** Add tags by header
+#+tblname: tagByHeader
+| tag   | header  | subject        |
+|-------+---------+----------------|
+| onion | to      | security-onion |
+| argus | subject | ARGUS          |
+| saag  | to      | saag           |
+
+#+begin_src python :var data=tagByHeader :results output
+import subprocess
+import sys
+
+for i in range(len(data)):
+    cmd = "notmuch tag +%s -- %s:\"%s\"" % (data[i][0],data[i][1],data[i][2])
+    print "Running '%s'..." % (cmd),
+
+    try:
+        #retcode = subprocess.call("echo foo", shell=True)
+        retcode = subprocess.call(cmd, shell=True)
+        if retcode < 0:
+            print >>sys.stderr, "Child was terminated by signal", -retcode
+            print >>sys.stdout, "Child was terminated by signal", -retcode
+        else:
+            print >>sys.stderr, "Child returned", retcode
+            print >>sys.stdout, "Child returned", retcode
+    except OSError as e:
+        print >>sys.stderr, "Execution failed:", e
+        print >>sys.stdout, "Execution failed:", e
+
+    print "Done."
+
+#+end_src
+
+#+RESULTS:
+: Running 'notmuch tag +onion -- to:"security-onion"'... Child returned 0
+: Done.
+: Running 'notmuch tag +argus -- subject:"ARGUS"'... Child returned 0
+: Done.
+: Running 'notmuch tag +saag -- to:"saag"'... Child returned 0
+: Done.
+
+** Moving things out of "inbox"
+*** Move all security onion mail out of my inbox
+  #+begin_src shell  :results output :exports both
+  exec 2>&1;date;set -e; set -u; set -x
+  
+  notmuch tag -inbox -- tag:onion
+  #+end_src
+
+  #+RESULTS:
+  : Sun Jul 24 06:25:00 EDT 2016
+  : + notmuch tag -inbox -- tag:onion
+    
+*** Move all argus mail out of my inbox
+  #+begin_src shell  :results output :exports both
+  exec 2>&1;date;set -e; set -u; set -x
+  
+  notmuch tag -inbox -- tag:argus
+  #+end_src
+
+  #+RESULTS:
+  : Sun Jul 24 06:29:15 EDT 2016
+  : + notmuch tag -inbox -- tag:argus
+    
+
+
+* Ideas and Docs
+  - http://danamlund.dk/ubuntu_setup_old_notmuch.html
