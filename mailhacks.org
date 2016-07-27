@@ -4,7 +4,7 @@
 #+OPTIONS: num:nil p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
 #+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
 #+TITLE: mailhacks with offline imap, org mode and notmuch
-#+DATE: <2016-07-24 18:58:55 Sunday>
+#+DATE: <2016-07-27 07:36:48 Wednesday>
 #+AUTHOR: George M Jones
 #+EMAIL: gmj@pobox.com
 #+LANGUAGE: en
@@ -42,7 +42,7 @@ there's nothing left.   The goal is to keep inbox nearly empty
 
   #+RESULTS:
   #+begin_example
-  Sun Jul 24 18:33:33 EDT 2016
+  Sun Jul 24 20:33:12 EDT 2016
   + offlineimap
   OfflineIMAP 7.0.0
     Licensed under the GNU GPL v2 or any later version (with an OpenSSL exception)
@@ -51,8 +51,9 @@ there's nothing left.   The goal is to keep inbox nearly empty
    Establishing connection to imap.gmail.com:993
   Folder 2016 [acc: eludom]:
    Syncing 2016: Gmail -> Maildir
+   Adding flag S to 4 messages on 2016
   Account sync eludom:
-   *** Finished account 'eludom' in 0:01
+   *** Finished account 'eludom' in 0:02
 #+end_example
 
 ** Tell notmuch about the new mail
@@ -63,7 +64,7 @@ there's nothing left.   The goal is to keep inbox nearly empty
   #+end_src
 
   #+RESULTS:
-  : Sun Jul 24 16:06:59 EDT 2016
+  : Sun Jul 24 20:33:43 EDT 2016
   : + notmuch new
   : No new mail.
 
