@@ -1,0 +1,243 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:nil arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t
+#+OPTIONS: num:nil p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
+#+TITLE: mailhacks with offline imap, org mode and notmuch
+#+DATE: <2016-07-30 22:11:13 Saturday>
+#+AUTHOR: George M Jones
+#+EMAIL: gmj@pobox.com
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 25.1.50.1 (Org mode 8.3.4)
+
+This is a set of hacks to pull email with
+https://github.com/OfflineIMAP/offlineimap,
+and classify it with https://notmuchmail.org/ tags and searches.
+
+Reading mail is also accomplished using the notmuch emacs interface
+https://notmuchmail.org/screenshots/, and sending is accomplished with
+the standard emacs message mode, though other options
+(e.g. Thunderbird) for reading/sending a possible since offlineimap is
+just dumping files in a MailDir format.
+
+This is an application of [[http://www.ranum.com/security/computer_security/papers/ai/][Marcus Ranum's concept "Artificial Ignorance"]] to
+my inbox, or =egrep -v ignoreThis\|ignoreThat\|ignoreTheOther= until
+there's nothing left.   The goal is to keep inbox nearly empty
+
+* Basic process
+  - pull mail down to local store with offlineimap
+  - Look at inbox, apply tags to the largest unclassified entries
+  - move them out of inbox
+  - repeat
+
+* Ingesting Mail
+  - This works with multiple IMAP accounts
+** Pull my latest mail
+#+name: getMyMail
+#+begin_src python :var data=tagByHeader :results output
+  import subprocess
+  import sys
+
+  for i in range(len(data)):
+      cmd = "offlineimap > %s" % ("offlineimap.log")
+      print "Running '%s'..." % (cmd),
+
+      try:
+          #retcode = subprocess.call("echo foo", shell=True)
+          retcode = subprocess.call(cmd, shell=True)
+          if retcode < 0:
+              print >>sys.stderr, "Child was terminated by signal", -retcode
+              print >>sys.stdout, "Child was terminated by signal", -retcode
+          else:
+              print >>sys.stderr, "Child returned", retcode
+              print >>sys.stdout, "Child returned", retcode
+      except OSError as e:
+          print >>sys.stderr, "Execution failed:", e
+          print >>sys.stdout, "Execution failed:", e
+		
+      print "Done."
+#+end_src
+
+
+** Tell notmuch about the new mail
+  #+begin_src shell  :results output :exports both
+  exec 2>&1;date;set -e; set -u; set -x
+  
+  notmuch new
+  #+end_src
+
+  #+RESULTS:
+  : Sat Jul 30 21:58:40 EDT 2016
+  : + notmuch new
+  : Processed 42 total files in 2s (19 files/sec.).[K
+  : Added 42 new messages to the database.
+
+* Classifying Mail
+#+tblname: tagByHeader
+| tags                   | header  | subject                      | comments |
+|------------------------+---------+------------------------------+----------|
+| +onion +lists          | to      | security-onion               |          |
+| +argus +lists          | subject | ARGUS                        |          |
+| +saag +lists           | to      | saag                         |          |
+| +shmoolabs +lists      | subject | Labs-Alumni                  |          |
+| +honeypot +lists       | from    | honeynetproject@honeynet.org |          |
+| +opsec +lists          | subject | OPSEC                        |          |
+| +listmgt +lists        | from    | -owner                       |          |
+| +listmgt +lists        | from    | -requests                    |          |
+| +lists                 | subject | BSATroop161                  |          |
+| +sns                   | from    | sns.amazonaws.com            |          |
+| +social                | from    | linkedin                     |          |
+| +social                | subject | Google+                      |          |
+| +social                | from    | twitter.com                  | eludom   |
+| +accounts              | from    | Amazon Web Services          |          |
+| +accounts              | from    | southwest.com                |          |
+| +accounts              | from    | account-update@amazon.com    |          |
+| +accounts              | from    | accounts.google.com          |          |
+| +accounts -inbox       | from    | livestream.com               | eludom   |
+| +finance               | from    | Mint.com                     |          |
+| +church                | from    | lcfweb.org                   |          |
+| +me                    | from    | gmj                          |          |
+| +me                    | from    | eludom                       |          |
+| +me                    | from    | George Jones                 |          |
+| +me                    | from    | fooologist                   |          |
+| +spam -inbox           | from    | tumblr.com                   |          |
+| +spam -inbox +accounts | subject | Spam                         |          |
+| +spam -inbox           | from    | noreply@youtube.com          |          |
+
+** Add tags by header
+
+#+begin_src python :var data=tagByHeader :results output
+import subprocess
+import sys
+
+for i in range(len(data)):
+    cmd = "notmuch tag %s -- %s:\"%s\"" % (data[i][0],data[i][1],data[i][2])
+    print "Running '%s'..." % (cmd),
+
+    try:
+        #retcode = subprocess.call("echo foo", shell=True)
+        retcode = subprocess.call(cmd, shell=True)
+        if retcode < 0:
+            print >>sys.stderr, "Child was terminated by signal", -retcode
+            print >>sys.stdout, "Child was terminated by signal", -retcode
+        else:
+            print >>sys.stderr, "Child returned", retcode
+            print >>sys.stdout, "Child returned", retcode
+    except OSError as e:
+        print >>sys.stderr, "Execution failed:", e
+        print >>sys.stdout, "Execution failed:", e
+
+    print "Done."
+
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Running 'notmuch tag +onion +lists -- to:"security-onion"'... Child returned 0
+Done.
+Running 'notmuch tag +argus +lists -- subject:"ARGUS"'... Child returned 0
+Done.
+Running 'notmuch tag +saag +lists -- to:"saag"'... Child returned 0
+Done.
+Running 'notmuch tag +shmoolabs +lists -- subject:"Labs-Alumni"'... Child returned 0
+Done.
+Running 'notmuch tag +honeypot +lists -- from:"honeynetproject@honeynet.org"'... Child returned 0
+Done.
+Running 'notmuch tag +opsec +lists -- subject:"OPSEC"'... Child returned 0
+Done.
+Running 'notmuch tag +listmgt +lists -- from:"-owner"'... Child returned 0
+Done.
+Running 'notmuch tag +listmgt +lists -- from:"-requests"'... Child returned 0
+Done.
+Running 'notmuch tag +lists -- subject:"BSATroop161"'... Child returned 0
+Done.
+Running 'notmuch tag +sns -- from:"sns.amazonaws.com"'... Child returned 0
+Done.
+Running 'notmuch tag +social -- from:"linkedin"'... Child returned 0
+Done.
+Running 'notmuch tag +social -- subject:"Google+"'... Child returned 0
+Done.
+Running 'notmuch tag +social -- from:"twitter.com"'... Child returned 0
+Done.
+Running 'notmuch tag +accounts -- from:"Amazon Web Services"'... Child returned 0
+Done.
+Running 'notmuch tag +accounts -- from:"southwest.com"'... Child returned 0
+Done.
+Running 'notmuch tag +accounts -- from:"account-update@amazon.com"'... Child returned 0
+Done.
+Running 'notmuch tag +accounts -- from:"accounts.google.com"'... Child returned 0
+Done.
+Running 'notmuch tag +accounts -inbox -- from:"livestream.com"'... Child returned 0
+Done.
+Running 'notmuch tag +finance -- from:"Mint.com"'... Child returned 0
+Done.
+Running 'notmuch tag +church -- from:"lcfweb.org"'... Child returned 0
+Done.
+Running 'notmuch tag +me -- from:"gmj"'... Child returned 0
+Done.
+Running 'notmuch tag +me -- from:"eludom"'... Child returned 0
+Done.
+Running 'notmuch tag +me -- from:"George Jones"'... Child returned 0
+Done.
+Running 'notmuch tag +me -- from:"fooologist"'... Child returned 0
+Done.
+Running 'notmuch tag +spam -inbox -- from:"tumblr.com"'... Child returned 0
+Done.
+Running 'notmuch tag +spam -inbox +accounts -- subject:"Spam"'... Child returned 0
+Done.
+Running 'notmuch tag +spam -inbox -- from:"noreply@youtube.com"'... Child returned 0
+Done.
+#+end_example
+
+
+
+*** Action Items
+**** TODO Do I need to tag everything all the time?
+     <2016-07-24 Sun>
+     - It might be more efficient to only tag new messages, or
+       messages in the inbox, etc.  Right now, I tag all messages
+       every time.  Think about this.  Is it a problem?
+
+* Moving things out of "inbox"
+
+For now, this is just a list.  I'm moving things out of inbox by hand.
+This could be fed to a code block like we're doing with tagByHeader
+above.
+
+#+tblname: moveOutOfInbox
+| tags     | comment |
+|----------+---------|
+| lists    |         |
+| sns      |         |
+| social   |         |
+| accounts |         |
+| spam     |         |
+
+
+** Move all list mail out of my inbox
+ #+begin_src shell  :results output :exports both
+ exec 2>&1;date;set -e; set -u; set -x
+  
+ notmuch tag -inbox -- tag:lists
+ #+end_src
+
+ #+RESULTS:
+ : Sun Jul 24 08:09:24 EDT 2016
+ : + notmuch tag -inbox -- tag:lists
+
+** Move a specific tag out of my inbox
+   Edit the tag below and execute the source block
+ #+begin_src shell  :results output :exports both
+ exec 2>&1;date;set -e; set -u; set -x
+  
+ notmuch tag -inbox -- tag:spam
+ #+end_src
+
+ #+RESULTS:
+ : Sun Jul 24 09:08:06 EDT 2016
+ : + notmuch tag -inbox -- tag:spam
+
+* Ideas and Docs
+  - http://danamlund.dk/ubuntu_setup_old_notmuch.html

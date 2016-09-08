@@ -1,0 +1,15 @@
+#! /bin/bash
+# Grep out files that change a lot in Ubuntu home directory
+#
+# Usage: cd ~ ; ls -l | grepOutUbuntuFiles
+#
+# 
+# Example:  
+#
+#  To find files that have changed today on an Ubuntu system home
+#  directory that are not standard files:
+#
+#    find . -mtime -1 -print0 | xargs -0 ls -ltd  | egrep -vi \\.mozilla\|\\.macromedia\|\\.cache\|\\.config\|\\.local | egrep -vi Mail 
+#
+
+egrep -vi \\.mozilla\|\\.macromedia\|\\.cache\|\\.config\|\\.local
