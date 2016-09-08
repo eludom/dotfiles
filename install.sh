@@ -33,7 +33,7 @@ bin/link2 -r bin/linkall ~/bin/linkall
 # link .dotfiles  into ~
 
 linkTo=$HOME
-linkThese=( .bashrc .gitconfig)
+linkThese=( .bashrc )
 link2=./bin/link2
 
 for linkThis in ${linkThese[@]}; do

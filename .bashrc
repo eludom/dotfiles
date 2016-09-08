@@ -3,7 +3,11 @@
 #
 # Tue Mar 26 20:07:29 2013 
 #
-
+#
+# Don't do this unless you are testing.
+# 
+#    set -e
+#
 #
 # Before anything else, fix the CTRL key !!!
 #
@@ -21,10 +25,12 @@ export PS1="\# [\t] \u@\h \W/ $ "
 alias  cd='	pushd'
 #bind -x '"\C-l": clear;'
 alias rm='	rm -i'
+alias ag='	alias | grep -i' 
 alias eg='	printenv | grep -i' 
 alias fegi='	find . -print | egrep -i'
 alias egi='	egrep -i' 
 alias psg='	/bin/ps -auxww | grep'
+alias p8='	ping -c 3 8.8.8.8'
 
 # Set timezone if ~/bin/tz.sh exists
 
@@ -45,6 +51,12 @@ if [ -e ~/bin/sshagent ]; then
   source ~/bin/sshagent
 fi
 
+# git stuff
+
+alias glm='git ls-files -m'
+alias gam='git add `git ls-files -m`'
+alias gcm='git commit -m'
+alias gs='git status'
 
 # Add git stuff to prompt
 
@@ -123,36 +135,36 @@ fi
 
 # http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
 
-    if hash emacsclient 2>/dev/null; then
-        # http://stackoverflow.com/questions/5570451/how-to-start-emacs-server-only-if-it-is-not-started
-        export ALTERNATE_EDITOR="" # Because I should never have to start emacs
-    	export VISUAL="emacsclient -t"
-	export EDITOR="emacsclient -t"
-    	alias e='[ "$DISPLAY" == ""] && emacsclient -t || emacsclient -c'
-    elif hash emacs 2>/dev/null; then
-        export ALTERNATE_EDITOR="" # Because I should never have to start emacs
-    	export VISUAL="emacs"
-	export EDITOR="emacs"
-    	alias e='[ "$DISPLAY" == ""] && emacsclient -t || emacsclient -c'
-    else
-        2>& echo BOO no emacs here
-        export ALTERNATE_EDITOR="" # Because I should never have to start emacs
-    	export VISUAL=""
-	export EDITOR=""
-    	unalias e 2>/dev/null || true
-	
-    fi
+#    if hash emacsclient 2>/dev/null; then
+#        # http://stackoverflow.com/questions/5570451/how-to-start-emacs-server-only-if-it-is-not-started
+#        export ALTERNATE_EDITOR="" # Because I should never have to start emacs
+#    	export VISUAL="emacsclient -t"
+#	export EDITOR="emacsclient -t"
+#    	alias e='[ "$DISPLAY" == ""] && emacsclient -t || emacsclient -c'
+#    elif hash emacs 2>/dev/null; then
+#        export ALTERNATE_EDITOR="" # Because I should never have to start emacs
+#    	export VISUAL="emacs"
+#	export EDITOR="emacs"
+#    	alias e='[ "$DISPLAY" == ""] && emacsclient -t || emacsclient -c'
+#    else
+#        2>& echo BOO no emacs here
+#        export ALTERNATE_EDITOR="" # Because I should never have to start emacs
+#    	export VISUAL=""
+#	export EDITOR=""
+#    	unalias e 2>/dev/null || true
+#	
+#    fi
 
 
 #
 # Do OS-specific setup
 #
 
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    color="--color";
-else
-    color=""
-fi
+#if [[ "$OSTYPE" == "linux-gnu" ]]; then
+#    color="--color";
+#else
+#    color=""
+#fi
 
 alias ls='	ls '$color' -a'
 alias llr=' 	ls -ltr '$color' -a'
