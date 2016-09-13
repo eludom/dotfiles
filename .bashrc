@@ -11,10 +11,9 @@
 #
 # Before anything else, fix the CTRL key !!!
 #
-
-if [ -x $HOME/bin/fixctrl.sh ]; then
-  $HOME/bin/fixctrl.sh
-fi
+# if [ -x $HOME/bin/fixctrl.sh ]; then
+#   $HOME/bin/fixctrl.sh
+# fi
 
 #
 # Generic things
@@ -49,7 +48,7 @@ fi
 #   ssh-add ~/.ssh/id_*
 
 if [ -e ~/bin/sshagent ]; then
-  echo Starting SSH agent
+  #echo Starting SSH agent
   source ~/bin/sshagent
 fi
 
@@ -71,8 +70,9 @@ function git-branch-prompt {
   if [ $branch ]; then printf " [%s]" $branch; fi
 }
 
-export PS1="\# [\t] \u@\h \W/\$(git-branch-prompt) $ " 
-PS1="\u@\h \[\033[0;36m\]\W\[\033[0m\]\[\033[0;32m\]\$(git-branch-prompt)\[\033[0m\] \$ "
+export PS1="\# [\t] \u@\h \W/ $ " 
+#export PS1="\# [\t] \u@\h \W/\$(git-branch-prompt) $ " 
+#PS1="\u@\h \[\033[0;36m\]\W\[\033[0m\]\[\033[0;32m\]\$(git-branch-prompt)\[\033[0m\] \$ "
 
 # Preserve history across sesssions
 # 
@@ -103,7 +103,7 @@ pathrm() {
 # add path to the end if not there
 pathlast() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-	echo  pathlast $1
+	#echo  pathlast $1
         export PATH="${PATH:+"$PATH:"}$1"
     fi
 }
@@ -111,7 +111,7 @@ pathlast() {
 # add path to the front if not there
 pathfirst() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-	echo  pathfirst $1
+	#echo  pathfirst $1
         export PATH="$1:${PATH}"
     fi
 }
