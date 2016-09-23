@@ -11,6 +11,16 @@
 #
 # Before anything else, fix the CTRL key !!!
 #
+# TO DO List
+#   - TODO Figure out why this breaks git over SSH
+#     Something about the prompt breaks git
+#
+#   - TODO set hostname promt based on contents of 
+#     ~/.hostname or someshuch (rather than "ufc3fdb42457757027cca")
+#
+#   - TODO figure out how to orgify this
+#     So that I can edit .org file and export .bashrc
+
 
 if [ -x $HOME/bin/fixctrl.sh ]; then
   $HOME/bin/fixctrl.sh
@@ -116,9 +126,9 @@ pathfirst() {
     fi
 }
 
-# Generic path
+# Add ~/bin to path
 
-pathlast $HOME/bin
+pathrm $HOME/bin && pathfirst $HOME/bin
 
 #
 # Execute any .sh files in ~/rc.local/*.sh
@@ -134,6 +144,29 @@ fi
 #
 # Invoking emacs
 #
+
+# http://stuff-things.net/2014/12/16/working-with-emacsclient/
+
+if [ -z "$SSH_CONNECTION" ]; then
+   case $OSTYPE in
+   darwin*)
+       export EMACSCLIENT=/Applications/Emacs.app/Contents/MacOS/bin/emacsclient
+       alias emacsclient=$EMACSCLIENT
+       ;;
+   *)
+       export EMACSCLIENT=emacsclient
+       ;;
+   esac
+   alias ec="$EMACSCLIENT -c -n"
+   export EDITOR="$EMACSCLIENT -c"
+   export ALTERNATE_EDITOR=""
+else
+    export EDITOR=$(type -P emacs || type -P ed || type -P vi || type -P vim)
+fi
+export VISUAL=$EDITOR
+
+# to exit emacs serve
+alias ke='emacsclient -e "(kill-emacs)"'
 
 # http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
 
