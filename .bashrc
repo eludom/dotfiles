@@ -9,11 +9,6 @@
 #    set -e
 #
 #
-# Before anything else, fix the CTRL key !!!
-#
-# if [ -x $HOME/bin/fixctrl.sh ]; then
-#   $HOME/bin/fixctrl.sh
-# fi
 
 #
 # Generic things
@@ -32,6 +27,20 @@ alias fegi='	find . -print | egrep -i'
 alias egi='	egrep -i' 
 alias psg='	/bin/ps -auxww | grep'
 alias p8='	ping -c 3 8.8.8.8'
+
+
+
+# Set HOSTNAME if ~/etc/hostname exists
+
+if [ -e ${HOME}/etc/hostname ]; then
+    export HOSTNAME=`cat ${HOME}/etc/hostname`
+elif [ -e /etc/hostname ]; then
+    export HOSTNAME=`cat /etc/hostname`
+else
+    export HOSTNAME="unknown"
+fi
+
+
 
 # Set timezone if ~/bin/tz.sh exists
 
@@ -70,8 +79,14 @@ function git-branch-prompt {
   if [ $branch ]; then printf " [%s]" $branch; fi
 }
 
-export PS1="\# [\t] \u@\h \W/ $ " 
-#export PS1="\# [\t] \u@\h \W/\$(git-branch-prompt) $ " 
+#export PS1="\# [\t] \u@\h \W/ $ "
+export PS1="\# [\t] \u@${HOSTNAME} \W/ $ "
+
+
+if command -v git >/dev/null 2>&1; then 
+  export PS1="\# [\t] \u@${HOSTNAME} \W/\$(git-branch-prompt) $ " 
+fi
+
 #PS1="\u@\h \[\033[0;36m\]\W\[\033[0m\]\[\033[0;32m\]\$(git-branch-prompt)\[\033[0m\] \$ "
 
 # Preserve history across sesssions
