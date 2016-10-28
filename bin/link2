@@ -3,7 +3,7 @@
 # Symlink a existing file to a new location.  Rename and link to old versions with datestamps.
 #
 # usage: link2 [options] target [link]
-#     -v | --verbose	Echo command names
+#     -v | --vrebose	Echo command names
 #     -d | --debug	Additional debugging output
 #     -h | --help		This text
 #     -n | --dry-run	Do not execute

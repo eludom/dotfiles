@@ -9,12 +9,6 @@
 #    set -e
 #
 #
-# Before anything else, fix the CTRL key !!!
-#
-
-if [ -x $HOME/bin/fixctrl.sh ]; then
-  $HOME/bin/fixctrl.sh
-fi
 
 #
 # Generic things
@@ -34,6 +28,20 @@ alias egi='	egrep -i'
 alias psg='	/bin/ps -auxww | grep'
 alias p8='	ping -c 3 8.8.8.8'
 
+
+
+# Set HOSTNAME if ~/etc/hostname exists
+
+if [ -e ${HOME}/etc/hostname ]; then
+    export HOSTNAME=`cat ${HOME}/etc/hostname`
+elif [ -e /etc/hostname ]; then
+    export HOSTNAME=`cat /etc/hostname`
+else
+    export HOSTNAME="unknown"
+fi
+
+
+
 # Set timezone if ~/bin/tz.sh exists
 
 if [ -e ~/bin/tz.sh ]; then
@@ -49,7 +57,7 @@ fi
 #   ssh-add ~/.ssh/id_*
 
 if [ -e ~/bin/sshagent ]; then
-  echo Starting SSH agent
+  #echo Starting SSH agent
   source ~/bin/sshagent
 fi
 
@@ -109,7 +117,7 @@ pathrm() {
 # add path to the end if not there
 pathlast() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-	echo  pathlast $1
+	#echo  pathlast $1
         export PATH="${PATH:+"$PATH:"}$1"
     fi
 }
@@ -117,7 +125,7 @@ pathlast() {
 # add path to the front if not there
 pathfirst() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-	echo  pathfirst $1
+	#echo  pathfirst $1
         export PATH="$1:${PATH}"
     fi
 }

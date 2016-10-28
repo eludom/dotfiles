@@ -4,7 +4,7 @@
 #+OPTIONS: num:nil p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
 #+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
 #+TITLE: mailhacks with offline imap, org mode and notmuch
-#+DATE: <2016-07-30 22:11:13 Saturday>
+#+DATE: <2016-08-19 08:14:28 Friday>
 #+AUTHOR: George M Jones
 #+EMAIL: gmj@pobox.com
 #+LANGUAGE: en
@@ -36,30 +36,32 @@ there's nothing left.   The goal is to keep inbox nearly empty
   - This works with multiple IMAP accounts
 ** Pull my latest mail
 #+name: getMyMail
-#+begin_src python :var data=tagByHeader :results output
+#+begin_src python :results output
   import subprocess
   import sys
 
-  for i in range(len(data)):
-      cmd = "offlineimap > %s" % ("offlineimap.log")
-      print "Running '%s'..." % (cmd),
+  cmd = "offlineimap > %s" % ("offlineimap.log")
+  print "Running '%s'..." % (cmd),
 
-      try:
-          #retcode = subprocess.call("echo foo", shell=True)
-          retcode = subprocess.call(cmd, shell=True)
-          if retcode < 0:
-              print >>sys.stderr, "Child was terminated by signal", -retcode
-              print >>sys.stdout, "Child was terminated by signal", -retcode
-          else:
-              print >>sys.stderr, "Child returned", retcode
-              print >>sys.stdout, "Child returned", retcode
-      except OSError as e:
-          print >>sys.stderr, "Execution failed:", e
-          print >>sys.stdout, "Execution failed:", e
-		
-      print "Done."
+  try:
+      #retcode = subprocess.call("echo foo", shell=True)
+      retcode = subprocess.call(cmd, shell=True)
+      if retcode < 0:
+          print >>sys.stderr, "Child was terminated by signal", -retcode
+          print >>sys.stdout, "Child was terminated by signal", -retcode
+      else:
+          print >>sys.stderr, "Child returned", retcode
+          print >>sys.stdout, "Child returned", retcode
+  except OSError as e:
+      print >>sys.stderr, "Execution failed:", e
+      print >>sys.stdout, "Execution failed:", e
+
+  print "Done."
 #+end_src
 
+#+RESULTS: getMyMail
+: Running 'offlineimap > offlineimap.log'... Child returned 0
+: Done.
 
 ** Tell notmuch about the new mail
   #+begin_src shell  :results output :exports both
@@ -69,12 +71,13 @@ there's nothing left.   The goal is to keep inbox nearly empty
   #+end_src
 
   #+RESULTS:
-  : Sat Jul 30 21:58:40 EDT 2016
+  : Fri Aug 19 07:09:12 EDT 2016
   : + notmuch new
-  : Processed 42 total files in 2s (19 files/sec.).[K
-  : Added 42 new messages to the database.
+  : Processed 125 total files in 1s (63 files/sec.).[K
+  : Added 119 new messages to the database. Detected 1 file rename.
 
 * Classifying Mail
+** Tags to classify things
 #+tblname: tagByHeader
 | tags                   | header  | subject                      | comments |
 |------------------------+---------+------------------------------+----------|
@@ -91,6 +94,8 @@ there's nothing left.   The goal is to keep inbox nearly empty
 | +social                | from    | linkedin                     |          |
 | +social                | subject | Google+                      |          |
 | +social                | from    | twitter.com                  | eludom   |
+| +social                | from    | facebookmail.com>            |          |
+| +accounts              | from    | audible.com                  |          |
 | +accounts              | from    | Amazon Web Services          |          |
 | +accounts              | from    | southwest.com                |          |
 | +accounts              | from    | account-update@amazon.com    |          |
@@ -105,8 +110,10 @@ there's nothing left.   The goal is to keep inbox nearly empty
 | +spam -inbox           | from    | tumblr.com                   |          |
 | +spam -inbox +accounts | subject | Spam                         |          |
 | +spam -inbox           | from    | noreply@youtube.com          |          |
+| +spam -inbox           | from    | news-googleplay@google.com   |          |
+| +spam +accounts -inbox | from    | discard-report@pobox.com     |          |
 
-** Add tags by header
+** Apply tags
 
 #+begin_src python :var data=tagByHeader :results output
 import subprocess
@@ -161,6 +168,10 @@ Running 'notmuch tag +social -- subject:"Google+"'... Child returned 0
 Done.
 Running 'notmuch tag +social -- from:"twitter.com"'... Child returned 0
 Done.
+Running 'notmuch tag +social -- from:"facebookmail.com>"'... Child returned 0
+Done.
+Running 'notmuch tag +accounts -- from:"audible.com"'... Child returned 0
+Done.
 Running 'notmuch tag +accounts -- from:"Amazon Web Services"'... Child returned 0
 Done.
 Running 'notmuch tag +accounts -- from:"southwest.com"'... Child returned 0
@@ -188,6 +199,10 @@ Done.
 Running 'notmuch tag +spam -inbox +accounts -- subject:"Spam"'... Child returned 0
 Done.
 Running 'notmuch tag +spam -inbox -- from:"noreply@youtube.com"'... Child returned 0
+Done.
+Running 'notmuch tag +spam -inbox -- from:"news-googleplay@google.com"'... Child returned 0
+Done.
+Running 'notmuch tag +spam +accounts -inbox -- from:"discard-report@pobox.com"'... Child returned 0
 Done.
 #+end_example
 
