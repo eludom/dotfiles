@@ -71,8 +71,14 @@ function git-branch-prompt {
   if [ $branch ]; then printf " [%s]" $branch; fi
 }
 
+# because hosnames assigned by IT deperments like abc123456789ef are not meaningful
+function prompt-hostname {
+  local branch=`git-branch-name`
+  if [ -f ~/etc/hostname ]; then head -1 ~/etc/hostname; else head -1 /etc/hostname; fi
+}
+
 export PS1="\# [\t] \u@\h \W/\$(git-branch-prompt) $ " 
-PS1="\u@\h \[\033[0;36m\]\W\[\033[0m\]\[\033[0;32m\]\$(git-branch-prompt)\[\033[0m\] \$ "
+PS1="\u@\$(prompt-hostname) \[\033[0;36m\]\W\[\033[0m\]\[\033[0;32m\]\$(git-branch-prompt)\[\033[0m\] \$ "
 
 # Preserve history across sesssions
 # 
