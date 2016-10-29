@@ -149,6 +149,19 @@ fi
 # Invoking emacs
 #
 
+
+# from http://stuff-things.net/2014/12/16/working-with-emacsclient/
+
+if [ -z "$SSH_CONNECTION" ]; then
+   export EMACSCLIENT=emacsclient
+   alias ec="$EMACSCLIENT -c -n"
+   export EDITOR="$EMACSCLIENT -c"
+   export ALTERNATE_EDITOR=""
+else
+    export EDITOR=$(type -P emacs || type -P vim || type -P vi)
+fi
+export VISUAL=$EDITOR
+
 # http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
 
 #    if hash emacsclient 2>/dev/null; then
