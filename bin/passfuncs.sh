@@ -42,7 +42,7 @@ passopenFunc () {
     echo -n username: " "
     passuser $1
     pass -c $1
-    $passBrowser `passurl $1`
+    $passBrowser `passurl $1` &
 }
 
 alias passurl=passurlFunc
