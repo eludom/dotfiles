@@ -9,23 +9,6 @@
 #    set -e
 #
 #
-# Before anything else, fix the CTRL key !!!
-#
-# TO DO List
-#   - TODO Figure out why this breaks git over SSH
-#     Something about the prompt breaks git
-#
-#   - TODO set hostname promt based on contents of 
-#     ~/.hostname or someshuch (rather than "ufc3fdb42457757027cca")
-#
-#   - TODO figure out how to orgify this
-#     So that I can edit .org file and export .bashrc
-
-
-if [ -x $HOME/bin/fixctrl.sh ]; then
-  $HOME/bin/fixctrl.sh
-fi
-
 #
 # Generic things
 #
@@ -44,6 +27,20 @@ alias egi='	egrep -i'
 alias psg='	/bin/ps -auxww | grep'
 alias p8='	ping -c 3 8.8.8.8'
 
+
+
+# Set HOSTNAME if ~/etc/hostname exists
+
+if [ -e ${HOME}/etc/hostname ]; then
+    export HOSTNAME=`cat ${HOME}/etc/hostname`
+elif [ -e /etc/hostname ]; then
+    export HOSTNAME=`cat /etc/hostname`
+else
+    export HOSTNAME="unknown"
+fi
+
+
+
 # Set timezone if ~/bin/tz.sh exists
 
 if [ -e ~/bin/tz.sh ]; then
@@ -59,7 +56,7 @@ fi
 #   ssh-add ~/.ssh/id_*
 
 if [ -e ~/bin/sshagent ]; then
-  echo Starting SSH agent
+  #echo Starting SSH agent
   source ~/bin/sshagent
 fi
 
@@ -81,8 +78,14 @@ function git-branch-prompt {
   if [ $branch ]; then printf " [%s]" $branch; fi
 }
 
+# because hosnames assigned by IT deperments like abc123456789ef are not meaningful
+function prompt-hostname {
+  local branch=`git-branch-name`
+  if [ -f ~/etc/hostname ]; then head -1 ~/etc/hostname; else head -1 /etc/hostname; fi
+}
+
 export PS1="\# [\t] \u@\h \W/\$(git-branch-prompt) $ " 
-PS1="\u@\h \[\033[0;36m\]\W\[\033[0m\]\[\033[0;32m\]\$(git-branch-prompt)\[\033[0m\] \$ "
+PS1="\u@\$(prompt-hostname) \[\033[0;36m\]\W\[\033[0m\]\[\033[0;32m\]\$(git-branch-prompt)\[\033[0m\] \$ "
 
 # Preserve history across sesssions
 # 
@@ -113,7 +116,7 @@ pathrm() {
 # add path to the end if not there
 pathlast() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-	echo  pathlast $1
+	#echo  pathlast $1
         export PATH="${PATH:+"$PATH:"}$1"
     fi
 }
@@ -121,7 +124,7 @@ pathlast() {
 # add path to the front if not there
 pathfirst() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-	echo  pathfirst $1
+	#echo  pathfirst $1
         export PATH="$1:${PATH}"
     fi
 }
@@ -145,28 +148,18 @@ fi
 # Invoking emacs
 #
 
-# http://stuff-things.net/2014/12/16/working-with-emacsclient/
+
+# from http://stuff-things.net/2014/12/16/working-with-emacsclient/
 
 if [ -z "$SSH_CONNECTION" ]; then
-   case $OSTYPE in
-   darwin*)
-       export EMACSCLIENT=/Applications/Emacs.app/Contents/MacOS/bin/emacsclient
-       alias emacsclient=$EMACSCLIENT
-       ;;
-   *)
-       export EMACSCLIENT=emacsclient
-       ;;
-   esac
+   export EMACSCLIENT=emacsclient
    alias ec="$EMACSCLIENT -c -n"
    export EDITOR="$EMACSCLIENT -c"
    export ALTERNATE_EDITOR=""
 else
-    export EDITOR=$(type -P emacs || type -P ed || type -P vi || type -P vim)
+    export EDITOR=$(type -P emacs || type -P vim || type -P vi)
 fi
 export VISUAL=$EDITOR
-
-# to exit emacs serve
-alias ke='emacsclient -e "(kill-emacs)"'
 
 # http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script
 

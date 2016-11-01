@@ -4,7 +4,7 @@
 #+OPTIONS: num:nil p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
 #+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
 #+TITLE: mailhacks with offline imap, org mode and notmuch
-#+DATE: <2016-07-27 07:36:48 Wednesday>
+#+DATE: <2016-08-19 08:14:28 Friday>
 #+AUTHOR: George M Jones
 #+EMAIL: gmj@pobox.com
 #+LANGUAGE: en
@@ -33,28 +33,35 @@ there's nothing left.   The goal is to keep inbox nearly empty
   - repeat
 
 * Ingesting Mail
-  - This works with multiple IMAP accounts 
+  - This works with multiple IMAP accounts
 ** Pull my latest mail
-  #+begin_src shell  :results output :exports both
-  exec 2>&1;date;set -e; set -u; set -x
-  offlineimap
-  #+end_src
+#+name: getMyMail
+#+begin_src python :results output
+  import subprocess
+  import sys
 
-  #+RESULTS:
-  #+begin_example
-  Sun Jul 24 20:33:12 EDT 2016
-  + offlineimap
-  OfflineIMAP 7.0.0
-    Licensed under the GNU GPL v2 or any later version (with an OpenSSL exception)
-  Account sync eludom:
-   *** Processing account eludom
-   Establishing connection to imap.gmail.com:993
-  Folder 2016 [acc: eludom]:
-   Syncing 2016: Gmail -> Maildir
-   Adding flag S to 4 messages on 2016
-  Account sync eludom:
-   *** Finished account 'eludom' in 0:02
-#+end_example
+  cmd = "offlineimap > %s" % ("offlineimap.log")
+  print "Running '%s'..." % (cmd),
+
+  try:
+      #retcode = subprocess.call("echo foo", shell=True)
+      retcode = subprocess.call(cmd, shell=True)
+      if retcode < 0:
+          print >>sys.stderr, "Child was terminated by signal", -retcode
+          print >>sys.stdout, "Child was terminated by signal", -retcode
+      else:
+          print >>sys.stderr, "Child returned", retcode
+          print >>sys.stdout, "Child returned", retcode
+  except OSError as e:
+      print >>sys.stderr, "Execution failed:", e
+      print >>sys.stdout, "Execution failed:", e
+
+  print "Done."
+#+end_src
+
+#+RESULTS: getMyMail
+: Running 'offlineimap > offlineimap.log'... Child returned 0
+: Done.
 
 ** Tell notmuch about the new mail
   #+begin_src shell  :results output :exports both
@@ -64,38 +71,49 @@ there's nothing left.   The goal is to keep inbox nearly empty
   #+end_src
 
   #+RESULTS:
-  : Sun Jul 24 20:33:43 EDT 2016
+  : Fri Aug 19 07:09:12 EDT 2016
   : + notmuch new
-  : No new mail.
+  : Processed 125 total files in 1s (63 files/sec.).[K
+  : Added 119 new messages to the database. Detected 1 file rename.
 
 * Classifying Mail
+** Tags to classify things
 #+tblname: tagByHeader
-| tags              | header  | subject                      | comments |
-|-------------------+---------+------------------------------+----------|
-| +onion +lists     | to      | security-onion               |          |
-| +argus +lists     | subject | ARGUS                        |          |
-| +saag +lists      | to      | saag                         |          |
-| +shmoolabs +lists | subject | Labs-Alumni                  |          |
-| +honeypot +lists  | from    | honeynetproject@honeynet.org |          |
-| +opsec +lists     | subject | OPSEC                        |          |
-| +listmgt +lists   | from    | -owner                       |          |
-| +listmgt +lists   | from    | -requests                    |          |
-| +sns              | from    | sns.amazonaws.com            |          |
-| +social           | from    | linkedin                     |          |
-| +social           | subject | Google+                      |          |
-| +social           | from    | twitter.com                  |  eludom  |
-| +accounts         | from    | Amazon Web Services          |          |
-| +accounts         | from    | southwest.com                |          |
-| +accounts         | from    | account-update@amazon.com    |          |
-| +accounts         | from    | accounts.google.com          |          |
-| +accounts         | from    | livestream.com               | eludom   |
-| +me               | from    | gmj                          |          |
-| +me               | from    | eludom                       |          |
-| +me               | from    | George Jones                 |          |
-| +me               | from    | fooologist                   |          |
-| +spam             | from    | noreply@youtube.com          |          |
+| tags                   | header  | subject                      | comments |
+|------------------------+---------+------------------------------+----------|
+| +onion +lists          | to      | security-onion               |          |
+| +argus +lists          | subject | ARGUS                        |          |
+| +saag +lists           | to      | saag                         |          |
+| +shmoolabs +lists      | subject | Labs-Alumni                  |          |
+| +honeypot +lists       | from    | honeynetproject@honeynet.org |          |
+| +opsec +lists          | subject | OPSEC                        |          |
+| +listmgt +lists        | from    | -owner                       |          |
+| +listmgt +lists        | from    | -requests                    |          |
+| +lists                 | subject | BSATroop161                  |          |
+| +sns                   | from    | sns.amazonaws.com            |          |
+| +social                | from    | linkedin                     |          |
+| +social                | subject | Google+                      |          |
+| +social                | from    | twitter.com                  | eludom   |
+| +social                | from    | facebookmail.com>            |          |
+| +accounts              | from    | audible.com                  |          |
+| +accounts              | from    | Amazon Web Services          |          |
+| +accounts              | from    | southwest.com                |          |
+| +accounts              | from    | account-update@amazon.com    |          |
+| +accounts              | from    | accounts.google.com          |          |
+| +accounts -inbox       | from    | livestream.com               | eludom   |
+| +finance               | from    | Mint.com                     |          |
+| +church                | from    | lcfweb.org                   |          |
+| +me                    | from    | gmj                          |          |
+| +me                    | from    | eludom                       |          |
+| +me                    | from    | George Jones                 |          |
+| +me                    | from    | fooologist                   |          |
+| +spam -inbox           | from    | tumblr.com                   |          |
+| +spam -inbox +accounts | subject | Spam                         |          |
+| +spam -inbox           | from    | noreply@youtube.com          |          |
+| +spam -inbox           | from    | news-googleplay@google.com   |          |
+| +spam +accounts -inbox | from    | discard-report@pobox.com     |          |
 
-** Add tags by header
+** Apply tags
 
 #+begin_src python :var data=tagByHeader :results output
 import subprocess
@@ -140,6 +158,8 @@ Running 'notmuch tag +listmgt +lists -- from:"-owner"'... Child returned 0
 Done.
 Running 'notmuch tag +listmgt +lists -- from:"-requests"'... Child returned 0
 Done.
+Running 'notmuch tag +lists -- subject:"BSATroop161"'... Child returned 0
+Done.
 Running 'notmuch tag +sns -- from:"sns.amazonaws.com"'... Child returned 0
 Done.
 Running 'notmuch tag +social -- from:"linkedin"'... Child returned 0
@@ -147,6 +167,10 @@ Done.
 Running 'notmuch tag +social -- subject:"Google+"'... Child returned 0
 Done.
 Running 'notmuch tag +social -- from:"twitter.com"'... Child returned 0
+Done.
+Running 'notmuch tag +social -- from:"facebookmail.com>"'... Child returned 0
+Done.
+Running 'notmuch tag +accounts -- from:"audible.com"'... Child returned 0
 Done.
 Running 'notmuch tag +accounts -- from:"Amazon Web Services"'... Child returned 0
 Done.
@@ -156,7 +180,11 @@ Running 'notmuch tag +accounts -- from:"account-update@amazon.com"'... Child ret
 Done.
 Running 'notmuch tag +accounts -- from:"accounts.google.com"'... Child returned 0
 Done.
-Running 'notmuch tag +accounts -- from:"livestream.com"'... Child returned 0
+Running 'notmuch tag +accounts -inbox -- from:"livestream.com"'... Child returned 0
+Done.
+Running 'notmuch tag +finance -- from:"Mint.com"'... Child returned 0
+Done.
+Running 'notmuch tag +church -- from:"lcfweb.org"'... Child returned 0
 Done.
 Running 'notmuch tag +me -- from:"gmj"'... Child returned 0
 Done.
@@ -166,7 +194,15 @@ Running 'notmuch tag +me -- from:"George Jones"'... Child returned 0
 Done.
 Running 'notmuch tag +me -- from:"fooologist"'... Child returned 0
 Done.
-Running 'notmuch tag +spam -- from:"noreply@youtube.com"'... Child returned 0
+Running 'notmuch tag +spam -inbox -- from:"tumblr.com"'... Child returned 0
+Done.
+Running 'notmuch tag +spam -inbox +accounts -- subject:"Spam"'... Child returned 0
+Done.
+Running 'notmuch tag +spam -inbox -- from:"noreply@youtube.com"'... Child returned 0
+Done.
+Running 'notmuch tag +spam -inbox -- from:"news-googleplay@google.com"'... Child returned 0
+Done.
+Running 'notmuch tag +spam +accounts -inbox -- from:"discard-report@pobox.com"'... Child returned 0
 Done.
 #+end_example
 
