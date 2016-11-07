@@ -40,7 +40,7 @@ passopenFunc () {
     #   username: FOO
 
     echo -n username: " "
-    passuser $1
+    passuserFunc $1
     pass -c $1
     $passBrowser `passurl $1` &
 }

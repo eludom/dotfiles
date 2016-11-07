@@ -30,15 +30,24 @@ bin/link2 -r bin/linkall ~/bin/linkall
 
 ~/bin/linkall $DIR/bin ~/bin/
 
-# link .dotfiles  into ~
 
-linkTo=$HOME
-<<<<<<< HEAD
-linkThese=( .bashrc )
-=======
-linkThese=( .bashrc .gitconfig .hushlogin .signature) 
->>>>>>> 3982e18a4e8743b444e346d9cab96ae478f4d7a6
 link2=./bin/link2
+
+# link .dotfiles  into ~
+linkTo=$HOME
+linkThese=( .bashrc .gitconfig .hushlogin .signature) 
+
+
+for linkThis in ${linkThese[@]}; do
+  ${link2} -r $linkThis $linkTo
+done
+
+# link rc.local files in to ~/rc.local/
+
+mkdir -p ~/rc.local
+
+linkTo=$HOME/rc.local
+linkThese=( rc.local/passfuncs.sh) 
 
 for linkThis in ${linkThese[@]}; do
   ${link2} -r $linkThis $linkTo
