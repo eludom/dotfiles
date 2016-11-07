@@ -138,7 +138,7 @@ pathrm $HOME/bin && pathfirst $HOME/bin
 #
 
 if [ -d ${HOME}/rc.local ]; then
-    for rcfile in $(find ${HOME}/rc.local -type f -name \*.sh); do
+    for rcfile in $(find ${HOME}/rc.local -name \*.sh); do
 	echo running localrc ${rcfile} 
 	source ${rcfile}
     done
