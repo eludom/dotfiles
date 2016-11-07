@@ -105,7 +105,7 @@ export PROMPT_COMMAND="history -a; history -c; history -r;"
 # remove an item from the path
 pathrm() {
     if [ -d "$1" ]; then
-        echo 1 $1
+        #echo 1 $1
 	removeThis="`echo $1 | sed -e 's#/#\\\/#'g`"
 	newPath=`echo $PATH | awk -v RS=: -v ORS=: "/$removeThis/ {next} {print}" | sed 's/[ :]*$//g'`
         export PATH=$newPath
