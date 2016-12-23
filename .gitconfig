@@ -3,9 +3,10 @@
 	email = gmj@pobox.com
 [core]
 	editor = emacs
+	excludesfile = ~/.gitignore
 [status]
 #	showUntrackedFiles = no
 	showUntrackedFiles = normal
 	
-[push]
-	default = simple
+#[push]
+#	default = simple

@@ -9,7 +9,6 @@
 #    set -e
 #
 #
-
 #
 # Generic things
 #
@@ -106,7 +105,7 @@ export PROMPT_COMMAND="history -a; history -c; history -r;"
 # remove an item from the path
 pathrm() {
     if [ -d "$1" ]; then
-        echo 1 $1
+        #echo 1 $1
 	removeThis="`echo $1 | sed -e 's#/#\\\/#'g`"
 	newPath=`echo $PATH | awk -v RS=: -v ORS=: "/$removeThis/ {next} {print}" | sed 's/[ :]*$//g'`
         export PATH=$newPath
@@ -130,12 +129,18 @@ pathfirst() {
     fi
 }
 
+<<<<<<< HEAD
 # Be sure we have a few specific paths if they exist
 
 pathlast $HOME/bin
 pathlast /opt/bin
 pathlast /usr/local/bin
 pathlast /opt/bin
+=======
+# Add ~/bin to path
+
+pathrm $HOME/bin && pathfirst $HOME/bin
+>>>>>>> c21bc11bf7b47719bc47ba09ad84239a20b67970
 
 #
 # Execute any .sh files in ~/rc.local/*.sh
@@ -143,6 +148,10 @@ pathlast /opt/bin
 
 if [ -d ${HOME}/rc.local ]; then
     for rcfile in $(find ${HOME}/rc.local -name \*.sh); do
+<<<<<<< HEAD
+=======
+	#echo running localrc ${rcfile} 
+>>>>>>> c21bc11bf7b47719bc47ba09ad84239a20b67970
 	source ${rcfile}
     done
 fi
