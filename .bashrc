@@ -82,7 +82,7 @@ function git-branch-prompt {
 # because hosnames assigned by IT deperments like abc123456789ef are not meaningful
 function prompt-hostname {
   local branch=`git-branch-name`
-  if [ -f ~/etc/hostname ]; then head -1 ~/etc/hostname; else head -1 /etc/hostname; fi
+  if [ -f ~/etc/hostname ]; then head -1 ~/etc/hostname; elif [ -f /etc/hostname ]; then head -1 /etc/hostname; else echo STUPIDMAC; fi
 }
 
 export PS1="\# [\t] \u@\h \W/\$(git-branch-prompt) $ " 
@@ -130,9 +130,12 @@ pathfirst() {
     fi
 }
 
-# Generic path
+# Be sure we have a few specific paths if they exist
 
 pathlast $HOME/bin
+pathlast /opt/bin
+pathlast /usr/local/bin
+pathlast /opt/bin
 
 #
 # Execute any .sh files in ~/rc.local/*.sh
@@ -140,7 +143,6 @@ pathlast $HOME/bin
 
 if [ -d ${HOME}/rc.local ]; then
     for rcfile in $(find ${HOME}/rc.local -name \*.sh); do
-	echo running localrc ${rcfile} 
 	source ${rcfile}
     done
 fi
