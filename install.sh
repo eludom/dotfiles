@@ -47,7 +47,7 @@ done
 mkdir -p ~/rc.local
 
 linkTo=$HOME/rc.local
-linkThese=( rc.local/passfuncs.sh) 
+linkThese=( rc.local/passfuncs.sh rc.local/awsfuncs.sh) 
 
 for linkThis in ${linkThese[@]}; do
   ${link2} -r $linkThis $linkTo
