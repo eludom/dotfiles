@@ -153,7 +153,6 @@ fi
 # Invoking emacs
 #
 
-
 # from http://stuff-things.net/2014/12/16/working-with-emacsclient/
 
 if [ -z "$SSH_CONNECTION" ]; then
@@ -207,12 +206,6 @@ alias lltm='	ls '$color' -a -lt | more'
 alias llth='	ls '$color' -a -lt | head'
 alias lss='	ls '$color' -a -1s | sort -n'
 alias lssr='	ls '$color' -a -1s | sort -nr'
-
-
-# See https://github.com/rafmagana/mush
-alias bitly='bitly -l `cat ~/creds/bitly.username` -k `cat ~/creds/bitly.key` -u'
-
-complete -C aws_completer aws
 
 # Let somebody know we finished running
 
