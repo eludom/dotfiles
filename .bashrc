@@ -24,6 +24,7 @@ alias hg='	history | grep -i'
 alias ht='	history | tail' 
 alias fegi='	find . -print | egrep -i'
 alias egi='	egrep -i' 
+alias oi='      offlineimap'
 alias psg='	/bin/ps -auxww | grep'
 alias p8='	ping -c 3 8.8.8.8'
 
@@ -135,6 +136,7 @@ pathlast $HOME/bin
 pathlast /opt/bin
 pathlast /usr/local/bin
 pathlast /opt/bin
+pathlast ~/.local/bin
 
 #
 # Execute any .sh files in ~/rc.local/*.sh
