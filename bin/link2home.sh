@@ -74,7 +74,9 @@ if [ "$#" -ge 1 ]; then
 fi
 
 # Get abolute path to directory of current file
-REALDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+#REALDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# use current directory
+REALDIR=`pwd`
 
 # Extract the directory name of this file
 BASEDIR=`basename $REALDIR`
@@ -119,7 +121,7 @@ for file in * .[a-z]*; do
 	if [ -h "${TARGET}" ]; then
 	    [[ -v VERBOSE ]] &&  info "${TARGET}" already exists. Skipping.
 	else
-	    ln -s "${SOURCE}"  "${HOMEDIR}"
+	    ln -s "${SOURCE}"  "${HOMEDIR}" || warn "Unable to link ${SOURCE}"
 	    [[ -v VERBOSE ]] &&  info ln -s "${SOURCE}" "${HOMEDIR}"
 
 	fi

@@ -1,11 +1,11 @@
 #
 # GMJ .bashrc
 #
-# Tue Mar 26 20:07:29 2013 
+# Tue Mar 26 20:07:29 2013
 #
 #
 # Don't do this unless you are testing.
-# 
+#
 #    set -e
 #
 #
@@ -13,17 +13,17 @@
 # Generic things
 #
 
-export PS1="\# [\t] \u@\h \W/ $ " 
+export PS1="\# [\t] \u@\h \W/ $ "
 
 alias  cd='	pushd'
 #bind -x '"\C-l": clear;'
 alias rm='	rm -i'
-alias ag='	alias | grep -i' 
-alias eg='	printenv | grep -i' 
-alias hg='	history | grep -i' 
-alias ht='	history | tail' 
+alias ag='	alias | grep -i'
+alias eg='	printenv | grep -i'
+alias hg='	history | grep -i'
+alias ht='	history | tail'
 alias fegi='	find . -print | egrep -i'
-alias egi='	egrep -i' 
+alias egi='	egrep -i'
 alias oi='      offlineimap'
 alias psg='	/bin/ps -auxww | grep'
 alias p8='	ping -c 3 8.8.8.8'
@@ -85,11 +85,11 @@ function prompt-hostname {
   if [ -f ~/etc/hostname ]; then head -1 ~/etc/hostname; elif [ -f /etc/hostname ]; then head -1 /etc/hostname; else echo STUPIDMAC; fi
 }
 
-export PS1="\# [\t] \u@\h \W/\$(git-branch-prompt) $ " 
+export PS1="\# [\t] \u@\h \W/\$(git-branch-prompt) $ "
 PS1="\u@\$(prompt-hostname) \[\033[0;36m\]\W\[\033[0m\]\[\033[0;32m\]\$(git-branch-prompt)\[\033[0m\] \$ "
 
 # Preserve history across sesssions
-# 
+#
 # http://unix.stackexchange.com/questions/1288/preserve-bash-history-in-multiple-terminal-windows
 #
 export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
@@ -106,10 +106,10 @@ export PROMPT_COMMAND="history -a; history -c; history -r;"
 # remove an item from the path
 pathrm() {
     if [ -d "$1" ]; then
-        #echo 1 $1
+	#echo 1 $1
 	removeThis="`echo $1 | sed -e 's#/#\\\/#'g`"
 	newPath=`echo $PATH | awk -v RS=: -v ORS=: "/$removeThis/ {next} {print}" | sed 's/[ :]*$//g'`
-        export PATH=$newPath
+	export PATH=$newPath
     fi
 }
 
@@ -118,7 +118,7 @@ pathrm() {
 pathlast() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
 	#echo  pathlast $1
-        export PATH="${PATH:+"$PATH:"}$1"
+	export PATH="${PATH:+"$PATH:"}$1"
     fi
 }
 
@@ -126,7 +126,7 @@ pathlast() {
 pathfirst() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
 	#echo  pathfirst $1
-        export PATH="$1:${PATH}"
+	export PATH="$1:${PATH}"
     fi
 }
 
@@ -144,7 +144,7 @@ pathlast ~/.local/bin
 
 if [ -d ${HOME}/rc.local ]; then
     for rcfile in $(find ${HOME}/rc.local -name \*.sh); do
-	#echo running localrc ${rcfile} 
+	#echo running localrc ${rcfile}
 	source ${rcfile}
     done
 fi
@@ -170,21 +170,21 @@ export VISUAL=$EDITOR
 #    if hash emacsclient 2>/dev/null; then
 #        # http://stackoverflow.com/questions/5570451/how-to-start-emacs-server-only-if-it-is-not-started
 #        export ALTERNATE_EDITOR="" # Because I should never have to start emacs
-#    	export VISUAL="emacsclient -t"
+#	export VISUAL="emacsclient -t"
 #	export EDITOR="emacsclient -t"
-#    	alias e='[ "$DISPLAY" == ""] && emacsclient -t || emacsclient -c'
+#	alias e='[ "$DISPLAY" == ""] && emacsclient -t || emacsclient -c'
 #    elif hash emacs 2>/dev/null; then
 #        export ALTERNATE_EDITOR="" # Because I should never have to start emacs
-#    	export VISUAL="emacs"
+#	export VISUAL="emacs"
 #	export EDITOR="emacs"
-#    	alias e='[ "$DISPLAY" == ""] && emacsclient -t || emacsclient -c'
+#	alias e='[ "$DISPLAY" == ""] && emacsclient -t || emacsclient -c'
 #    else
 #        2>& echo BOO no emacs here
 #        export ALTERNATE_EDITOR="" # Because I should never have to start emacs
-#    	export VISUAL=""
+#	export VISUAL=""
 #	export EDITOR=""
-#    	unalias e 2>/dev/null || true
-#	
+#	unalias e 2>/dev/null || true
+#
 #    fi
 
 
@@ -199,9 +199,9 @@ export VISUAL=$EDITOR
 #fi
 
 alias ls='	ls '$color' -a'
-alias llr=' 	ls -ltr '$color' -a'
-alias llrt=' 	ls -ltr '$color' -a | tail'
-alias llt=' 	ls -lt '$color' -a'
+alias llr='	ls -ltr '$color' -a'
+alias llrt='	ls -ltr '$color' -a | tail'
+alias llt='	ls -lt '$color' -a'
 alias lltm='	ls '$color' -a -lt | more'
 alias llth='	ls '$color' -a -lt | head'
 alias lss='	ls '$color' -a -1s | sort -n'
