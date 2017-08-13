@@ -1,0 +1,20 @@
+#! /bin/bash
+# Link everthing in '$PWD' to a dir in '~/$PWD'
+#
+# Put a copy of his in any directory that should have it's
+# file linked into root.
+
+# Any files listed (one per line) in .install.ignore will be ignored
+
+
+# get the directory of this script
+WHERE_AM_I="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd ${WHERE_AM_I}
+
+# Extract the directory name of this file
+BASEDIR=`basename $WHERE_AM_I`
+
+echo Linking evertying in "${WHERE_AM_I}"  into "~/""${BASEDIR}"
+~/bin/link2home.sh -v -d
+
+# any directory specific post-processing (permissions, etc) goes here.

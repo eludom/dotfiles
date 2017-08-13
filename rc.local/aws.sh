@@ -1,4 +1,4 @@
-export PATH=~"/.local/bin/:${PATH}"
+export PATH=~"~/.local/bin/:${PATH}"
 
 awsRmAll () {
     # Remove all objects in an AWS bucket

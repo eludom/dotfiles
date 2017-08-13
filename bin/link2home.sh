@@ -3,7 +3,7 @@
 #
 # - create a directory in $HOME with the same name as this directory
 # - link all files in this directory in the new directory
-# - exclude files listed in link2home.exclue
+# - exclude files listed in .ignore
 
 set -e -u
 
@@ -95,8 +95,8 @@ cd "${REALDIR}"
 # get exception list
 declare -A EXCLUSIONS
 
-if [ -f 'link2home.exclude' ]; then
-    for exclude in `cat link2home.exclude`; do
+if [ -f '.ignore' ]; then
+    for exclude in `cat .ignore`; do
 	EXCLUSIONS["${exclude}"]="${exclude}"
     done
 fi
@@ -110,7 +110,7 @@ for file in * .[a-z]*; do
     [ -f "${file}" ] || continue
 
     if [ ${EXCLUSIONS["${file}"]+DNE} ]; then
-	info skip "${file}"
+	info skiping "${file}"
     else
 
 	if [ -v REMOVE ]; then
