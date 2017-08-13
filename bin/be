@@ -1,10 +1,17 @@
 #! /bin/bash
-# change aws and ssh credentials
+# change aws, ssh and gpg credentials
 #
-# If  ~/.aws/credentials.$1 exists, copy to ~/.aws/credentials
-# If  ~/.ssh/id_{dsa,rsa}.$1 exists, copy to ~/.ssh/id_{dsa,rsa}
+# Usage
 #
-# exists.  It is copied to
+#   be [options] NAME
+#   be [options] --whoami
+#   be [options] --list
+#
+#  e.g.
+#
+#   If  ~/.gnupg.$1 exists, link to ~/.gnupg
+#   If  ~/.ssh/id_{dsa,rsa}.$1 exists, link to ~/.ssh/id_{dsa,rsa} and add to ssh agent
+#   If  ~/.aws/credentials.$1 exists, link to ~/.aws/credentials
 #
 # TODO
 #  - Add gpg identities
@@ -39,6 +46,7 @@ Usage: ${PROG} [options] who
 
      -a|--aws		change/list aws credentials ONLY
      -d|--debug         debug output
+     -g|--gnupg		change/list gnupgcredentials ONLY
      -l|--list		list availabe credentials.
      -s|--ssh		change/list ssh credentials ONLY
      -v|--verbose       verbose output
@@ -48,9 +56,123 @@ END
     exit 1
 }
 
+function gpg_list() {
+    # list available gpg credentail sets (diretories)
+    info available GPG credentials sets
+    ls -ld ~/.gnupg.*
+}
+
+function gpg_whoami() {
+    # list current gpg identity
+    info Current gpg credential set
+    ls -ld ~/.gnupg
+}
+
+function gpg_become() {
+    # change gpg identity
+    rm -f ~/.gnupg || true
+    ln -s ~/.gnupg."${who}" ~/.gnupg
+}
+
+function aws_list() {
+    # list available aws credentials
+    cd ~/.aws || die "Error connecting to ~/.aws"
+
+    info available AWS credentials and configs
+    ls -1 credentials.* config.*
+}
+
+function aws_whoami() {
+    # list current aws identity
+    cd ~/.aws || die "Error connecting to ~/.aws"
+
+    info Current aws credentials
+    ls -l credentials config
+}
+
+function aws_become() {
+    # change aws identity
+    cd ~/.aws || die "Error connecting to ~/.aws"
+
+    aws_creds="credentials.""${who}"
+    if [ ! -f "${aws_creds}"  ]; then
+	warn file "${aws_creds}" does not exist.  Not changing aws identity.
+    else
+	[[ -v VERBOSE ]] && set -x
+	rm -f credentials || true
+	ln -s "${aws_creds}" credentials
+	[[ -v VERBOSE ]] && set +x
+    fi
+
+    aws_config="config.""${who}"
+    if [ ! -f "${aws_config}"  ]; then
+	warn file "${aws_config}" does not exist.  Not installing.
+    else
+	[[ -v VERBOSE ]] && set -x
+	rm -f config || true
+	ln -s "${aws_config}" config
+	[[ -v VERBOSE ]] && set +x
+    fi
+}
+
+
+function ssh_list() {
+    # list available ssh credentials
+    cd ~/.ssh || die "Error connecting to ~/.ssh"
+
+    info available SSH credentials
+    ls -1 id_rsa.* id_dsa.*
+}
+
+function ssh_whoami() {
+    # list current ssh identity
+    cd ~/.ssh || die "Error connecting to ~/.ssh"
+
+    info Current SSH identities
+    ls -l id_???  || warn "no ~/.ssh/id_{rsa,dsa} file"
+    info SSH Agent Identities
+    ssh-add -l
+}
+
+function ssh_become() {
+    # change ssh identity
+    cd ~/.ssh || die "Error connecting to ~/.ssh"
+
+    rsa_creds="id_rsa.""${who}"
+    dsa_creds="id_dsa.""${who}"
+
+    if [ -f "${dsa_creds}" ]; then
+	ssh_creds="${dsa_creds}"
+    elif [ -f "${rsa_creds}" ]; then
+	ssh_creds="${rsa_creds}"
+    else
+	echo "No ssh creds found. "${rsa_creds}" and "${dsa_creds}" do not exis."
+	exit 1
+    fi
+
+    target=`basename $ssh_creds ".""${who}"`
+
+    if [ -f "${ssh_creds}"  ]; then
+	[[ -v VERBOSE ]] && set +x
+	rm -f "${target}" || true
+	ln -s "${ssh_creds}" "${target}"
+	chmod 400 "${target}"
+	ssh-add "${ssh_creds}"
+	[[ -v VERBOSE ]] && set -x
+    fi
+}
+
+
+#
+# "main()" begins here
+#
+
 # Defaults
 SSH=1
 AWS=1
+GPG=1
+
+
 
 # parse global options
 
@@ -60,12 +182,20 @@ do
 	-a|--aws)
 	    AWS=1
 	    unset SSH
+	    unset GPG
 	    d_flag="-d"
 	    shift # past argument with no value
 	    ;;
 	-d|--debug)
 	    DEBUG=1
 	    d_flag="-d"
+	    shift # past argument with no value
+	    ;;
+	-g|--gnupg)
+	    GNUPG=1
+	    unset AWS
+	    unset SSH
+	    g_flag="-g"
 	    shift # past argument with no value
 	    ;;
 	-l|--list)
@@ -76,6 +206,7 @@ do
 	-s|--ssh)
 	    SSH=1
 	    unset AWS
+	    unset GPG
 	    d_flag="-d"
 	    shift # past argument with no value
 	    ;;
@@ -106,45 +237,20 @@ if [[ !  -v LIST  && ! -v WHOAMI ]]; then
     who="${1}"
 fi
 
-if [[ ! -v SSH && ! -v AWS ]]; then
-    die "Must specify at least one of '--aws' and '--ssh'"
+if [[ ! -v SSH && ! -v AWS && ! -v GPG ]]; then
+    die "Must specify at least one of '--aws' and '--ssh' and '--gnupg'"
 fi
-
 
 # Change aws credentials
 
 if [ -v AWS ]; then
 
-    cd ~/.aws || die "Error connecting to ~/.aws"
-
     if [[ -v LIST ]]; then
-	info available AWS credentials and configs
-	ls -1 credentials.* config.*
+	aws_list
     elif [[ -v WHOAMI ]]; then
-	info Current aws credentials
-	ls -l credentials config
+	aws_whoami
     else
-
-	aws_creds="credentials.""${who}"
-	if [ ! -f "${aws_creds}"  ]; then
-	    warn file "${aws_creds}" does not exist.  Not changing aws identity.
-	else
-	    [[ -v VERBOSE ]] && set -x
-	    rm -f credentials || true
-	    ln -s "${aws_creds}" credentials
-	    [[ -v VERBOSE ]] && set +x
-	fi
-
-	aws_config="config.""${who}"
-	if [ ! -f "${aws_config}"  ]; then
-	    warn file "${aws_config}" does not exist.  Not installing.
-	else
-	    [[ -v VERBOSE ]] && set -x
-	    rm -f config || true
-	    ln -s "${aws_config}" config
-	    [[ -v VERBOSE ]] && set +x
-	fi
-
+	aws_become
     fi
 fi
 
@@ -152,37 +258,24 @@ fi
 
 if [ -v SSH ]; then
 
-    cd ~/.ssh || die "Error connecting to ~/.ssh"
+    if [[ -v LIST ]]; then
+	ssh_list
+    elif [[ -v WHOAMI ]]; then
+	ssh_whoami
+    else
+	ssh_become
+    fi
+fi
+
+# Change ssh credentials
+
+if [ -v GPG ]; then
 
     if [[ -v LIST ]]; then
-	info available SSH credentials
-	ls -1 id_rsa.* id_dsa.*
+	gpg_list
     elif [[ -v WHOAMI ]]; then
-	info Primary ssh credentials
-	ls -l id_???  || warn "no ~/.ssh/id_{rsa,dsa} file"
-	info SSH Agent Identities
-	ssh-add -l
+	gpg_whoami
     else
-	rsa_creds="id_rsa.""${who}"
-	dsa_creds="id_dsa.""${who}"
-
-
-	if [ -f "${dsa_creds}" ]; then
-	    ssh_creds="${dsa_creds}"
-	elif [ -f "${rsa_creds}" ]; then
-	    ssh_creds="${rsa_creds}"
-	else
-	    echo "No ssh creds found."
-	fi
-
-	target=`basename $ssh_creds ".""${who}"`
-
-	if [ -f "${ssh_creds}"  ]; then
-	    [[ -v VERBOSE ]] && set +x
-	    rm -f "${target}" || true
-	    ln -s "${ssh_creds}" "${target}"
-	    chmod 400 "${target}"
-	    [[ -v VERBOSE ]] && set -x
-	fi
+	gpg_become
     fi
 fi

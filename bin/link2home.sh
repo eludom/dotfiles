@@ -33,6 +33,7 @@ Usage: ${PROG} [options]
    options
 
      -d|--debug         debug output
+     -l|--linkdir       symlink directory itself
      -r|--remove        remove old files
      -v|--verbose       verbose output
 
@@ -48,6 +49,11 @@ do
     case $i in
 	-d|--debug)
 	    DEBUG=1
+	    d_flag="-d"
+	    shift # past argument with no value
+	    ;;
+	-l|--linkdir)
+	    LINKDIR=1
 	    d_flag="-d"
 	    shift # past argument with no value
 	    ;;
@@ -76,21 +82,35 @@ fi
 # Get abolute path to directory of current file
 #REALDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # use current directory
-REALDIR=`pwd`
+WHERE_AM_I=`pwd`
 
 # Extract the directory name of this file
-BASEDIR=`basename $REALDIR`
+BASEDIR=`basename $WHERE_AM_I`
 
 # create name of directory in $HOME
-HOMEDIR="${HOME}/${BASEDIR}"
+DIR_IN_HOME="${HOME}/${BASEDIR}"
 
-# crate the directory name in $HOME if DNE
-mkdir -p "${HOMEDIR}"
+
+if [[ -v LINKDIR ]]; then
+
+    if [ -v REMOVE ]; then
+	rm -f "${DIR_IN_HOME}"
+	[[ -v VERBOSE ]] &&  info rm -f "${DIR_IN_HOME}"
+    fi
+
+    [[ -v VERBOSE ]] &&  info ln -s "${WHERE_AM_I}" "${DIR_IN_HOME}"
+    ln -s "${WHERE_AM_I}"  "${DIR_IN_HOME}" || warn "Unable to link ${WHERE_AM_I}"
+
+    exit 0
+else
+    # crate the directory name in $HOME if DNE
+    mkdir -p "${DIR_IN_HOME}"
+fi
 
 #
 # symlink everything here to $HOME
 #
-cd "${REALDIR}"
+cd "${WHERE_AM_I}"
 
 # get exception list
 declare -A EXCLUSIONS
@@ -104,8 +124,8 @@ fi
 #for file in * .[a-z]*; do
 for file in * .[a-z]*; do
 
-    SOURCE="${REALDIR}/${file}"
-    TARGET="${HOMEDIR}/${file}"
+    SOURCE="${WHERE_AM_I}/${file}"
+    TARGET="${DIR_IN_HOME}/${file}"
 
     [ -f "${file}" ] || continue
 
@@ -114,16 +134,15 @@ for file in * .[a-z]*; do
     else
 
 	if [ -v REMOVE ]; then
-	    rm -f "${HOMEDIR}/${file}"
-	    [[ -v VERBOSE ]] &&  info rm -f "${TARGET}"
+	    [[ -v VERBOSE ]] &&  info rm -f "${DIR_IN_HOME}/${file}"
+	    rm -f "${DIR_IN_HOME}/${file}"
 	fi
 
 	if [ -h "${TARGET}" ]; then
 	    [[ -v VERBOSE ]] &&  info "${TARGET}" already exists. Skipping.
 	else
-	    ln -s "${SOURCE}"  "${HOMEDIR}" || warn "Unable to link ${SOURCE}"
-	    [[ -v VERBOSE ]] &&  info ln -s "${SOURCE}" "${HOMEDIR}"
-
+	    [[ -v VERBOSE ]] &&  info ln -s "${SOURCE}" "${DIR_IN_HOME}"
+	    ln -s "${SOURCE}"  "${DIR_IN_HOME}" || warn "Unable to link ${SOURCE}"
 	fi
 
     fi

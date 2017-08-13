@@ -1,7 +1,7 @@
 #! /bin/bash
 # Link everthing in '$PWD' to a dir in '~/$PWD'
 #
-# Put a copy of his in any directory that should have it's
+# Put a COPY (not link) of his in any directory that should have it's
 # file linked into root.
 
 # Any files listed (one per line) in .install.ignore will be ignored
