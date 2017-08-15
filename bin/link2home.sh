@@ -33,6 +33,7 @@ Usage: ${PROG} [options]
    options
 
      -d|--debug         debug output
+     -h|--home          link directly to $HOME
      -l|--linkdir       symlink directory itself
      -r|--remove        remove old files
      -v|--verbose       verbose output
@@ -57,6 +58,11 @@ do
 	    d_flag="-d"
 	    shift # past argument with no value
 	    ;;
+	-h|--home)
+	    TOHOME=1
+	    d_flag="-d"
+	    shift # past argument with no value
+	    ;;	
 	-r|--remove)
 	    REMOVE=1
 	    # remove old files
@@ -88,14 +94,23 @@ WHERE_AM_I=`pwd`
 BASEDIR=`basename $WHERE_AM_I`
 
 # create name of directory in $HOME
-DIR_IN_HOME="${HOME}/${BASEDIR}"
 
+if [[ -v TOHOME ]]; then
+    DIR_IN_HOME="${HOME}"
+else
+    DIR_IN_HOME="${HOME}/${BASEDIR}"
+fi
 
 if [[ -v LINKDIR ]]; then
 
     if [ -v REMOVE ]; then
-	rm -f "${DIR_IN_HOME}"
-	[[ -v VERBOSE ]] &&  info rm -f "${DIR_IN_HOME}"
+
+	if [[ "${HOME}" == "${DIR_IN_HOME}" ]]; then
+	    [[ -v VERBOSE ]] &&  info not removing "${HOME}"
+	else
+  	  rm -f "${DIR_IN_HOME}"
+	  [[ -v VERBOSE ]] &&  info rm -f "${DIR_IN_HOME}"
+        fi
     fi
 
     [[ -v VERBOSE ]] &&  info ln -s "${WHERE_AM_I}" "${DIR_IN_HOME}"
@@ -122,18 +137,19 @@ if [ -f '.ignore' ]; then
 fi
 
 #for file in * .[a-z]*; do
-for file in * .[a-z]*; do
+for file in * .[a-z0-9A-Z_\-]*; do
 
     SOURCE="${WHERE_AM_I}/${file}"
     TARGET="${DIR_IN_HOME}/${file}"
 
-    [ -f "${file}" ] || continue
+    [ -e "${file}" ] || continue
 
     if [ ${EXCLUSIONS["${file}"]+DNE} ]; then
 	info skiping "${file}"
     else
 
 	if [ -v REMOVE ]; then
+
 	    [[ -v VERBOSE ]] &&  info rm -f "${DIR_IN_HOME}/${file}"
 	    rm -f "${DIR_IN_HOME}/${file}"
 	fi
