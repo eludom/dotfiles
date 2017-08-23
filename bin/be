@@ -15,8 +15,13 @@
 #
 # TODO
 #  - Add gpg identities
+#  - deal with git identities
+#     + Use XDG-CONFIG-HOME to switch identities?
+#       http://git.661346.n2.nabble.com/What-is-XDG-CONFIG-HOME-for-exactly-td7627117.html
+#    + See https://gist.github.com/jexchan/2351996
 #  - Switch pass(1) databases/identities
 #  - Deal with .pem files
+
 
 set -e; set -u
 
@@ -33,14 +38,14 @@ function usage() {
     debug "in ${FUNCNAME[0]}"
 
     if [[ "$#" -gt 0 ]]; then
-	warn $@
+        warn $@
     fi
 
     cat <<END 1>&2
 Usage: ${PROG} [options] who
 
    arguments
-     who	       name of identity
+     who               name of identity
 
    options
 
@@ -96,22 +101,22 @@ function aws_become() {
 
     aws_creds="credentials.""${who}"
     if [ ! -f "${aws_creds}"  ]; then
-	warn file "${aws_creds}" does not exist.  Not changing aws identity.
+        warn file "${aws_creds}" does not exist.  Not changing aws identity.
     else
-	[[ -v VERBOSE ]] && set -x
-	rm -f credentials || true
-	ln -s "${aws_creds}" credentials
-	[[ -v VERBOSE ]] && set +x
+        [[ -v VERBOSE ]] && set -x
+        rm -f credentials || true
+        ln -s "${aws_creds}" credentials
+        [[ -v VERBOSE ]] && set +x
     fi
 
     aws_config="config.""${who}"
     if [ ! -f "${aws_config}"  ]; then
-	warn file "${aws_config}" does not exist.  Not installing.
+        warn file "${aws_config}" does not exist.  Not installing.
     else
-	[[ -v VERBOSE ]] && set -x
-	rm -f config || true
-	ln -s "${aws_config}" config
-	[[ -v VERBOSE ]] && set +x
+        [[ -v VERBOSE ]] && set -x
+        rm -f config || true
+        ln -s "${aws_config}" config
+        [[ -v VERBOSE ]] && set +x
     fi
 }
 
@@ -142,23 +147,23 @@ function ssh_become() {
     dsa_creds="id_dsa.""${who}"
 
     if [ -f "${dsa_creds}" ]; then
-	ssh_creds="${dsa_creds}"
+        ssh_creds="${dsa_creds}"
     elif [ -f "${rsa_creds}" ]; then
-	ssh_creds="${rsa_creds}"
+        ssh_creds="${rsa_creds}"
     else
-	echo "No ssh creds found. "${rsa_creds}" and "${dsa_creds}" do not exis."
-	exit 1
+        echo "No ssh creds found. "${rsa_creds}" and "${dsa_creds}" do not exis."
+        exit 1
     fi
 
     target=`basename $ssh_creds ".""${who}"`
 
     if [ -f "${ssh_creds}"  ]; then
-	[[ -v VERBOSE ]] && set +x
-	rm -f "${target}" || true
-	ln -s "${ssh_creds}" "${target}"
-	chmod 400 "${target}"
-	ssh-add "${ssh_creds}"
-	[[ -v VERBOSE ]] && set -x
+        [[ -v VERBOSE ]] && set +x
+        rm -f "${target}" || true
+        ln -s "${ssh_creds}" "${target}"
+        chmod 400 "${target}"
+        ssh-add "${ssh_creds}"
+        [[ -v VERBOSE ]] && set -x
     fi
 }
 
@@ -179,51 +184,51 @@ GPG=1
 for i in "$@"
 do
     case $i in
-	-a|--aws)
-	    AWS=1
-	    unset SSH
-	    unset GPG
-	    d_flag="-d"
-	    shift # past argument with no value
-	    ;;
-	-d|--debug)
-	    DEBUG=1
-	    d_flag="-d"
-	    shift # past argument with no value
-	    ;;
-	-g|--gnupg)
-	    GNUPG=1
-	    unset AWS
-	    unset SSH
-	    g_flag="-g"
-	    shift # past argument with no value
-	    ;;
-	-l|--list)
-	    LIST=1
-	    d_flag="-d"
-	    shift # past argument with no value
-	    ;;
-	-s|--ssh)
-	    SSH=1
-	    unset AWS
-	    unset GPG
-	    d_flag="-d"
-	    shift # past argument with no value
-	    ;;
-	-v|--verbose)
-	    VERBOSE=1
-	    v_flag="-v"
-	    shift # past argument with no value
-	    ;;
+        -a|--aws)
+            AWS=1
+            unset SSH
+            unset GPG
+            d_flag="-d"
+            shift # past argument with no value
+            ;;
+        -d|--debug)
+            DEBUG=1
+            d_flag="-d"
+            shift # past argument with no value
+            ;;
+        -g|--gnupg)
+            GNUPG=1
+            unset AWS
+            unset SSH
+            g_flag="-g"
+            shift # past argument with no value
+            ;;
+        -l|--list)
+            LIST=1
+            d_flag="-d"
+            shift # past argument with no value
+            ;;
+        -s|--ssh)
+            SSH=1
+            unset AWS
+            unset GPG
+            d_flag="-d"
+            shift # past argument with no value
+            ;;
+        -v|--verbose)
+            VERBOSE=1
+            v_flag="-v"
+            shift # past argument with no value
+            ;;
 
-	-w|--whoami)
-	    WHOAMI=1
-	    v_flag="-v"
-	    shift # past argument with no value
-	    ;;
-	-*|--*)
-	    usage "Unknown state option: $i"
-	    ;;
+        -w|--whoami)
+            WHOAMI=1
+            v_flag="-v"
+            shift # past argument with no value
+            ;;
+        -*|--*)
+            usage "Unknown state option: $i"
+            ;;
     esac
 done
 
@@ -231,7 +236,7 @@ done
 
 if [[ !  -v LIST  && ! -v WHOAMI ]]; then
     if [ "$#" -ne 1 ]; then
-	usage need a username
+        usage need a username
     fi
 
     who="${1}"
@@ -246,11 +251,11 @@ fi
 if [ -v AWS ]; then
 
     if [[ -v LIST ]]; then
-	aws_list
+        aws_list
     elif [[ -v WHOAMI ]]; then
-	aws_whoami
+        aws_whoami
     else
-	aws_become
+        aws_become
     fi
 fi
 
@@ -259,11 +264,11 @@ fi
 if [ -v SSH ]; then
 
     if [[ -v LIST ]]; then
-	ssh_list
+        ssh_list
     elif [[ -v WHOAMI ]]; then
-	ssh_whoami
+        ssh_whoami
     else
-	ssh_become
+        ssh_become
     fi
 fi
 
@@ -272,10 +277,10 @@ fi
 if [ -v GPG ]; then
 
     if [[ -v LIST ]]; then
-	gpg_list
+        gpg_list
     elif [[ -v WHOAMI ]]; then
-	gpg_whoami
+        gpg_whoami
     else
-	gpg_become
+        gpg_become
     fi
 fi

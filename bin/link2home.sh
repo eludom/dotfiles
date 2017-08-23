@@ -42,6 +42,9 @@ END
     exit 1
 }
 
+# globals variables
+
+declare -A EXCLUSIONS
 
 # parse global options
 
@@ -62,7 +65,7 @@ do
 	    TOHOME=1
 	    d_flag="-d"
 	    shift # past argument with no value
-	    ;;	
+	    ;;
 	-r|--remove)
 	    REMOVE=1
 	    # remove old files
@@ -108,9 +111,9 @@ if [[ -v LINKDIR ]]; then
 	if [[ "${HOME}" == "${DIR_IN_HOME}" ]]; then
 	    [[ -v VERBOSE ]] &&  info not removing "${HOME}"
 	else
-  	  rm -f "${DIR_IN_HOME}"
+	  rm -f "${DIR_IN_HOME}"
 	  [[ -v VERBOSE ]] &&  info rm -f "${DIR_IN_HOME}"
-        fi
+	fi
     fi
 
     [[ -v VERBOSE ]] &&  info ln -s "${WHERE_AM_I}" "${DIR_IN_HOME}"
@@ -127,14 +130,13 @@ fi
 #
 cd "${WHERE_AM_I}"
 
-# get exception list
-declare -A EXCLUSIONS
-
 if [ -f '.ignore' ]; then
     for exclude in `cat .ignore`; do
 	EXCLUSIONS["${exclude}"]="${exclude}"
     done
 fi
+
+debug linking files
 
 #for file in * .[a-z]*; do
 for file in * .[a-z0-9A-Z_\-]*; do
