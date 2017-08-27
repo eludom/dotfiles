@@ -1,14 +1,4 @@
-#+TITLE: George Jones's dotfiles and installation script
-#+DATE: <2016-02-23 04:59:42 Tuesday>
-
-This directory contains my generic dotfiles (.bashrc, etc) and (for
-historical reasons) my misc homegrown ~/bin/ utilities.
-
-- Install with install.sh
-
-- Project file (TODO'S etc) in project-dotfiles.org
-
-
+This repo contains dotfiles (e.g. /.bashrc/) to be installed  ${HOME}/
 
 
 
