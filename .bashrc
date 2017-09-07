@@ -106,10 +106,10 @@ export PROMPT_COMMAND="history -a; history -c; history -r;"
 # remove an item from the path
 pathrm() {
     if [ -d "$1" ]; then
-	#echo 1 $1
-	removeThis="`echo $1 | sed -e 's#/#\\\/#'g`"
-	newPath=`echo $PATH | awk -v RS=: -v ORS=: "/$removeThis/ {next} {print}" | sed 's/[ :]*$//g'`
-	export PATH=$newPath
+        #echo 1 $1
+        removeThis="`echo $1 | sed -e 's#/#\\\/#'g`"
+        newPath=`echo $PATH | awk -v RS=: -v ORS=: "/$removeThis/ {next} {print}" | sed 's/[ :]*$//g'`
+        export PATH=$newPath
     fi
 }
 
@@ -117,18 +117,25 @@ pathrm() {
 # add path to the end if not there
 pathlast() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-	#echo  pathlast $1
-	export PATH="${PATH:+"$PATH:"}$1"
+        #echo  pathlast $1
+        export PATH="${PATH:+"$PATH:"}$1"
     fi
 }
 
 # add path to the front if not there
 pathfirst() {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-	#echo  pathfirst $1
-	export PATH="$1:${PATH}"
+        #echo  pathfirst $1
+        export PATH="$1:${PATH}"
     fi
 }
+
+# show path
+path() {
+    echo $PATH
+}
+
+
 
 # Be sure we have a few specific paths if they exist
 
@@ -136,7 +143,6 @@ pathlast $HOME/bin
 pathlast /opt/bin
 pathlast /usr/local/bin
 pathlast /opt/bin
-pathlast ~/.local/bin
 
 #
 # Execute any .sh files in ~/rc.local/*.sh
@@ -144,14 +150,16 @@ pathlast ~/.local/bin
 
 if [ -d ${HOME}/rc.local ]; then
     for rcfile in $(find ${HOME}/rc.local -name \*.sh); do
-	#echo running localrc ${rcfile}
-	source ${rcfile}
+        #echo running localrc ${rcfile}
+        source ${rcfile}
     done
 fi
 
 #
 # Invoking emacs
 #
+
+alias emacs='setsid emacs'
 
 # from http://stuff-things.net/2014/12/16/working-with-emacsclient/
 

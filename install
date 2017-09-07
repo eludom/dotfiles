@@ -26,6 +26,6 @@ fi
 
 
 echo Linking evertying in "${WHERE_AM_I}"  into "~/""${BASEDIR}"
-${LINK2HOME} -v -d -r --home
+${LINK2HOME} -v -d -r --tobase
 
 # any directory specific post-processing (permissions, etc) goes here.
