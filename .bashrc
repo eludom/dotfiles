@@ -206,6 +206,7 @@ export VISUAL=$EDITOR
 #    color=""
 #fi
 
+# ls aliases
 alias ls='	ls '$color' -a'
 alias llr='	ls -ltr '$color' -a'
 alias llrt='	ls -ltr '$color' -a | tail'
