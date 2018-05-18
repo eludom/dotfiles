@@ -49,6 +49,9 @@ if [ -e ~/bin/tz.sh ]; then
   source ~/bin/tz.sh
 fi
 
+# Set local for numeric output
+LOCAL=`locale -a | grep -i en_us | head -1`
+if [[ "$LOCAL" != "" ]]; then export LC_NUMERIC="$LOCAL"; fi
 
 # set up ssh agent
 #
@@ -200,22 +203,128 @@ export VISUAL=$EDITOR
 # Do OS-specific setup
 #
 
-#if [[ "$OSTYPE" == "linux-gnu" ]]; then
-#    color="--color";
-#else
-#    color=""
-#fi
 
+#
 # ls aliases
-alias ls='	ls '$color' -a'
-alias llr='	ls -ltr '$color' -a'
-alias llrt='	ls -ltr '$color' -a | tail'
-alias llt='	ls -lt '$color' -a'
-alias lltm='	ls '$color' -a -lt | more'
-alias llth='	ls '$color' -a -lt | head'
-alias lss='	ls '$color' -a -1s | sort -n'
-alias lssr='	ls '$color' -a -1s | sort -nr'
+#
+
+# coloring for ls functions
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    # This works on terminals, piped to cat, tail etc
+    # This fails piped to more, less etc
+    # color="--color";
+    #
+    # Always omits color
+    # color="--color=never"
+    #
+    # This works when piped to less, more
+    # color="--color=auto"
+    #
+    # Probably want different settings of 'color='
+    # based on intend output (terminal, more/less).
+    #
+    # Need to fix/test this gmj <2018-05-18>
+
+    # color="--color";
+    color=""
+else
+    color=""
+fi
+
+BIN_LS=/bin/ls
+
+#alias ls='	ls '$color' -a'
+# List
+# Usage: ls [DIR]
+function ls {
+    DIR=${1:-.};
+    $BIN_LS $color -a $DIR;
+}
+
+
+#alias llrt='	ls -ltr '$color' -a | tail'
+# Long List Reverse Tail
+# Usage: llrt [DIR]
+function llrt {
+    DIR=${1:-.};
+    $BIN_LS $color -a -ltr $DIR | tail
+}
+
+#alias llt='	ls -lt '$color' -a'
+# Long List Time
+# Usage: llt [DIR]
+function llt {
+    set -x
+    echo LLT2
+    DIR=${1:-.}
+    $BIN_LS $color -a -lt $DIR
+    set +x
+}
+
+#alias lltm='	ls '$color' -a -lt | more'
+# Long List Time, More
+# Usage: lltm [DIR]
+function lltm {
+    DIR=${1:-.};
+    $BIN_LS $color -a -lt $DIR | more;
+}
+
+#alias lltl='	ls '$color' -a -lt | less'
+# Long List Time, Less
+# Usage: lltl [DIR]
+function lltl {
+    DIR=${1:-.};
+    $BIN_LS $color -a -lt $DIR | less;
+}
+
+#alias llth='	ls '$color' -a -lt | head'
+# Long List Time, Head
+# Usage: llth [DIR [LINES]]
+function llth {
+    DIR=${1:-.};
+    LINES=${2:-10};
+    $BIN_LS $color -a -lt $DIR | head -$LINES;
+}
+
+#alias lltt='	ls '$color' -a -lt | tail'
+# Long List Time, Tail
+# Usage: lltt [DIR [LINES]]
+function lltt {
+    DIR=${1:-.};
+    LINES=${2:-10};
+    $BIN_LS $color -a -lt $DIR | tail -$LINES;
+}
+
+#alias lss='	ls '$color' -a -1s | sort -n'
+# List Sort Size
+# Usage: lss [DIR]
+function lss {
+    DIR=${1:-.};
+    $BIN_LS $color -a -1s $DIR | sort -n
+}
+
+#alias lssr='	ls '$color' -a -1s | sort -nr'
+# List Sort Size Reverse
+# Usage: lssr [DIR]
+function lssr {
+    DIR=${1:-.};
+    $BIN_LS $color -a -1s $DIR | sort -nr
+}
+
+# Aliases for viewing the newest file in a directoy
+alias nftf='tail -f `ls -A1t | head -1`' # tail follow newest file
+alias nft='tail `ls -A1t | head -1`'    # tail newest file
+alias nfh='head `ls -A1t | head -1`'    # head newest file
+alias nfl='less `ls -A1t | head -1`'    # less newest file
+alias nfc='cat `ls -A1t | head -1`'     # cat newest file
+alias nfls='ls -A1t | head -1'          # ls newest file
+alias nflsl='ls -Atl | head -2 | tail -1' # ls newest file, long
+
 
 # Let somebody know we finished running
 
 touch $HOME/.bashrc-ran
+
+# added by Anaconda3 installer
+#export PATH="/home/gmj/anaconda3/bin:$PATH"
