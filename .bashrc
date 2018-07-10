@@ -234,83 +234,91 @@ fi
 
 BIN_LS=/bin/ls
 
-#alias ls='	ls '$color' -a'
+
+alias ls='	ls '$color' -a'
+
+#
+# NOTE/TODO: <2018-07-10> commented out function versions of ls
+# commands were an attempt at allowing different versions of ls
+# for directories other than $PWD.  Needs work.  "ls *" fails.
+#
+
 # List
 # Usage: ls [DIR]
-function ls {
-    DIR=${1:-.};
-    $BIN_LS $color -a $DIR;
-}
+# function ls {
+#     DIR=${1:-.};
+#     $BIN_LS $color -a $DIR;
+# }
 
 
-#alias llrt='	ls -ltr '$color' -a | tail'
+alias llrt='	ls -ltr '$color' -a | tail'
 # Long List Reverse Tail
 # Usage: llrt [DIR]
-function llrt {
-    DIR=${1:-.};
-    $BIN_LS $color -a -ltr $DIR | tail
-}
+# function llrt {
+#     DIR=${1:-.};
+#     $BIN_LS $color -a -ltr $DIR | tail
+# }
 
-#alias llt='	ls -lt '$color' -a'
+alias llt='	ls -lt '$color' -a'
 # Long List Time
 # Usage: llt [DIR]
-function llt {
-    set -x
-    echo LLT2
-    DIR=${1:-.}
-    $BIN_LS $color -a -lt $DIR
-    set +x
-}
+# function llt {
+#     set -x
+#     echo LLT2
+#     DIR=${1:-.}
+#     $BIN_LS $color -a -lt $DIR
+#     set +x
+# }
 
-#alias lltm='	ls '$color' -a -lt | more'
+alias lltm='	ls '$color' -a -lt | more'
 # Long List Time, More
 # Usage: lltm [DIR]
-function lltm {
-    DIR=${1:-.};
-    $BIN_LS $color -a -lt $DIR | more;
-}
+# function lltm {
+#     DIR=${1:-.};
+#     $BIN_LS $color -a -lt $DIR | more;
+# }
 
-#alias lltl='	ls '$color' -a -lt | less'
+alias lltl='	ls '$color' -a -lt | less'
 # Long List Time, Less
 # Usage: lltl [DIR]
-function lltl {
-    DIR=${1:-.};
-    $BIN_LS $color -a -lt $DIR | less;
-}
+# function lltl {
+#     DIR=${1:-.};
+#     $BIN_LS $color -a -lt $DIR | less;
+# }
 
-#alias llth='	ls '$color' -a -lt | head'
+alias llth='	ls '$color' -a -lt | head'
 # Long List Time, Head
 # Usage: llth [DIR [LINES]]
-function llth {
-    DIR=${1:-.};
-    LINES=${2:-10};
-    $BIN_LS $color -a -lt $DIR | head -$LINES;
-}
+# function llth {
+#     DIR=${1:-.};
+#     LINES=${2:-10};
+#     $BIN_LS $color -a -lt $DIR | head -$LINES;
+# }
 
-#alias lltt='	ls '$color' -a -lt | tail'
+alias lltt='	ls '$color' -a -lt | tail'
 # Long List Time, Tail
 # Usage: lltt [DIR [LINES]]
-function lltt {
-    DIR=${1:-.};
-    LINES=${2:-10};
-    $BIN_LS $color -a -lt $DIR | tail -$LINES;
-}
+# function lltt {
+#     DIR=${1:-.};
+#     LINES=${2:-10};
+#     $BIN_LS $color -a -lt $DIR | tail -$LINES;
+# }
 
-#alias lss='	ls '$color' -a -1s | sort -n'
+alias lss='	ls '$color' -a -1s | sort -n'
 # List Sort Size
 # Usage: lss [DIR]
-function lss {
-    DIR=${1:-.};
-    $BIN_LS $color -a -1s $DIR | sort -n
-}
+# function lss {
+#     DIR=${1:-.};
+#     $BIN_LS $color -a -1s $DIR | sort -n
+# }
 
-#alias lssr='	ls '$color' -a -1s | sort -nr'
+alias lssr='	ls '$color' -a -1s | sort -nr'
 # List Sort Size Reverse
 # Usage: lssr [DIR]
-function lssr {
-    DIR=${1:-.};
-    $BIN_LS $color -a -1s $DIR | sort -nr
-}
+# function lssr {
+#     DIR=${1:-.};
+#     $BIN_LS $color -a -1s $DIR | sort -nr
+# }
 
 # Aliases for viewing the newest file in a directoy
 alias nftf='tail -f `ls -A1t | head -1`' # tail follow newest file
