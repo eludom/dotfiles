@@ -138,6 +138,8 @@ path() {
     echo $PATH
 }
 
+# show path, one entry per line
+alias pathcat="echo $PATH | sed 's/:/\n/g'"
 
 
 # Be sure we have a few specific paths if they exist
