@@ -332,6 +332,9 @@ alias nfls='ls -A1t | head -1'          # ls newest file
 alias nflsl='ls -Atl | head -2 | tail -1' # ls newest file, long
 
 
+# alias for viewing files
+if [[  ! -z "`which xdg-open`" ]]; then alias open='xdg-open '; fi
+
 # Let somebody know we finished running
 
 touch $HOME/.bashrc-ran
