@@ -28,6 +28,20 @@ alias oi='      offlineimap'
 alias psg='	/bin/ps -auxww | grep'
 alias p8='	ping -c 3 8.8.8.8'
 
+# aliases (functions) that take srgs
+
+function hgt() {
+    # hgt == "history grep (for arg) tail"
+    #echo "Histroy Grep tail"
+
+    if [ -z ${1+x} ]; then
+        echo 'hgt needs an argument' 1>&2
+        return 1
+    fi
+
+    history | grep -i "$1" | tail
+    return 0
+}
 
 
 # Set HOSTNAME if ~/etc/hostname exists
