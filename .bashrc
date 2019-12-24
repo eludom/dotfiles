@@ -9,9 +9,20 @@
 #    set -e
 #
 #
+
+# Helper functions
+PROG=`basename "$0" | tr -d '\n'`
+
+function info()  { echo ${PROG}\: info: "$@" 1>&2; }
+function warn()  { echo ${PROG}\: warning: "$@" 1>&2; }
+function error() { echo ${PROG}\: error: "$@" 1>&2; }
+function debug() { [[ -v DEBUG ]] && echo ${PROG}\: debug: "$@" 1>&2 || true ; }
+function die()   { echo ${PROG}\: fatal: "$@" 1>&2 && exit 1; }
+
 #
 # Generic things
 #
+
 
 export PS1="\# [\t] \u@\h \W/ $ "
 
@@ -337,6 +348,7 @@ alias lssr='	ls '$color' -a -1s | sort -nr'
 # }
 
 # Aliases for viewing the newest file in a directoy
+# TODO replace ls with find -type f
 alias nftf='tail -f `ls -A1t | head -1`' # tail follow newest file
 alias nft='tail `ls -A1t | head -1`'    # tail newest file
 alias nfh='head `ls -A1t | head -1`'    # head newest file
