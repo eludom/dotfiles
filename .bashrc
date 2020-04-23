@@ -354,13 +354,10 @@ alias lssr='	ls '$color' -a -1s | sort -nr'
 # Aliases for viewing the newest file in a directoy
 # TODO replace ls with find -type f
 
-function nf() { ls -1t `find . -type f` | head -1; } # list newest file
-
-
 # list the newest file in the current directory
 # TODO: need to handle spaces in filenames
 function nf() {
-    \ls -1t `find . -maxdepth 1 -type f`  | \
+    \ls -1t `find ${1:-.} -maxdepth 1 -type f`  | \
         head -1 | \
         sed 's/\.\./\/dev\/null/' ; \
         }
