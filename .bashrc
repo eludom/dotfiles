@@ -253,8 +253,8 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     #
     # Need to fix/test this gmj <2018-05-18>
 
-    # color="--color";
-    color=""
+     color="--color";
+    #color=""
 else
     color=""
 fi
@@ -286,7 +286,8 @@ alias llrt='	ls -ltr '$color' -a | tail'
 #     $BIN_LS $color -a -ltr $DIR | tail
 # }
 
-alias llt='	ls -lt '$color' -a'
+
+#alias llt='	ls -lt '$color' -a'
 # Long List Time
 # Usage: llt [DIR]
 # function llt {
@@ -296,14 +297,16 @@ alias llt='	ls -lt '$color' -a'
 #     $BIN_LS $color -a -lt $DIR
 #     set +x
 # }
+function llt() { ls -lt $color ${1:-} ${2:-}; }
 
-alias lltm='	ls '$color' -a -lt | more'
+#alias lltm='	ls '$color' -a -lt | more'
 # Long List Time, More
 # Usage: lltm [DIR]
 # function lltm {
 #     DIR=${1:-.};
 #     $BIN_LS $color -a -lt $DIR | more;
 # }
+function lltm() { ls -lt $color ${1:-} ${2:-} | more; }
 
 alias lltl='	ls '$color' -a -lt | less'
 # Long List Time, Less
@@ -313,7 +316,7 @@ alias lltl='	ls '$color' -a -lt | less'
 #     $BIN_LS $color -a -lt $DIR | less;
 # }
 
-alias llth='	ls '$color' -a -lt | head'
+#alias llth='	ls '$color' -a -lt | head'
 # Long List Time, Head
 # Usage: llth [DIR [LINES]]
 # function llth {
@@ -321,6 +324,7 @@ alias llth='	ls '$color' -a -lt | head'
 #     LINES=${2:-10};
 #     $BIN_LS $color -a -lt $DIR | head -$LINES;
 # }
+function llth() { ls -lt $color ${1:-} ${2:-} | head; }
 
 alias lltt='	ls '$color' -a -lt | tail'
 # Long List Time, Tail
@@ -349,13 +353,25 @@ alias lssr='	ls '$color' -a -1s | sort -nr'
 
 # Aliases for viewing the newest file in a directoy
 # TODO replace ls with find -type f
-alias nftf='tail -f `ls -A1t | head -1`' # tail follow newest file
-alias nft='tail `ls -A1t | head -1`'    # tail newest file
-alias nfh='head `ls -A1t | head -1`'    # head newest file
-alias nfl='less `ls -A1t | head -1`'    # less newest file
-alias nfc='cat `ls -A1t | head -1`'     # cat newest file
-alias nfls='ls -A1t | head -1'          # ls newest file
-alias nflsl='ls -Atl | head -2 | tail -1' # ls newest file, long
+
+function nf() { ls -1t `find . -type f` | head -1; } # list newest file
+
+
+# list the newest file in the current directory
+# TODO: need to handle spaces in filenames
+function nf() {
+    \ls -1t `find . -maxdepth 1 -type f`  | \
+        head -1 | \
+        sed 's/\.\./\/dev\/null/' ; \
+        }
+
+alias nftf='tail -f `nf`' # tail follow newest file
+alias nft='tail `nf`'    # tail newest file
+alias nfh='head `nf`'    # head newest file
+alias nfl='less `nf`'    # less newest file
+alias nfc='cat `nf`'     # cat newest file
+alias nfls='ls -A1t `nf`'  # ls newest file, excluding .
+alias nflsl='ls -Atl `nf`' # ls newest file, long
 
 
 # alias for viewing files
