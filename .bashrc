@@ -362,13 +362,33 @@ function nf() {
         sed 's/\.\./\/dev\/null/' ; \
         }
 
-alias nftf='tail -f `nf`' # tail follow newest file
-alias nft='tail `nf`'    # tail newest file
-alias nfh='head `nf`'    # head newest file
-alias nfl='less `nf`'    # less newest file
-alias nfc='cat `nf`'     # cat newest file
-alias nfls='ls -A1t `nf`'  # ls newest file, excluding .
-alias nflsl='ls -Atl `nf`' # ls newest file, long
+#alias nftf='tail -f `nf`' # tail follow newest file
+unalias nfh 2> /dev/null
+function nftf { NF=`nf ${1:-.}`; debug NF $NF;  tail -f $NF ; }
+
+#alias nft='tail `nf`'    # tail newest file
+unalias nft 2> /dev/null
+function nft { NF=`nf ${1:-.}`; debug NF $NF;  tail $NF ; }
+
+#alias nfh='head `nf`'    # head newest file
+unalias nfh 2> /dev/null
+function nfh { NF=`nf ${1:-.}`; debug NF $NF;  head $NF ; }
+
+#alias nfl='less `nf`'    # less newest file
+unalias nfl 2> /dev/null
+function nfl { NF=`nf ${1:-.}`; debug NF $NF;  less $NF ; }
+
+#alias nfc='cat `nf`'     # cat newest file
+unalias nfc 2> /dev/null
+function nfc { NF=`nf ${1:-.}`; debug NF $NF;  cat $NF ; }
+
+#alias nfls='ls -A1t `nf`'  # ls newest file, excluding .
+unalias nfls 2> /dev/null
+function nfls { NF=`nf ${1:-.}`; debug NF $NF;  ls -A1t $NF ; }
+
+#alias nflsl='ls -Atl `nf`' # ls newest file, long
+unalias nflsl 2> /dev/null
+function nflsl { NF=`nf ${1:-.}`; debug NF $NF;  ls -Atl $NF ; }
 
 
 # alias for viewing files
