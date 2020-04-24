@@ -278,14 +278,15 @@ alias ls='	ls '$color' -a'
 # }
 
 
-alias llrt='	ls -ltr '$color' -a | tail'
+#alias llrt='	ls -ltr '$color' -a | tail'
 # Long List Reverse Tail
 # Usage: llrt [DIR]
 # function llrt {
 #     DIR=${1:-.};
 #     $BIN_LS $color -a -ltr $DIR | tail
 # }
-
+unalias llrt 2> /dev/null
+function llrt() { ls -lrt $color ${*:-}; }
 
 #alias llt='	ls -lt '$color' -a'
 # Long List Time
@@ -297,7 +298,8 @@ alias llrt='	ls -ltr '$color' -a | tail'
 #     $BIN_LS $color -a -lt $DIR
 #     set +x
 # }
-function llt() { ls -lt $color ${1:-} ${2:-}; }
+unalias llt 2> /dev/null
+function llt() { ls -lt $color ${*:-}; }
 
 #alias lltm='	ls '$color' -a -lt | more'
 # Long List Time, More
@@ -306,15 +308,18 @@ function llt() { ls -lt $color ${1:-} ${2:-}; }
 #     DIR=${1:-.};
 #     $BIN_LS $color -a -lt $DIR | more;
 # }
-function lltm() { ls -lt $color ${1:-} ${2:-} | more; }
+unalias llm 2> /dev/null
+function lltm() { ls -lt $color ${*:-} | more; }
 
-alias lltl='	ls '$color' -a -lt | less'
+# alias lltl='	ls '$color' -a -lt | less'
 # Long List Time, Less
 # Usage: lltl [DIR]
 # function lltl {
 #     DIR=${1:-.};
 #     $BIN_LS $color -a -lt $DIR | less;
 # }
+unalias lltl 2> /dev/null
+function lltl() { ls -alt $color ${*:-} | more; }
 
 #alias llth='	ls '$color' -a -lt | head'
 # Long List Time, Head
@@ -324,9 +329,9 @@ alias lltl='	ls '$color' -a -lt | less'
 #     LINES=${2:-10};
 #     $BIN_LS $color -a -lt $DIR | head -$LINES;
 # }
-function llth() { ls -lt $color ${1:-} ${2:-} | head; }
+function llth() { ls -lt $color ${*:-} | head; }
 
-alias lltt='	ls '$color' -a -lt | tail'
+# alias lltt='	ls '$color' -a -lt | tail'
 # Long List Time, Tail
 # Usage: lltt [DIR [LINES]]
 # function lltt {
@@ -334,25 +339,34 @@ alias lltt='	ls '$color' -a -lt | tail'
 #     LINES=${2:-10};
 #     $BIN_LS $color -a -lt $DIR | tail -$LINES;
 # }
+unalias lltt 2> /dev/null
+function lltt() { ls -alt $color ${*:-} | tail; }
 
-alias lss='	ls '$color' -a -1s | sort -n'
+
+#alias lss='	ls '$color' -a -1s | sort -n'
 # List Sort Size
 # Usage: lss [DIR]
 # function lss {
 #     DIR=${1:-.};
 #     $BIN_LS $color -a -1s $DIR | sort -n
 # }
+unalias lss 2> /dev/null
+function lss() { ls -a1s $color ${*:-} | sort -n; }
 
-alias lssr='	ls '$color' -a -1s | sort -nr'
+
+#alias lssr='	ls '$color' -a -1s | sort -nr'
 # List Sort Size Reverse
 # Usage: lssr [DIR]
 # function lssr {
 #     DIR=${1:-.};
 #     $BIN_LS $color -a -1s $DIR | sort -nr
 # }
+unalias lssr 2> /dev/null
+function lssr() { ls -a1s $color ${*:-} | sort -nr; }
 
+#
 # Aliases for viewing the newest file in a directoy
-# TODO replace ls with find -type f
+#
 
 # list the newest file in the current directory
 # TODO: need to handle spaces in filenames
