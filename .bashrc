@@ -370,39 +370,40 @@ function lssr() { ls -a1s $color ${*:-} | sort -nr; }
 
 # list the newest file in the current directory
 # TODO: need to handle spaces in filenames
-function nf() {
-    \ls -1t `find ${1:-.} -maxdepth 1 -type f`  | \
-        head -1 | \
-        sed 's/\.\./\/dev\/null/' ; \
-        }
+
+function nf ()
+{
+    NF=`find ${1:-.} -maxdepth 1 -type f -print0 | xargs -0 ls -1t  |  head -1;`;
+    echo ${NF:-/dev/null} | sed "s/ /\\\ /g"
+}
 
 #alias nftf='tail -f `nf`' # tail follow newest file
 unalias nfh 2> /dev/null
-function nftf { NF=`nf ${1:-.}`; debug NF $NF;  tail -f $NF ; }
+function nftf { NF=`nf ${1:-.}`; debug NF $NF;  echo "$NF" | xargs tail -f  ; }
 
 #alias nft='tail `nf`'    # tail newest file
 unalias nft 2> /dev/null
-function nft { NF=`nf ${1:-.}`; debug NF $NF;  tail $NF ; }
+function nft { NF=`nf ${1:-.}`; debug NF $NF;  echo "$NF" | xargs tail  ; }
 
 #alias nfh='head `nf`'    # head newest file
 unalias nfh 2> /dev/null
-function nfh { NF=`nf ${1:-.}`; debug NF $NF;  head $NF ; }
+function nfh { NF=`nf ${1:-.}`; debug NF $NF;  echo "$NF" | xargs head  ; }
 
 #alias nfl='less `nf`'    # less newest file
 unalias nfl 2> /dev/null
-function nfl { NF=`nf ${1:-.}`; debug NF $NF;  less $NF ; }
+function nfl { NF=`nf ${1:-.}`; debug NF $NF;  echo "$NF" | xargs less  ; }
 
 #alias nfc='cat `nf`'     # cat newest file
 unalias nfc 2> /dev/null
-function nfc { NF=`nf ${1:-.}`; debug NF $NF;  cat $NF ; }
+function nfc { NF=`nf ${1:-.}`; debug NF $NF;  echo "$NF" | xargs cat  ; }
 
 #alias nfls='ls -A1t `nf`'  # ls newest file, excluding .
 unalias nfls 2> /dev/null
-function nfls { NF=`nf ${1:-.}`; debug NF $NF;  ls -A1t $NF ; }
+function nfls { NF=`nf ${1:-.}`; debug NF $NF;  echo "$NF" | xargs ls -A1t  ; }
 
 #alias nflsl='ls -Atl `nf`' # ls newest file, long
 unalias nflsl 2> /dev/null
-function nflsl { NF=`nf ${1:-.}`; debug NF $NF;  ls -Atl $NF ; }
+function nflsl { NF=`nf ${1:-.}`; debug NF $NF;  echo "$NF" | xargs ls -Atl  ; }
 
 
 # alias for viewing files
