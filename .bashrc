@@ -107,9 +107,29 @@ function git-branch-prompt {
   if [ $branch ]; then printf " [%s]" $branch; fi
 }
 
+
+#
+# Because MacOS has to be different...
+#
+
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # ...
+    alias 2clip='xclip -selection c'
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+        alias 2clip='pbcopy'
+# elif [[ "$OSTYPE" == "cygwin" ]]; then
+#         # POSIX compatibility layer and Linux environment emulation for Windows
+# elif [[ "$OSTYPE" == "msys" ]]; then
+#         # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
+# elif [[ "$OSTYPE" == "win32" ]]; then
+#         # I'm not sure this can happen.
+# elif [[ "$OSTYPE" == "freebsd"* ]]; then
+#         # ...
+# else
+        # Unknown.
+fi
 # because hosnames assigned by IT deperments like abc123456789ef are not meaningful
 function prompt-hostname {
-  local branch=`git-branch-name`
   if [ -f ~/etc/hostname ]; then head -1 ~/etc/hostname; elif [ -f /etc/hostname ]; then head -1 /etc/hostname; else echo STUPIDMAC; fi
 }
 
