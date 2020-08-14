@@ -41,6 +41,31 @@ alias p8='	ping -c 3 8.8.8.8'
 
 # aliases (functions) that take srgs
 
+function gf() {
+    # grep-find: grep for regexp(s) in files.
+
+    local files=""
+    local days=""
+
+    if [ -z ${1+x} ]; then
+        echo 'gf needs string(s) to search for ' 1>&2
+        info "Usage: gf patterns [filename-pattern [mtime-days]]"
+        return 1
+    fi
+
+    if [ ! -z ${2+x} ]; then
+        files="-name ${2}"
+    fi
+
+    if [ ! -z ${3+x} ]; then
+        files="-mtime -${3}"
+    fi
+
+    # set -x
+    find . -type f -mtime -365 $files -exec egrep --color -H -i "${1}" \{\} \;
+    # set +x
+}
+
 function hgt() {
     # hgt == "history grep (for arg) tail"
     #echo "Histroy Grep tail"
