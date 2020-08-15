@@ -39,31 +39,52 @@ alias oi='      offlineimap'
 alias psg='	/bin/ps -auxww | grep'
 alias p8='	ping -c 3 8.8.8.8'
 
-# aliases (functions) that take srgs
+# aliases (functions) that take args
 
 function gf() {
-    # grep-find: grep for regexp(s) in files.
+    # grep-find: grep for patterins in files via find
+    #
+    # Usage: gf patterns [files [days]]
+    #
+    # Examples:
+    #   gf findMeAnywhere
+    #   gf findMeInTextFiles '*.txt'
+    #   gf findMeInTextFiles .txt
+    #   gf BEGIN\|END .org 30
 
     local files=""
-    local days=""
+    local days="365"
 
+    set -o noglob
+
+    # $1 is pattern(s) for egrep
     if [ -z ${1+x} ]; then
         echo 'gf needs string(s) to search for ' 1>&2
-        info "Usage: gf patterns [filename-pattern [mtime-days]]"
+        info "Usage: gf patterns [files [days]]"
         return 1
     fi
 
+    # $2 (if present) is files for find.  No globbing, so "*.txt" OK
     if [ ! -z ${2+x} ]; then
-        files="-name ${2}"
+        if [[ "$2" =~ ^\. ]]; then
+            # Special case: treat ".foo" as "*.foo"
+            # Avoids needing to quote on command line
+            files="-name *$2"
+        else
+            files="-name ${2}"
+        fi
     fi
 
+    # $3 (if present) is find -mtime arg, default 365
     if [ ! -z ${3+x} ]; then
-        files="-mtime -${3}"
+        days="${3}"
     fi
 
     # set -x
-    find . -type f -mtime -365 $files -exec egrep --color -H -i "${1}" \{\} \;
+    find . -type f -mtime -${days} $files -exec egrep --color -H -i "${1}" \{\} \;
     # set +x
+
+    set +o noglob
 }
 
 function hgt() {
