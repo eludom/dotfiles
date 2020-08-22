@@ -2,7 +2,7 @@
 	name = George Jones
 	email = gmj@pobox.com
 [core]
-	editor = emacs
+        editor = emacsclient -c
 	excludesfile = ~/.gitignore
 [status]
 #	showUntrackedFiles = no
