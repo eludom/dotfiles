@@ -37,7 +37,8 @@ alias fegi='	find . -print | egrep -i'
 alias egi='	egrep -i'
 alias oi='      offlineimap'
 alias psg='	/bin/ps -auxww | grep'
-alias p8='	ping -c 3 8.8.8.8'
+alias p8='	ping -c 3 8.8.8.8' # make sure routing works
+alias pp='	ping -c 3 port111.com' # make sure dns and routing work
 
 # aliases (functions) that take args
 
