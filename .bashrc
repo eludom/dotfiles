@@ -42,50 +42,6 @@ alias pp='	ping -c 3 port111.com' # make sure dns and routing work
 
 # aliases (functions) that take args
 
-
-function some {
-    # Functon to print "some" lines of a file, like head or tail but, random start
-    #
-    # Usage: some [[-#] FILE]
-
-    set -u; # be safe out there
-
-    HOW_MANY=10 # Number of lines to print.  Default.
-    FILE="/dev/stdin" # default
-
-
-    if [ "$#" -eq 0 ]; then
-        :
-    elif [ "$#" -eq 1 ]; then
-        if [[ "$1" =~ -[0-9] ]]; then
-            HOW_MANY=`echo "$1" | sed 's/^-//'`
-        else
-            FILE="$1"
-        fi
-
-    elif [ "$#" -eq 2 ]; then
-        if [[ "$1" =~ -[0-9] ]]; then
-            HOW_MANY=`echo "$1" | sed 's/^-//'`
-        else
-            echo "some: Usage: some [-# [FILE]]"
-            return
-        fi
-
-        FILE="$2"
-    fi
-
-    # Count the lines to bound display
-    LINES=`wc -l $FILE | sed -e 's/ .*//'`
-
-    # pick a random starting line at least HOW_MANY back from the end
-    FIRST=$((1 + RANDOM % (LINES - HOW_MANY + 1 )))
-    LAST=$((FIRST + HOW_MANY - 1))
-
-    # Let's see some lines !
-    awk "NR >= $FIRST && NR <= $LAST" $FILE
-}
-
-
 function gf() {
     # grep-find: grep for patterins in files via find
     #
