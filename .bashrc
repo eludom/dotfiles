@@ -26,7 +26,6 @@ function die()   { echo ${PROG}\: fatal: "$@" 1>&2 && exit 1; }
 
 export PS1="\# [\t] \u@\h \W/ $ "
 
-alias  cd='	pushd'
 #bind -x '"\C-l": clear;'
 alias rm='	rm -i'
 alias ag='	alias | grep -i'
@@ -38,6 +37,15 @@ alias egi='	egrep -i'
 alias oi='      offlineimap'
 alias psg='	/bin/ps -auxww | grep'
 alias p8='	ping -c 3 8.8.8.8'
+
+# Deal with directory stack (cd, etc.)
+
+alias  cd='	pushd'
+function dirl() {
+    # list directory stack, one per line
+    for d in `dirs`; do echo $d; done
+    }
+alias  dirp='popd > /dev/null && dirl'
 
 # aliases (functions) that take args
 
@@ -329,6 +337,8 @@ BIN_LS=/bin/ls
 
 
 alias ls='	ls '$color' -a'
+
+
 
 #
 # NOTE/TODO: <2018-07-10> commented out function versions of ls
