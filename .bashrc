@@ -45,8 +45,18 @@ alias  cd='	pushd'
 function dirl() {
     # list directory stack, one per line
     for d in `dirs`; do echo $d; done
-    }
-alias  dirp='popd > /dev/null && dirl'
+}
+
+# alias  dirp='popd > /dev/null && dirl'
+
+# function to pop N entries off the directory stack
+# Usage: dirp [N]
+
+function dirp ()
+{
+  for i in seq ${1:-"1"}; do popd > /dev/null; done && dirl
+}
+(.ven
 
 # aliases (functions) that take args
 
