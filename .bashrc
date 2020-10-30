@@ -162,6 +162,7 @@ function git-branch-prompt {
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # ...
     alias 2clip='xclip -selection c'
+    alias 3clip='printf %s "$(cat /dev/stdin)" | xclip -selection c'  # no final \n
 elif [[ "$OSTYPE" == "darwin"* ]]; then
         alias 2clip='pbcopy'
 # elif [[ "$OSTYPE" == "cygwin" ]]; then
