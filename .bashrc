@@ -42,23 +42,42 @@ alias pp='	ping -c 3 port111.com' # make sure dns and routing work
 # Deal with directory stack (cd, etc.)
 
 alias  cd='	pushd'
+
+#
+# cd functions that list the directory stack
+#
+
 function dirl() {
-    # list directory stack, one per line
+    # "DIR"ectory "L"ist directory stack, one per line
+    # Usage: dirl
+
     for d in `dirs`; do echo $d; done
 }
 
-# alias  dirp='popd > /dev/null && dirl'
+function dirc() {
+    # "DIR"ectory "C"onnect - connect to directory and list stack
+    # Usage: dirc [DIR
 
-# function to pop N entries off the directory stack
-# Usage: dirp [N]
-
-function dirp ()
-{
-  for i in seq ${1:-"1"}; do popd > /dev/null; done && dirl
+    pushd ${1:-"$HOME"} > /dev/null
+    dirl
 }
-(.ven
 
+function dirp () {
+    # "DIR"ectory "P"op - pop N entries off the directory stack
+    # Usage: dirp [N]
+    #
+    # OLD:
+    #   alias  dirp='popd > /dev/null && dirl'
+    for i in `seq ${1:-"1"}`; do
+        debug "dirl: popd. i is $i"
+        popd > /dev/null;
+    done
+    dirl
+}
+
+#
 # aliases (functions) that take args
+#
 
 function gf() {
     # grep-find: grep for patterins in files via find
