@@ -4,9 +4,13 @@
 [core]
         editor = emacsclient -c
 	excludesfile = ~/.gitignore
+	quotepath = false
+	commitGraph = true
 [status]
 #	showUntrackedFiles = no
 	showUntrackedFiles = normal
 	
 #[push]
 #	default = simple
+[gc]
+	writeCommitGraph = true
