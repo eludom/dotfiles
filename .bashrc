@@ -11,7 +11,8 @@
 #
 
 # Helper functions
-PROG=`basename "$0" | tr -d '\n'`
+#PROG=`basename "$0" | tr -d '\n'`
+PROG="bashrc"
 
 function info()  { echo ${PROG}\: info: "$@" 1>&2; }
 function warn()  { echo ${PROG}\: warning: "$@" 1>&2; }
