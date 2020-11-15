@@ -307,7 +307,7 @@ if [ -z "$SSH_CONNECTION" ]; then
    export EDITOR="$EMACSCLIENT -c"
    export ALTERNATE_EDITOR=""
 else
-    export EDITOR=$(type -P emacs || type -P vim || type -P vi)
+    export EDITOR=$(type -P emacs || type -P ed)
 fi
 export VISUAL=$EDITOR
 
