@@ -516,11 +516,18 @@ function nflsl { NF=`nf ${1:-.}`; debug NF $NF;  echo "$NF" | xargs ls -Atl  ; }
 
 
 # alias for viewing files
+#
+#  Notes on setting up file/mime type assiciatons
+#  https://unix.stackexchange.com/questions/77136/xdg-open-default-applications-behavior
+#
+#  So...
+#
+#  locate -r 'emacs.*\.desktop'
+#  xdg-mime default emacs.desktop text/plain
+#
 if [[  ! -z "`which xdg-open`" ]]; then alias open='xdg-open '; fi
 
 # Let somebody know we finished running
 
 touch $HOME/.bashrc-ran
-
-# added by Anaconda3 installer
-#export PATH="/home/gmj/anaconda3/bin:$PATH"
+debug ".bashrc done"
