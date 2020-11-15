@@ -72,11 +72,7 @@ function dirp () {
     dirl
 }
 
-# because old habits die hard
-alias popd=dirp
-alias pushd=dirc
 alias cd=dirc
-
 
 #
 # aliases (functions) that take args
