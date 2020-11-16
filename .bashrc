@@ -1,16 +1,16 @@
 #
 # GMJ .bashrc
 #
-# Tue Mar 26 20:07:29 2013
-#
+# 2020-11-15
 #
 # Don't do this unless you are testing.
 #
 #    set -e
-#
-#
 
 # Helper functions
+
+#PROG=`basename "$0" | tr -d '\n'`
+PROG="bashrc" # $0 not piking it up right for .bashrc
 
 PROG='.bashrc'
 function info()  { echo ${PROG}\: info: "$@" 1>&2; }
@@ -38,6 +38,7 @@ alias oi='      offlineimap'
 alias psg='	/bin/ps -auxww | grep'
 alias p8='	ping -c 3 8.8.8.8' # make sure routing works
 alias pp='	ping -c 3 port111.com' # make sure dns and routing work
+alias locate='locate -r'
 
 #
 # cd functions that list the directory stack
@@ -71,11 +72,7 @@ function dirp () {
     dirl
 }
 
-# because old habits die hard
-alias popd=dirp
-alias pushd=dirc
 alias cd=dirc
-
 
 #
 # aliases (functions) that take args
@@ -309,7 +306,7 @@ if [ -z "$SSH_CONNECTION" ]; then
    export EDITOR="$EMACSCLIENT -c"
    export ALTERNATE_EDITOR=""
 else
-    export EDITOR=$(type -P emacs || type -P vim || type -P vi)
+    export EDITOR=$(type -P emacs || type -P ed)
 fi
 export VISUAL=$EDITOR
 
@@ -519,11 +516,18 @@ function nflsl { NF=`nf ${1:-.}`; debug NF $NF;  echo "$NF" | xargs ls -Atl  ; }
 
 
 # alias for viewing files
+#
+#  Notes on setting up file/mime type assiciatons
+#  https://unix.stackexchange.com/questions/77136/xdg-open-default-applications-behavior
+#
+#  So...
+#
+#  locate -r 'emacs.*\.desktop'
+#  xdg-mime default emacs.desktop text/plain
+#
 if [[  ! -z "`which xdg-open`" ]]; then alias open='xdg-open '; fi
 
 # Let somebody know we finished running
 
 touch $HOME/.bashrc-ran
-
-# added by Anaconda3 installer
-#export PATH="/home/gmj/anaconda3/bin:$PATH"
+debug ".bashrc done"
