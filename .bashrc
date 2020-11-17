@@ -287,6 +287,7 @@ pathlast $HOME/bin
 pathlast /opt/bin
 pathlast /usr/local/bin
 pathlast /opt/bin
+pathlast $HOME/.local/bin
 
 #
 # Execute any .sh files in ~/rc.local/*.sh
