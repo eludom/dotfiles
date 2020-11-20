@@ -184,7 +184,7 @@ fi
 alias glm='git ls-files -m'
 alias gam='git add `git ls-files -m`'
 alias gcm='git commit -m'
-alias gs='git status'
+alias gs='git status --ahead'
 
 # Add git stuff to prompt
 
